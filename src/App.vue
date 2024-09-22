@@ -5,11 +5,25 @@
 
 <template>
 
-  <RouterView />
-</template>
 
-<style scoped>
-header {
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+}
+
+body{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+
+/* header {
   line-height: 1.5;
   max-height: 100vh;
 }
@@ -71,5 +85,6 @@ nav a:first-of-type {
     padding: 1rem 0;
     margin-top: 1rem;
   }
-}
+
 </style>
+

@@ -1,3 +1,4 @@
+
 <template>
   <div class="container" id="container">
 
@@ -12,6 +13,7 @@
         <button class="Enviar">Sign Up</button>
       </form>
     </div>
+
   </div>
 </template>
 
@@ -23,5 +25,8 @@ export default {
 
 <style scoped>
 
+
 </style>
+
+
 
