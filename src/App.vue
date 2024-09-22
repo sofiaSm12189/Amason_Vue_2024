@@ -1,14 +1,10 @@
 <script setup>
-import LoginView from './views/LoginView.vue';
+
+
 </script>
 
 <template>
- 
-<LoginView/>
 
-</template>
-
-<style>
 
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
 
@@ -38,9 +34,11 @@ body{
 }
 
 nav {
+  display: flex;
   width: 100%;
   font-size: 12px;
   text-align: center;
+  justify-content: center;
   margin-top: 2rem;
 }
 
@@ -81,11 +79,12 @@ nav a:first-of-type {
 
   nav {
     text-align: left;
-    margin-left: -1rem;
+  
     font-size: 1rem;
 
     padding: 1rem 0;
     margin-top: 1rem;
   }
-} */
+
 </style>
+
