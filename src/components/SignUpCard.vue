@@ -9,8 +9,9 @@
         <input type="email" placeholder="Email" />
         <input type="password" placeholder="Password" />
         <input type="password" placeholder="Confirm your password" />
+        <button class="Enviar">Confirmar</button>
+        <p></p>
         <button type="button"  @click="$emit('toggle')">¿Ya tienes una cuenta?</button>
-        <button class="Enviar">Sign Up</button>
       </form>
     </div>
 

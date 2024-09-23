@@ -30,14 +30,13 @@ const toggleComponent = () => {
 }
 
 body {
-    background-color: #c9d6ff;
-    background: linear-gradient(to right, #e2e2e2, #c9d6ff);
+    background-color: #91ebff;
+    background: linear-gradient(to top, #e2e2e2, #e8faff);
     display: flex;
     align-items: center;
     justify-content: center;
     height: 100vh;
 }
-
 
 .container {
     background-color: #fff;
@@ -45,18 +44,16 @@ body {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
     position:relative;
     overflow: hidden;
-    width: 50vw;
+    width: 45vw;
+    height: 35vw;
     max-width: 768px;
-    min-height: 70vh;
+    min-height: 80vh;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 20px;
     transition: width 0.3s, height 0.3s;
-    
 }
-
-
 
 .container p {
     font-size: 1rem;
@@ -66,7 +63,7 @@ body {
 }
 
 .container button {
-    background-color: #512da8;
+    background-color: #00aed5;
     color: #fff;
     font-size: 0.875rem;
     padding: 10px 2.5rem;
@@ -77,8 +74,6 @@ body {
     text-transform: uppercase;
     margin-top: 10px;
     cursor: pointer;
-    
-
 }
 
 .container button:hover {
@@ -115,10 +110,10 @@ body {
 }
 
 .container input {
-    background-color: #eee;
+    background-color: #e6e6e6;
     border: none;
-    margin: 8px 0;
-    padding: 10px 15px;
+    margin: 8px 2px;
+    padding: 10px 30px;
     font-size: 1rem;
     border-radius: 8px;
     width: 100%;
