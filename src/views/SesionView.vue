@@ -53,6 +53,7 @@ body {
     align-items: center;
     padding: 20px;
     transition: width 0.3s, height 0.3s;
+    
 }
 
 
@@ -94,10 +95,9 @@ body {
 }
 
 .container img {
-    width: 50%;
-    position:absolute;
+    width: 36%;
+    position: absolute;
     top: 10px;
-    border-radius: 25px;
     margin-top: 1.5rem;
     margin-bottom: 1rem;
 

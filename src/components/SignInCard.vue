@@ -3,7 +3,7 @@
  
 
   <div class="container" id="container">
-    <img src="../assets/Logo.jpg" alt="Amason Logo">
+    <img src="../assets/Logo.png" alt="Amason Logo">
     <div class="form-container sign">
       <form>
         <h1>Iniciar Sesión</h1>
