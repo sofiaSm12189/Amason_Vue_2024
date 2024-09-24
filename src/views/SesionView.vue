@@ -1,6 +1,8 @@
 <template>
 
-    <component :is="currentComponent" @toggle="toggleComponent" />
+    <component :is="currentComponent" @toggle="toggleComponent">
+        <img src="../assets/Logo.png" alt="Amason Logo">
+    </component>
 
 </template>
 
