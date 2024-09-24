@@ -1,6 +1,6 @@
 <template>
   <div class="container" id="container">
-    <img src="../assets/Logo.png" alt="Amason Logo">
+    <slot></slot>
     <div class="form-container sign">
       <form>
         <h1>Iniciar Sesión</h1>
