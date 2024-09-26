@@ -1,15 +1,15 @@
 <template>
 
     <component :is="currentComponent" @toggle="toggleComponent">
-        <img src="../assets/Logo.png" alt="Amason Logo">
+        <img src="../../assets/Logo.png" alt="Amason Logo">
     </component>
 
 </template>
 
 <script setup>
 import { ref, computed } from 'vue';
-import SignInCard from '../components/SignInCard.vue';
-import SignUpCard from '../components/SignUpCard.vue';
+import SignInCard from '../../components/LoginComponents/SignInCard.vue';
+import SignUpCard from '../../components/LoginComponents/SignUpCard.vue';
 
 const isSignUp = ref(false);
 
