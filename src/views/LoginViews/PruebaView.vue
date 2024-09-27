@@ -1,18 +1,18 @@
 <template>
 
-
-  <div class="container-router">
-    <RouterView />
-  </div>
-  
+<header>
+    <div class="navbar">
+      <NavBar/>
+    </div>
+  </header>
 
 </template>
 
 <script setup>
 
+    import NavBar from '@/components/LayoutComponents/NavBar.vue';
+
 </script>
-
-
 
 
 <style scoped>
@@ -40,14 +40,6 @@ header {
   display: flex;
   width: 100%;
   padding: 0.5rem 2rem;
-}
-
-
-.container-router {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  
 }
 
 @media (max-width: 1034px) {
