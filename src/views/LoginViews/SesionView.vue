@@ -1,9 +1,9 @@
 <template>
-
+<div class="login">
     <component :is="currentComponent" @toggle="toggleComponent">
         <img src="../../assets/Logo.png" alt="Amason Logo">
     </component>
-
+</div>
 </template>
 
 <script setup>
@@ -21,27 +21,21 @@ const toggleComponent = () => {
 </script>
 
 
-<style>
+<style scoped>
 
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+.login {
+  background-color: #91ebff;
+  background: linear-gradient(to top, #e2e2e2, #e8faff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
 }
 
-body {
-    background-color: #91ebff;
-    background: linear-gradient(to top, #e2e2e2, #e8faff);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    width: 100vw;
-}
-
-.container {
+:deep(.container) {
     background-color: #fff;
     border-radius: 30px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
@@ -58,14 +52,14 @@ body {
     transition: width 0.3s, height 0.3s;
 }
 
-.container p {
+:deep(.container p) {
     font-size: 1rem;
     line-height: 1.5rem;
     letter-spacing: 0.3px;
     margin: 20px 0;
 }
 
-.container button {
+:deep(.container button) {
     background-color: #00aed5;
     color: #fff;
     font-size: 0.875rem;
@@ -79,20 +73,20 @@ body {
     cursor: pointer;
 }
 
-.container button:hover {
+:deep(.container button:hover) {
     background-color: black;
     color: white;
     transition: all 0.3s;
     transform: scale(1.05);
 }
 
-.container .Enviar:hover {
+:deep(.container .Enviar:hover) {
     background-color: #b5c5fb;
     color: black;
     font-weight: bold;
 }
 
-.container img {
+:deep(.container img) {
     width: 36%;
     position: absolute;
     top: 10px;
@@ -101,7 +95,7 @@ body {
 
 }
 
-.container form {
+:deep(.container form) {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -112,7 +106,7 @@ body {
     margin-top: 1rem;
 }
 
-.container input {
+:deep(.container input) {
     background-color: #e6e6e6;
     border: none;
     margin: 8px 2px;
@@ -123,7 +117,7 @@ body {
     outline: none;
 }
 
-.form-container {
+:deep(.form-container) {
     margin-top: 60px;
     position: relative;
     height: 80%;
@@ -133,62 +127,62 @@ body {
 
 }
 
-.sign {
+:deep(.sign) {
     width: 100%;
     z-index: 2;
 }
 
-h1 {
+:deep(h1) {
     
     margin-bottom: 1rem;
 }
 
 @media (max-width: 1024px) {
-    .container {
+    :depp(.container) {
         width: 70vw;
 
     }
 }
 
 @media (max-width: 768px) {
-    .container {
+    :deep(.container) {
         width: 70vw;
         min-height: 50vh;
         padding: 15px;
     }
 
-    .container form {
+    :deep(.container form) {
         padding: 0 20px;
     }
 
-    .container input {
+    :deep(.container input) {
         font-size: 0.95rem;
         padding: 8px 12px;
     }
 }
 
 @media (max-width: 480px) {
-    .container {
+    :depp(.container) {
         width: 70vw;
         border-radius: 20px;
         min-height: 50vh;
         padding: 10px;
     }
 
-    .container h1 {
+    :deep(.container h1) {
         font-size: 1.25rem;
     }
 
-    .container button {
+    :deep(.container button) {
         padding: 8px 25px;
         font-size: 0.8rem;
     }
 
-    .container input {
+    :deep(.container input) {
         padding: 8px 10px;
     }
 
-    .container a {
+    :deep(.container a) {
         font-size: 0.75rem;
     }
 }
