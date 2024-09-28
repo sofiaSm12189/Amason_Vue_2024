@@ -26,7 +26,7 @@ export default {
   },
   data() {
     return {
-      patitoImage,  // Imagen por defecto
+      patitoImage,
     };
   },
 };
@@ -36,13 +36,19 @@ export default {
 .category-card {
   border: 1px solid #ddd;
   padding: 20px;
-  border-radius: 0px;
   width: 300px;
   align-content: center;
   text-align: left;
   height: auto;
-  box-shadow: 1px 1px #e0e0e0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s; 
+  background-color: #fff; 
 }
+
+.category-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); 
+} 
 
 .items {
   display: flex;
