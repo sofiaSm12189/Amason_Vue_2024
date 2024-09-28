@@ -139,8 +139,8 @@ margin:0% 7%;
         width: 80px;
         height: 54px;
         left: 10%; 
-        -webkit-animation: moverCamion 6s linear infinite;
-        animation: moverCamion 6s linear infinite;
+        -webkit-animation: moverCamion 7s linear infinite;
+        animation: moverCamion 7s linear infinite;
     }
 }
 </style>
