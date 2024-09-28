@@ -5,13 +5,17 @@
       <NavBar/>
     </div>
   </header>
-
+  <!-- <div class="categories-card">
+    <MenuView/>
+  </div>
+  -->
+  <MenuView/>
 </template>
 
 <script setup>
 
     import NavBar from '@/components/LayoutComponents/NavBar.vue';
-
+    import MenuView from './MenuView.vue';
 </script>
 
 
@@ -48,4 +52,11 @@ header {
   }
 }
 
+  /* .categories-card {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: transparent;
+    gap: 20px;
+    justify-content: space-around;
+  } */
 </style>
