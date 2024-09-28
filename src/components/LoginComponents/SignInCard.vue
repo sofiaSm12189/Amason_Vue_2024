@@ -9,11 +9,14 @@
 
         <button class="Enviar" type="button" @click="handleLogin">Ingresar</button>
 
-        <button class="Enviar" type="button">Ingresar</button>
-
         <p></p>
         <p>¿No tienes una cuenta?</p>
         <button type="button" @click="$emit('toggle')">Registrarse</button>
+
+        <div style="text-align: left;">
+        <a href="AmasonBusiness">Amason Business</a>
+        </div>
+
       </form>
     </div>
   </div>
