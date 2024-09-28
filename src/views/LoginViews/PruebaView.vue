@@ -1,21 +1,15 @@
 <template>
-
-<header>
-    <div class="navbar">
-      <NavBar/>
-    </div>
-  </header>
-  <!-- <div class="categories-card">
-    <MenuView/>
-  </div>
-  -->
+  
   <MenuView/>
+  <NavBar />
+  
 </template>
 
 <script setup>
 
     import NavBar from '@/components/LayoutComponents/NavBar.vue';
     import MenuView from './MenuView.vue';
+
 </script>
 
 
@@ -25,38 +19,11 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Montserrat', sans-serif;
-}
-
-header {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position:fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  background-color: #53b2de;
-  margin-bottom: 2rem;
+  font-family: 'Montserrat', sans-serif;  
 }
 
 .navbar {
-  display: flex;
-  width: 100%;
-  padding: 0.5rem 2rem;
+  width: 90vw;
 }
 
-@media (max-width: 1034px) {
-  .navbar {
-    width: 1034px; /* Fija el ancho a 1034px cuando la ventana sea menor o igual a 1034px */
-  }
-}
-
-  /* .categories-card {
-    display: flex;
-    flex-wrap: wrap;
-    background-color: transparent;
-    gap: 20px;
-    justify-content: space-around;
-  } */
 </style>
