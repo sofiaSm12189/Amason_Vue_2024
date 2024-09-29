@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 
 import SesionView from '../views/LoginViews/SesionView.vue'
+import MainLayout from '../components/LayoutComponents/MainLayout.vue'
 import PruebaView from '../views/LoginViews/PruebaView.vue'
 import MenuView from '../views/LoginViews/MenuView.vue'
 
@@ -11,19 +12,27 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'Sesion',
+      component: MainLayout,
+      children: [
+
+        {
+          path: '/prueba',
+          name: 'Prueba',
+          component: PruebaView
+        },
+        {
+          path: '/menu',
+          name: 'Menu',
+          component: MenuView
+        }
+      ],
+      
+    },
+    {
+      path: '/sesion',
+      name: 'sesion',
       component: SesionView
     },
-    {
-      path: '/prueba',
-      name: 'Prueba',
-      component: PruebaView
-    },
-    {
-      path: '/menu',
-      name: 'Menu',
-      component: MenuView
-    }
   ]
 })
 

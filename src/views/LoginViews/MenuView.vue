@@ -89,7 +89,7 @@ export default {
 
 .categories-card {
   display: flex;
-  margin-top: 5vh;
+  margin-top: 17vh;
   margin-left: 4vh;
   margin-right: 4vh;
   margin-bottom: 6vh;
