@@ -1,8 +1,8 @@
 <template>
-  
-  <MenuView/>
-  <NavBar />
-  
+
+ <NavBar/>
+ <MenuView/>
+
 </template>
 
 <script setup>
