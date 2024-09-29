@@ -49,6 +49,7 @@ export default {
   background: #000;
   position: relative;
   padding: 5px 0px;
+  height: 180px;
   font-family: 'Play', sans-serif;
   text-align: center;
   justify-content: center;
@@ -59,8 +60,8 @@ export default {
   display: flex;
   justify-content: center;
   width: 100%;
-  margin: 0.5% 0%;
-  padding: 0.5% 0%;
+  margin: 0.2% 0%;
+  padding: 0.2% 0%;
   color: gray;
   font-size: 1.0em;
 }
@@ -95,9 +96,9 @@ export default {
 }
 
 .footer .footer_carrito {
-  background: url('@/assets/carrito3.png') no-repeat center center;
-  width: 85px;
-  height: 56px;
+  background: url('@/assets/c.gif') no-repeat center center;
+  width: 132px;
+  height: 88px;
   background-size: 100%;
   z-index: 10;
   position: absolute;
@@ -136,8 +137,9 @@ export default {
   }
 
   .footer .footer_carrito {
-    width: 80px;
-    height: 54px;
+    width: 89px;
+    bottom: 0;
+    height: 60px;
     left: 10%;
     -webkit-animation: moverCamion 7s linear infinite;
     animation: moverCamion 7s linear infinite;
