@@ -38,6 +38,7 @@ export default {
   border-radius: 8px;
   border: 1px solid #d9d9d9;
   box-sizing: border-box;
+  
   padding: 12px;
   width: 300px;
   align-content: center;

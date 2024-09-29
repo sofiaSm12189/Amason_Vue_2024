@@ -96,7 +96,7 @@ export default {
 }
 
 .footer .footer_carrito {
-  background: url('@/assets/c.gif') no-repeat center center;
+  background: url('@/assets/carrito_entrega.gif') no-repeat center center;
   width: 132px;
   height: 88px;
   background-size: 100%;

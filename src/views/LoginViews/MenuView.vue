@@ -90,11 +90,13 @@ export default {
 .categories-card {
   display: flex;
   margin-top: 17vh;
-  margin-left: 4vh;
-  margin-right: 4vh;
+  margin-left: 1vh;
+  margin-right: 1vh;
   margin-bottom: 6vh;
   flex-wrap: wrap;
+  width: auto;
   background-color: transparent;
+  padding: 2.4% 3%;
   gap: 20px;
   justify-content: space-around;
   overflow: hidden;
