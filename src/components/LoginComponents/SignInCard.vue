@@ -26,7 +26,7 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 
 const handleLogin = () => {
-  router.push('/prueba'); 
+  router.push('/Menu'); 
 };
 </script>
 
