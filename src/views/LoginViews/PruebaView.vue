@@ -1,14 +1,20 @@
 <template>
-
- <NavBar/>
- <MenuView/>
-
+  <nav>
+    <NavBar />
+  </nav>
+    <menu>
+      <MenuView/>
+    </menu>
+  <footer>
+    <FooterLayout />
+  </footer>
 </template>
 
 <script setup>
 
     import NavBar from '@/components/LayoutComponents/NavBar.vue';
     import MenuView from './MenuView.vue';
+    import FooterLayout from '@/components/LayoutComponents/FooterLayout.vue';
 
 </script>
 
@@ -22,8 +28,6 @@
   font-family: 'Montserrat', sans-serif;  
 }
 
-.navbar {
-  width: 90vw;
-}
+
 
 </style>

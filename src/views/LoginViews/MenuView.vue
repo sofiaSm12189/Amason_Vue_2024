@@ -62,8 +62,23 @@ export default {
             { title: 'a', img: 'jacket.jpg' },
             { title: 'a', img: 'shoes.jpg' },
           ],
+        },{
+          title: 'aaaaa',
+          items: [
+            { title: 'T-aaa', img: 'tshirt.jpg' },
+            { title: 'aa', img: 'jeans.jpg' },
+            { title: 'a', img: 'jacket.jpg' },
+            { title: 'a', img: 'shoes.jpg' },
+          ],
+        },{
+          title: 'aaaaa',
+          items: [
+            { title: 'T-aaa', img: 'tshirt.jpg' },
+            { title: 'aa', img: 'jeans.jpg' },
+            { title: 'a', img: 'jacket.jpg' },
+            { title: 'a', img: 'shoes.jpg' },
+          ],
         },
-        // Agrega más categorías aquí
       ],
     };
   },
@@ -80,8 +95,9 @@ export default {
   margin-bottom: 6vh;
   flex-wrap: wrap;
   background-color: transparent;
-  gap: 25px;
+  gap: 20px;
   justify-content: space-around;
+  overflow: hidden;
 }
 
 </style>
