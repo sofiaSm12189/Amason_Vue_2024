@@ -1,6 +1,6 @@
 <template>
   <nav>
-    <input type="checkbox" id="check" aria-label="Toggle navigation">
+    <input type="checkbox" id="check" aria-label="Toggle navigation" @change="toggleBodyScroll">
     <label for="check" class="checkbtn">
       <i class="fas fa-bars" aria-hidden="true"></i>
     </label>
@@ -33,7 +33,20 @@
   </nav>
 </template>
 
+<script>
 
+export default {
+  methods: {
+    toggleBodyScroll(event) {
+      if (event.target.checked) {
+        document.body.classList.add('no-scroll');
+      } else {
+        document.body.classList.remove('no-scroll');
+      }
+    }
+  }
+};
+</script>
 
 <style scoped>
 nav {
@@ -43,6 +56,10 @@ nav {
   justify-content: space-between;
   align-items: center;
   padding: 35px 20px;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
 }
 
 .logo {
@@ -102,9 +119,8 @@ ul {
   padding: 0;
   margin: 0;
   font-size: 1rem;
-  justify-content:center;
+  justify-content: center;
   align-items: center;
-  
 }
 
 ul li {
@@ -112,21 +128,17 @@ ul li {
   width: 100%;
   text-align: center;
   display: flex;
-  
   flex-direction: column;
   align-items: center;
-
 }
 
 ul li a {
   display: flex;
-  
   flex-direction: column;
   align-items: center;
   color: white;
   text-decoration: none;
   transition: color 0.3s;
-
 }
 
 .checkbtn {
@@ -141,7 +153,6 @@ ul li a {
 }
 
 @media (max-width: 768px) {
-
   .logo {
     font-size: 1.5rem;
   }
@@ -155,7 +166,7 @@ ul li a {
     width: 50%;
   }
 
-  .line-1{
+  .line-1 {
     display: none;
   }
 
@@ -184,5 +195,11 @@ ul li a {
   #check:checked ~ ul {
     right: 0;
   }
+}
+</style>
+
+<style>
+.no-scroll {
+  overflow: hidden;
 }
 </style>
