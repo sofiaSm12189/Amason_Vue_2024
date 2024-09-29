@@ -6,7 +6,7 @@
     </label>
     <label class="logo">Amason</label>
     <div class="search-container">
-      <input type="text" placeholder="Buscar un artículo" aria-label="Buscar">
+      <input type="text" placeholder="Buscar artículo" aria-label="Buscar">
       <button type="button" aria-label="Buscar">
         <i class="fas fa-search" aria-hidden="true"></i>
       </button>
@@ -21,12 +21,13 @@
       <li>
         <a href="#">
           <div class="line-1">Devoluciones y</div>
-          <div class="line-2"> pedidos</div>
+          <div class="line-2">pedidos</div>
         </a>
       </li>
       <li>
         <a href="#">
-          <div class="line-2"> Carrito</div>
+          <div class="line-1">Ver carrito</div>
+          <div class="line-2">Carrito</div>
         </a>
       </li>
     </ul>
@@ -34,7 +35,6 @@
 </template>
 
 <script>
-
 export default {
   methods: {
     toggleBodyScroll(event) {
@@ -70,7 +70,7 @@ nav {
 .search-container {
   display: flex;
   align-items: center;
-  width: 80%;
+  width: 67%;
   justify-content: center;
 }
 
@@ -80,7 +80,7 @@ nav {
   border: none;
   border-radius: 5px 0 0 5px;
   outline: none;
-  width: 80%;
+  width: 85%;
   line-height: 2rem;
   font-size: 1rem;
   background-color: #fff;
@@ -103,12 +103,12 @@ nav {
 }
 
 .line-1 {
-  display: inline-block;
+  position: relative;;
   white-space: nowrap;
 }
 
 .line-2 {
-  display: inline-block;
+  position: relative;
   white-space: nowrap;
   font-weight: bold;
 }
@@ -121,10 +121,11 @@ ul {
   font-size: 1rem;
   justify-content: center;
   align-items: center;
+  width: 44%;
 }
 
 ul li {
-  margin-right: 20px;
+  padding: 0 5px;
   width: 100%;
   text-align: center;
   display: flex;
@@ -133,12 +134,16 @@ ul li {
 }
 
 ul li a {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  display: block;
+  width: 100%;
+  padding: 5px 0;
   color: white;
   text-decoration: none;
-  transition: color 0.3s;
+  transition: background-color 0.3s;
+}
+
+ul li a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .checkbtn {
@@ -152,7 +157,7 @@ ul li a {
   display: none;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 854px) {
   .logo {
     font-size: 1.5rem;
   }
@@ -186,10 +191,12 @@ ul li a {
 
   ul li {
     margin: 20px 0;
+    width: 100%;
   }
 
   ul li a {
     font-size: 20px;
+    text-align: center;
   }
 
   #check:checked ~ ul {

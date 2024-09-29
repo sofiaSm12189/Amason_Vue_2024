@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import CategoryCard from '@/components/LayoutComponents/CategoryCard.vue';
+import CategoryCard from '@/components/MenuComponents/CategoryCard.vue';
 
 export default {
   components: {
