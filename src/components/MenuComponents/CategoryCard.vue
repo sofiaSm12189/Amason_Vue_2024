@@ -34,8 +34,11 @@ export default {
 
 <style scoped>
 .category-card {
-  border: 1px solid #ddd;
-  padding: 20px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+  border: 1px solid #d9d9d9;
+  box-sizing: border-box;
+  padding: 12px;
   width: 300px;
   align-content: center;
   text-align: left;
@@ -43,6 +46,7 @@ export default {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s; 
   background-color: #fff; 
+  overflow: hidden;
 }
 
 .category-card:hover {
