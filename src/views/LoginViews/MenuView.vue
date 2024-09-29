@@ -1,20 +1,15 @@
 <template>
-   
   <div class="categories-card">
-    <CategoryCard
-      v-for="(category, index) in categories"
-      :key="index"
-      :category="category"
-    />
+    <CategoryCard v-for="(category, index) in categories" :key="index" :category="category" />
   </div>
 </template>
 
 <script>
-import CategoryCard from '@/components/MenuComponents/CategoryCard.vue';
+import CategoryCard from '@/components/MenuComponents/CategoryCard.vue'
 
 export default {
   components: {
-    CategoryCard,
+    CategoryCard
   },
   data() {
     return {
@@ -25,8 +20,8 @@ export default {
             { title: 'Phone', img: 'phone.jpg' },
             { title: 'Laptop', img: 'laptop.jpg' },
             { title: 'Headphones', img: 'headphones.jpg' },
-            { title: 'Camera', img: 'camera.jpg' },
-          ],
+            { title: 'Camera', img: 'camera.jpg' }
+          ]
         },
         {
           title: 'Clothing',
@@ -34,59 +29,52 @@ export default {
             { title: 'T-shirt', img: 'tshirt.jpg' },
             { title: 'Jeans', img: 'jeans.jpg' },
             { title: 'Jacket', img: 'jacket.jpg' },
-            { title: 'Shoes', img: 'shoes.jpg' },
-          ],
+            { title: 'Shoes', img: 'shoes.jpg' }
+          ]
         },
         {
-          title: 'aaaaa',
+          title: 'Books',
           items: [
-            { title: 'T-aaa', img: 'tshirt.jpg' },
-            { title: 'aa', img: 'jeans.jpg' },
-            { title: 'a', img: 'jacket.jpg' },
-            { title: 'a', img: 'shoes.jpg' },
-          ],
+            { title: 'Fiction', img: 'fiction.jpg' },
+            { title: 'Science', img: 'science.jpg' },
+            { title: 'Biography', img: 'biography.jpg' },
+            { title: 'Fantasy', img: 'fantasy.jpg' }
+          ]
         },
         {
-          title: 'aaaaa',
+          title: 'Toys & Games',
           items: [
-            { title: 'T-aaa', img: 'tshirt.jpg' },
-            { title: 'aa', img: 'jeans.jpg' },
-            { title: 'a', img: 'jacket.jpg' },
-            { title: 'a', img: 'shoes.jpg' },
-          ],
-        },{
-          title: 'aaaaa',
-          items: [
-            { title: 'T-aaa', img: 'tshirt.jpg' },
-            { title: 'aa', img: 'jeans.jpg' },
-            { title: 'a', img: 'jacket.jpg' },
-            { title: 'a', img: 'shoes.jpg' },
-          ],
-        },{
-          title: 'aaaaa',
-          items: [
-            { title: 'T-aaa', img: 'tshirt.jpg' },
-            { title: 'aa', img: 'jeans.jpg' },
-            { title: 'a', img: 'jacket.jpg' },
-            { title: 'a', img: 'shoes.jpg' },
-          ],
-        },{
-          title: 'aaaaa',
-          items: [
-            { title: 'T-aaa', img: 'tshirt.jpg' },
-            { title: 'aa', img: 'jeans.jpg' },
-            { title: 'a', img: 'jacket.jpg' },
-            { title: 'a', img: 'shoes.jpg' },
-          ],
+            { title: 'Board Games', img: 'boardgames.jpg' },
+            { title: 'Action Figures', img: 'actionfigures.jpg' },
+            { title: 'Puzzles', img: 'puzzles.jpg' },
+            { title: 'Dolls', img: 'dolls.jpg' }
+          ]
         },
-      ],
-    };
-  },
-};
+        {
+          title: 'Automotive',
+          items: [
+            { title: 'Car Tires', img: 'tires.jpg' },
+            { title: 'Engine Oil', img: 'engineoil.jpg' },
+            { title: 'Car Mats', img: 'carmats.jpg' },
+            { title: 'Seat Covers', img: 'seatcovers.jpg' }
+          ]
+        },
+        {
+          title: 'Beauty & Personal Care',
+          items: [
+            { title: 'Makeup', img: 'makeup.jpg' },
+            { title: 'Skincare', img: 'skincare.jpg' },
+            { title: 'Haircare', img: 'haircare.jpg' },
+            { title: 'Perfume', img: 'perfume.jpg' }
+          ]
+        }
+      ]
+    }
+  }
+}
 </script>
 
 <style scoped>
-
 .categories-card {
   display: flex;
   margin-top: 17vh;
@@ -101,5 +89,4 @@ export default {
   justify-content: space-around;
   overflow: hidden;
 }
-
 </style>
