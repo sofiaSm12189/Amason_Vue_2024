@@ -24,18 +24,26 @@
           <div class="line-2">pedidos</div>
         </a>
       </li>
-      <li>
+      <li class="cart-container">
         <a href="#">
-          <div class="line-1">Ver carrito</div>
+          <div class="line-1"><i class="fa-solid fa-cart-shopping"></i></div>
           <div class="line-2">Carrito</div>
         </a>
+        <div class="cart-toggle">
+          <PopUpCart/>
+        </div>
       </li>
     </ul>
   </nav>
 </template>
 
 <script>
+import PopUpCart from '../CartComponents/PopUpCart.vue';
+
 export default {
+  components: {
+    PopUpCart
+  },
   methods: {
     toggleBodyScroll(event) {
       if (event.target.checked) {
@@ -49,6 +57,31 @@ export default {
 </script>
 
 <style scoped>
+.cart-container {
+  position: relative;
+}
+
+.cart-toggle {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: none;
+  z-index: 1000;
+  border-radius: 8px;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  opacity: 0;
+  transform: translateY(-10px);
+
+}
+
+.cart-container:hover .cart-toggle {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
 nav {
   background-color: #4babe2;
   color: white;
@@ -80,7 +113,7 @@ nav {
   border: none;
   border-radius: 5px 0 0 5px;
   outline: none;
-  width: 85%;
+  width: 90%;
   line-height: 2rem;
   font-size: 1rem;
   background-color: #fff;
@@ -103,7 +136,7 @@ nav {
 }
 
 .line-1 {
-  position: relative;;
+  position: relative;
   white-space: nowrap;
 }
 
@@ -116,16 +149,15 @@ nav {
 ul {
   display: flex;
   list-style: none;
-  padding: 0;
+  padding: 0 0px;
   margin: 0;
   font-size: 1rem;
   justify-content: center;
   align-items: center;
-  width: 44%;
 }
 
 ul li {
-  padding: 0 5px;
+  padding: 0 8px;
   width: 100%;
   text-align: center;
   display: flex;
