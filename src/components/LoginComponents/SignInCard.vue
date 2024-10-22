@@ -11,6 +11,13 @@
       <input type="password" v-model="password" required />
 
       <button type="submit">Login</button>
+        <label for="email">Email</label>
+      <input type="email" v-model="email" required />
+      
+      <label for="password">Password</label>
+      <input type="password" v-model="password" required />
+
+      <button type="submit">Login</button>
         <p>¿No tienes una cuenta?</p>
         <button type="button" @click="$emit('toggle')">Registrarse</button>
       </form>
