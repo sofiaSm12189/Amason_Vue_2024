@@ -27,7 +27,7 @@ export default {
 </script>
 
 
-<style>
+<style scoped>
 body{
   background-color: #f3f3f3;
   font-family: 'Montserrat', sans-serif;

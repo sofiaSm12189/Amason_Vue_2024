@@ -2,6 +2,7 @@
   <div class="container" id="container">
     <slot></slot>
     <div class="form-container sign">
+      
       <form @submit.prevent="submitForm">
         <h1>Iniciar Sesión</h1>
         <label for="email">Email</label>
@@ -37,7 +38,7 @@ export default {
         await loginUser({ email: this.email, password: this.password });
         this.$router.push('/Menu');
       } catch (error) {
-        this.error = 'Inicio de sesión fallido. Por favor, revise sus credenciales e intente nuevamente.';
+        this.error = 'Por favor, revise sus credenciales e intente nuevamente.';
       }
     }
   }
@@ -48,5 +49,6 @@ export default {
 .error {
   color: red;
   margin-top: 10px;
+  text-align: center;
 }
 </style>

@@ -104,6 +104,7 @@ const toggleComponent = () => {
     height: 100%;
     border-radius: 10px;
     margin-top: 1rem;
+    width: 35vw;
 }
 
 :deep(.container input) {
@@ -113,7 +114,7 @@ const toggleComponent = () => {
     padding: 10px 30px;
     font-size: 1rem;
     border-radius: 8px;
-    width: 100%;
+    width: 60%;
     outline: none;
 }
 
