@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <CarritoLayout
+    <CarritoItem
       :products="[
         { image: '@/assets/xiaomi.jpg', name: 'Audifonos', description: 'XIAOMI-auriculares inalámbricos Mini con Bluetooth 5,3, cascos TWS con Control táctil, deportivos, resistentes al agua, para juegos', price: 15, delivery: 2, quantity: 1 },
         { image: '@/assets/xiaomi.jpg', name: 'Audifonos', description: 'XIAOMI-auriculares inalámbricos Mini con Bluetooth 5,3, cascos TWS con Control táctil, deportivos, resistentes al agua, para juegos', price: 15, delivery: 2, quantity: 1 },
@@ -12,11 +12,11 @@
 </template>
 
 <script>
-import CarritoLayout from '@/components/CarritoComponents/CarritoLayout.vue'
+import CarritoItem from '../../components/CartComponents/CartItem.vue';
 
 export default {
   components: {
-    CarritoLayout,
+    CarritoItem,
   },
   methods: {
     //handleDelete(index) {
