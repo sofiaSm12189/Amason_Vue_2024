@@ -27,7 +27,7 @@
       <li class="cart-container">
         <a href="#">
           <div class="line-1"><i class="fa-solid fa-cart-shopping"></i></div>
-          <div class="line-2">Carrito</div>
+          <button class="Enviar" type="button" @click="goToCart">Ingresar</button>
         </a>
         <div class="cart-toggle">
           <PopUpCart/>
@@ -53,6 +53,16 @@ export default {
       }
     }
   }
+};
+</script>
+
+<script setup>
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+const goToCart = () => {
+  router.push('/Carrito');
 };
 </script>
 
