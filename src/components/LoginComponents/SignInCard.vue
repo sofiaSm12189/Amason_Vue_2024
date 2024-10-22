@@ -2,7 +2,7 @@
   <div class="container" id="container">
     <slot></slot>
     <div class="form-container sign">
-      <form @submit.prevent="login">
+      <form @submit.prevent="submitForm">
         <h1>Iniciar Sesión</h1>
         <label for="email">Email</label>
       <input type="email" v-model="email" required />
@@ -18,46 +18,31 @@
   </div>
 </template>
 
-<!-- <script setup>
-import { useRouter } from 'vue-router';
-
-
-const router = useRouter();
-
-const handleLogin = () => {
-  router.push('/Menu'); 
-};
-
-</script> -->
-
 <script>
+import { loginUser } from '../../../api/auth';
 import axios from 'axios';
 
 export default {
   data() {
     return {
-      email: '',
-      password: ''
+      
+        email: '',
+        password: '',
+      
+      error: null
     };
   },
   methods: {
-    async login() {
+    async submitForm() {
       try {
-        const response = await axios.post('http://localhost:8000/api/login', {
-          email: this.email,
-          password: this.password
-        });
-        
-        // Guarda el token en el localStorage para utilizarlo en futuras peticiones
+        this.error = null;
+        const response = await loginUser({email: this.email, password: this.password});
         const token = response.data.token;
         localStorage.setItem('token', token);
-
-        // Configura Axios para incluir el token en los headers de las siguientes peticiones
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-
-        // Redirige al usuario a la página de tickets
         this.$router.push('/Menu');
       } catch (error) {
+        this.error = 'Login failed. Please check your credentials and try again.';
         console.error('Login failed:', error);
       }
     }
