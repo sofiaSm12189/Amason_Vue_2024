@@ -2,15 +2,17 @@
   <div class="container" id="container">
     <slot></slot>
     <div class="form-container sign">
-      <form @submit.prevent="login">
+      
+      <form @submit.prevent="submitForm">
         <h1>Iniciar Sesión</h1>
         <label for="email">Email</label>
-      <input type="email" v-model="email" required />
-      
-      <label for="password">Password</label>
-      <input type="password" v-model="password" required />
+        <input type="email" v-model="email" required />
+        
+        <label for="password">Password</label>
+        <input type="password" v-model="password" required />
 
-      <button type="submit">Login</button>
+        <button type="submit">Login</button>
+        <p v-if="error" class="error">{{ error }}</p>
         <p>¿No tienes una cuenta?</p>
         <button type="button" @click="$emit('toggle')">Registrarse</button>
       </form>
@@ -18,54 +20,35 @@
   </div>
 </template>
 
-<!-- <script setup>
-import { useRouter } from 'vue-router';
-
-
-const router = useRouter();
-
-const handleLogin = () => {
-  router.push('/Menu'); 
-};
-
-</script> -->
-
 <script>
-import axios from 'axios';
+import { loginUser } from '../../../api/auth';
 
 export default {
   data() {
     return {
       email: '',
-      password: ''
+      password: '',
+      error: null
     };
   },
   methods: {
-    async login() {
+    async submitForm() {
       try {
-        const response = await axios.post('http://localhost:8000/api/login', {
-          email: this.email,
-          password: this.password
-        });
-        
-        // Guarda el token en el localStorage para utilizarlo en futuras peticiones
-        const token = response.data.token;
-        localStorage.setItem('token', token);
-
-        // Configura Axios para incluir el token en los headers de las siguientes peticiones
-        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-
-        // Redirige al usuario a la página de tickets
+        this.error = null;
+        await loginUser({ email: this.email, password: this.password });
         this.$router.push('/Menu');
       } catch (error) {
-        console.error('Login failed:', error);
+        this.error = 'Por favor, revise sus credenciales e intente nuevamente.';
       }
     }
   }
 };
-
 </script>
 
 <style scoped>
-
+.error {
+  color: red;
+  margin-top: 10px;
+  text-align: center;
+}
 </style>
