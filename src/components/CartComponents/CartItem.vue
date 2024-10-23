@@ -1,5 +1,5 @@
 <template>
-  <div>
+  
     <div v-for="(item, index) in products" :key="index" class="details-card">
       <CarritoCheckbox />
       <div class="image-card">
@@ -31,7 +31,7 @@
         </div>
       </div>
     </div>
-  </div>
+  
 </template>
 
 <script>
@@ -81,12 +81,14 @@ export default {
   display: flex;
   justify-content: space-between;
   border-top: var(--sds-size-stroke-border) solid rgba(0, 0, 0, 0.46);
-  padding: 15px;
+  padding: 10px;
   margin-bottom: 15px;
   border-bottom: 1px solid #e0e0e0;
 }
+
 .details-card .image-card {
   flex-shrink: 0;
+  margin-left: -1vh;
   align-content: center;
 }
 
@@ -106,11 +108,11 @@ export default {
 .details-card .description-item .description,
 .details-card .description-item .bold,
 .details-card .description-item .group .delivery {
-  margin-bottom: 2px;
+  margin-bottom: 1px;
 }
 
 .details-card .description-item .description {
-  width: 720px;
+  width: 700px;
   height: 75px;
   flex-shrink: 0;
   color: #000;
@@ -132,6 +134,7 @@ export default {
   line-height: 140%;
   text-align: right;
 }
+
 .details-card .description-item .delivery {
   align-self: flex-start;
   line-height: 140%;
@@ -144,7 +147,7 @@ export default {
 }
 
 .details-card .description-item .group {
-  width: 720px;
+  width: 700px;
   height: 70px;
   align-self: flex-end;
   justify-content: space-between;
