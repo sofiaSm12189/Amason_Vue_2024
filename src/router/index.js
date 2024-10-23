@@ -5,7 +5,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import SesionView from '../views/LoginViews/SesionView.vue'
 import MainLayout from '../components/LayoutComponents/MainLayout.vue'
 import MenuView from '../views/LoginViews/MenuView.vue'
-import CarritoView from '@/views/LoginViews/CarritoView.vue'
+import CartView from '@/views/LoginViews/CartView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -28,7 +28,7 @@ const router = createRouter({
           {
             path: '/Carrito',
             name: 'Carrito',
-            component: CarritoView
+            component: CartView
           },
         ],
         
