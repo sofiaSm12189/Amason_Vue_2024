@@ -1,14 +1,14 @@
 <template>
     <div class="summary">
       <div class="inf">
-        <div class="tex">Cantidad de Artículos:</div>
-        <div class="price">3</div>
+        <div class="tex">Artículos:</div>
+        <div class="price">(3)</div>
       </div>
-      <div class="gray-line"></div>
       <div class="inf">
         <div class="tex">Total:</div>
         <div class="price">USD$400</div>
       </div>
+      <div class="gray-line"></div>
     </div>
     <button class="btn">Check Out</button>
     <div class="payments">
@@ -34,9 +34,7 @@
   width: 100%;
   height: 130px;
   border-radius: 12px;
-  border: 1px solid #d1d5db;
   padding: 20px;
-  background-color: #fdfdfd;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -81,6 +79,7 @@ i{
 }
 
 .btn {
+  margin-top: -4vh;
   width: 100%;
   height: 60px;
   background-color: #f1a80b;
@@ -96,7 +95,7 @@ i{
 }
 
 .payments {
-  border-top: 1px solid #d1d5db;
+  border: 1px solid #d1d5db;
   margin-top: auto;
   min-width: 376px;
   width: 100%;
@@ -110,7 +109,7 @@ i{
   padding: 10px 0;
   border-bottom-left-radius: 12px;
   border-bottom-right-radius: 12px;
-  background-color: #f9fafb;
+  background-color: #fdfdfd;
   margin-bottom: -20px;
 }
 
