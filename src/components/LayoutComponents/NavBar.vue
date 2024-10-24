@@ -4,7 +4,7 @@
     <label for="check" class="checkbtn">
       <i class="fas fa-bars" aria-hidden="true"></i>
     </label>
-    <label class="logo">Amason</label>
+    <img src="@/assets/Amason_White.svg" alt="Logo" class="logo-img" style="width: 128px; height: auto;">
     <div class="search-container">
       <input type="text" placeholder="Buscar artículo" aria-label="Buscar">
       <button type="button" aria-label="Buscar">
