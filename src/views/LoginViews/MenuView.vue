@@ -77,7 +77,6 @@ export default {
 <style scoped>
 .categories-card {
   display: flex;
-  margin-top: 17vh;
   margin-left: 1vh;
   margin-right: 1vh;
   margin-bottom: 6vh;
