@@ -93,7 +93,7 @@ nav {
   justify-content: space-between;
   align-items: center;
   padding: 35px 20px;
-  position: fixed;
+  position: sticky;
   top: 0;
   width: 100%;
   z-index: 1000;
