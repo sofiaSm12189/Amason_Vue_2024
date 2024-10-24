@@ -4,7 +4,9 @@
     <label for="check" class="checkbtn">
       <i class="fas fa-bars" aria-hidden="true"></i>
     </label>
-    <img src="@/assets/Amason_White.svg" alt="Logo" class="logo-img" style="width: 128px; height: auto;">
+    <button @click="goToHome" aria-label="Go to Home" class="logo-button">
+      <img src="@/assets/Amason_White.svg" alt="Logo" class="logo-img" style="width: 128px; height: auto;">
+    </button>
     <div class="search-container">
       <input type="text" placeholder="Buscar artículo" aria-label="Buscar">
       <button type="button" aria-label="Buscar">
@@ -51,6 +53,8 @@ export default {
       } else {
         document.body.classList.remove('no-scroll');
       }
+    }, goToHome() {
+      this.$router.push('/Menu');
     }
   }
 };
@@ -95,9 +99,11 @@ nav {
   z-index: 1000;
 }
 
-.logo {
-  font-size: 2rem;
-  font-weight: bold;
+.logo-button {
+  background: none; 
+  border: none; 
+  padding: 0; 
+  cursor: pointer;
 }
 
 .search-container {
