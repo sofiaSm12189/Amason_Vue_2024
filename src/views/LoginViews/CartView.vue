@@ -11,18 +11,21 @@
       @delete="handleDelete"
     />
   </div> 
-   <div class="order"> <OrderCart/></div> 
+  <div class="order-container">
+    <div class="order"> <SummaryOrder/></div> 
+  </div>
+   
   </div>
 </template>
 
 <script>
 import CarritoItem from '../../components/CartComponents/CartItem.vue';
-import OrderCart from '../../components/CartComponents/OrderCart.vue';
+import SummaryOrder from '../../components/CartComponents/SummaryOrder.vue';
 
 export default {
   components: {
     CarritoItem,
-    OrderCart,
+    SummaryOrder,
   },
   methods: {
     handleDelete(index) {
@@ -38,8 +41,7 @@ export default {
   background-color: #f3f3f3;
   font-family: 'Montserrat', sans-serif;
   height: auto;
-  width: 100%;
-  padding: 10%;
+  width: auto;
   padding: 10px;
   box-sizing: border-box;
   display: flex;
@@ -63,14 +65,23 @@ export default {
   
 }
 
+.order-container {
+  margin-top: 20vh;
+  flex-direction: column;
+}
+
 .order {
-  margin-top: 8.6vh;
-  position: static;
+  position: relative;
   height: auto;
   gap: 40px;
   padding: 20px;
   border-radius: 12px;
   box-sizing: border-box;
+  width: 90vw;
+  max-width: 376px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
 }
-
 </style>
