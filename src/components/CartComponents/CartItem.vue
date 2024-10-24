@@ -1,81 +1,71 @@
 <template>
-  
-    <div v-for="(item, index) in products" :key="index" class="details-card">
-      <CarritoCheckbox />
-      <div class="image-card">
-        <img :src="item.image" :alt="item.alt" />
+  <div v-for="(item, index) in products" :key="index" class="details-card">
+    <CarritoCheckbox />
+    <div class="image-card">
+      <img :src="item.image" :alt="item.alt" />
+    </div>
+    <div class="description-item">
+      <div class="bold">
+        <p>{{ item.name }}</p>
       </div>
-      <div class="description-item">
-        <div class="bold">
-          <p>{{ item.name }}</p>
+      <div class="description">
+        <p>{{ item.description }}</p>
+      </div>
+      <div class="bold">
+        <p>USD${{ item.price }}</p>
+      </div>
+      <div class="group">
+        <div class="quantity">
+          <button class="quantity-btn" @click="decreaseQuantity">-</button>
+          <p class="quantity-display">{{ quantity }}</p>
+          <button class="quantity-btn" @click="increaseQuantity">+</button>
         </div>
-        <div class="description">
-          <p>{{ item.description }}</p>
-        </div>
-        <div class="bold">
-          <p>USD${{ item.price }}</p>
-        </div>
-        <div class="delivery">
-          <p>Costo de Envío: USD${{ item.delivery }}</p>
-        </div>
-        <div class="group">
-          <div class="cantidad">
-            <button class="quantity-btn" @click="decreaseQuantity(index)">-</button>
-            <p class="quantity-display">{{ item.quantity }}</p>
-            <button class="quantity-btn" @click="increaseQuantity(index)">+</button>
-          </div>
-
-          <button class="btn-delete" @click="deleteItem(index)">
-            <img src="@/assets/delete.svg" alt="Eliminar" />
-          </button>
-        </div>
+        <button class="btn-delete" @click="deleteItem(index)">
+          <i class="fa-solid fa-trash-can fa-2xl" style="color: #c8240d;"></i>
+        </button>
       </div>
     </div>
-  
+  </div>
 </template>
 
 <script>
-import CarritoCheckbox from '../icons/CheckboxCart.vue';
+import CarritoCheckbox from '../icons/CheckboxCart.vue'
 
 export default {
   components: {
-    CarritoCheckbox,
+    CarritoCheckbox
   },
   props: {
     products: {
       type: Array,
-      required: true,
-    },
+      required: true
+    }
   },
   data() {
     return {
-      localProducts: this.products.map(product => ({ ...product })),
-    };
+      quantity: 1
+    }
   },
   methods: {
-    increaseQuantity(index) {
-      this.localProducts[index].quantity++;
-      this.$emit('update-quantity', index, this.localProducts[index].quantity); 
+    increaseQuantity() {
+      this.quantity++
     },
-    decreaseQuantity(index) {
-      if (this.localProducts[index].quantity > 1) {
-        this.localProducts[index].quantity--;
-        this.$emit('update-quantity', index, this.localProducts[index].quantity); 
+    decreaseQuantity() {
+      if (this.quantity > 1) {
+        this.quantity--
       }
     },
     deleteItem(index) {
-      this.$emit('delete', index);
-      alert('Elemento eliminado.');
+      this.$emit('delete', index)
+      alert('Elemento eliminado.')
     },
     shareItem() {
-      
-      alert('Compartido exitosamente.'); 
-    },
-  },
-};
+      alert('Compartido exitosamente.')
+    }
+  }
+}
 </script>
-
-<style scoped>
+<style>
 .details-card {
   margin-left: 18px;
   display: flex;
@@ -84,11 +74,11 @@ export default {
   padding: 10px;
   margin-bottom: 15px;
   border-bottom: 1px solid #e0e0e0;
+  flex-wrap: wrap; /* Para que los elementos se ajusten en pantallas pequeñas */
 }
 
 .details-card .image-card {
   flex-shrink: 0;
-  margin-left: -1vh;
   align-content: center;
 }
 
@@ -107,13 +97,12 @@ export default {
 
 .details-card .description-item .description,
 .details-card .description-item .bold,
-.details-card .description-item .group .delivery {
+.details-card .description-item .delivery {
   margin-bottom: 1px;
 }
 
 .details-card .description-item .description {
-  width: 700px;
-  height: 75px;
+  width: 100%; /* Asegura que ocupe todo el ancho disponible en pantallas pequeñas */
   flex-shrink: 0;
   color: #000;
   font-family: Arial;
@@ -147,43 +136,123 @@ export default {
 }
 
 .details-card .description-item .group {
-  width: 700px;
-  height: 70px;
+  width: 100%;
   align-self: flex-end;
   justify-content: space-between;
   align-items: center;
-  display: flex;  
+  display: flex;
 }
 
-.details-card .group .cantidad {
+.details-card .group .quantity {
   display: flex;
   align-items: center;
   gap: 5px;
   justify-content: center;
   border: 1px solid #e0e0e0;
   border-radius: 10px;
-  padding: 5px;
   background-color: #e2e2e2;
-  width: 80px;
-  height: 30px;
+  width: 20vw;
+  height: auto;
 }
 
-.details-card .group .cantidad button.quantity-btn {
-  width: 30px;
-  height: 30px;
+.details-card .group .quantity button.quantity-btn {
+  width: 1vw;
+  height: 1vw;
   background: none;
   border: none;
-  font-size: 20px;
+  font-size: 1vw;
   color: #808080;
   cursor: pointer;
 }
 
 .description-item .group .btn-delete {
-  font-weight: 700;
-  padding: 15px;
+  padding: 2vw;
   line-height: 140%;
   border: none;
   background: transparent;
   cursor: pointer;
+}
+
+
+@media (min-width: 768px) {
+  .details-card {
+    flex-wrap: nowrap;
+    padding: 20px;
+  }
+
+  .details-card .image-card img {
+    width: 150px;
+  }
+
+  .details-card .description-item {
+    margin-left: 20px;
+  }
+
+  .details-card .description-item .description,
+  .details-card .description-item .bold,
+  .details-card .description-item .delivery {
+    font-size: 16px;
+  }
+
+  .details-card .group .quantity {
+    width: 80px;
+    height: 40px;
+  }
+
+  .details-card .group .quantity button.quantity-btn {
+    width: 30px;
+    height: 30px;
+  }
+
+  .description-item .group .btn-delete {
+    padding: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .details-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .details-card .image-card {
+    width: 100%; 
+    text-align: center;
+  }
+
+  .details-card .image-card img {
+    width: 100%; 
+    max-width: 150px; 
+    height: auto;
+  }
+
+  .details-card .description-item {
+    margin-left: 0;
+    width: 100%;
+    padding: 10px 0;
+  }
+
+  .details-card .group .quantity {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .details-card .group .quantity button.quantity-btn {
+    width: 30px;
+    height: 30px;
+    font-size: 3vw;
+  }
+
+  .description-item .group {
+    flex-direction: column; 
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .description-item .group .btn-delete {
+    align-self: flex-end;
+    order: -1;
+    margin-top: -60px; /* Ajusta este valor según sea necesario */
+  }
 }
 </style>

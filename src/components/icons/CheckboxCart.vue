@@ -85,4 +85,34 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
     grid-gap: 24px;
 }
+
+@media (max-width: 1024px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .checkbox {
+        --border: #C0C0C0;
+        input,
+        svg {
+            width: 22px;
+            height: 22px; 
+        }
+    }
+}
+
+@media (min-width: 1024px) {
+    .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)); 
+    }
+
+    .checkbox {
+        --border: #C0C0C0;
+        input,
+        svg {
+            width: 22px;
+            height: 22px;
+        }
+    }
+}
 </style>
