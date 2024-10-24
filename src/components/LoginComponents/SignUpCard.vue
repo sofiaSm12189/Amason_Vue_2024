@@ -14,22 +14,20 @@
         <input type="password" v-model="password" placeholder="Contraseña" required />
 
         <label for="confirmPassword">Confirmar Contraseña</label>
-        <input
-          type="password"
-          v-model="confirmPassword"
-          placeholder="Confirmar contraseña"
-          required
-        />
+        <input type="password" v-model="confirmPassword" placeholder="Confirmar contraseña" required />
 
         <label for="role">Tipo de Usuario</label>
         <select v-model="role" required>
           <option disabled value="">Seleccione el tipo de usuario</option>
-          <option value="admin">Admin</option>
-          <option value="vendedor">Vendedor</option>
+          <option value="user">Cliente</option>
+          <option value="seller">Vendedor</option>
         </select>
 
         <button class="Enviar">Confirmar</button>
-        <p></p>
+
+        <!-- Mostrar mensaje de éxito -->
+        <p v-if="successMessage" class="success-message">{{ successMessage }}</p>
+
         <button type="button" @click="$emit('toggle')">¿Ya tienes una cuenta?</button>
       </form>
     </div>
@@ -46,7 +44,8 @@ export default {
       email: '',
       password: '',
       confirmPassword: '',
-      role: ''
+      role: '',
+      successMessage: '' // Propiedad para almacenar el mensaje de éxito
     }
   },
   methods: {
@@ -79,15 +78,41 @@ export default {
         // Configura Axios para incluir el token en los headers de las siguientes peticiones
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
 
-        // Redirigir a la página principal o al menú
-        this.$router.push('/')
+        // Mostrar mensaje de éxito
+        this.successMessage = '¡Usuario registrado con éxito!'
+
+        // Vaciar los campos del formulario
+        this.name = ''
+        this.email = ''
+        this.password = ''
+        this.confirmPassword = ''
+        this.role = ''
+
+        // Eliminar el mensaje de éxito después de 3 segundos
+        setTimeout(() => {
+          this.successMessage = ''
+        }, 3000)
+
+        // Redirigir a la página principal o al menú (opcional)
+        // this.$router.push('/')
       } catch (error) {
-        console.error('Error en el registro:', error)
-        alert('Hubo un error en el registro. Verifica los datos ingresados.')
+        if (error.response && error.response.data) {
+          console.error('Detalles del error:', error.response.data);
+          alert('Error: ' + JSON.stringify(error.response.data));  // Muestra más detalles del error al usuario
+        } else {
+          console.error('Error desconocido:', error);
+          alert('Ocurrió un error desconocido');
+        }
       }
     }
   }
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.success-message {
+  color: green;
+  font-size: 1.2em;
+  margin-top: 10px;
+}
+</style>
