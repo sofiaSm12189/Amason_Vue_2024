@@ -14,7 +14,7 @@
     <button class="btn">Check Out</button>
     <div class="payments">
       <div class="method">
-        <i class="fa-brands fa-cc-visa fa-2xl" style="color: #21246e;"></i>
+        <i class="fa-brands fa-cc-visa fa-2xl" style="color: #21246e"></i>
       </div>
       <div class="method">
         <img src="@/assets/paypal.svg" alt="PayPal" />
@@ -30,17 +30,17 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters } from 'vuex'
 
 export default {
   components: {},
   computed: {
-    ...mapGetters(['cartItems', 'formattedTotalAmount']),
+    ...mapGetters(['cartItems', 'formattedTotalAmount'])
   },
   mounted() {
-    this.fetchCartItems();
-  },
-};
+    this.fetchCartItems()
+  }
+}
 </script>
 
 <style scoped>
@@ -60,14 +60,15 @@ export default {
   justify-content: space-around;
 }
 
-.information .units, .information .total {
+.information .units,
+.information .total {
   width: 100%;
   display: flex;
   justify-content: space-between;
 }
 
-
-.information .units .tex, .information .total .tex {
+.information .units .tex,
+.information .total .tex {
   font-size: 18px;
   font-weight: 400;
   color: #4b5563;
@@ -75,7 +76,8 @@ export default {
   line-height: 30px;
 }
 
-.information .total .bold, .information .units .bold {
+.information .total .bold,
+.information .units .bold {
   font-size: 18px;
   font-weight: 600;
   color: #111827;
@@ -163,41 +165,48 @@ i {
 
 @media (max-width: 854px) {
   .summary {
-     position: sticky;
-    bottom: 0;
+    position: fixed;
+    height: 8vh;
+    bottom: 70px;
     left: 0;
-    width: 200vw;
+    padding: 0 20px;
+    width: 100%;
     flex-direction: row;
-    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
-    border-top: 1px solid #d1d5db;
-    padding: 0 4vw;
-    justify-content: space-around;
-    align-content: center; 
+    background-color: #4babe2;
+    display: flex;
+    align-items: center;
+    gap: 50px;
+    justify-content: flex-end;
   }
 
   .information {
-    background-color: aqua;
     display: flex;
-    width: 30%;
+    width: 25%;
     align-self: center;
     height: 5vw;
-    left: 70px;
-    align-items: baseline;
-    -webkit-box-align: baseline;
+   
   }
 
   .information .total {
-    font-size: 16px;
+    font-size: 20px;
   }
 
-  .payments, .information .total .tex, .information .units, .information .gray-line {
+  .information .total .tex, .information .total .bold{
+    font-size: 20px;
+     color: white;
+  }
+
+  .payments,
+  .information .units,
+  .information .gray-line {
     display: none;
   }
 
   .btn {
-    width: 120px;
-    height: 30px;
-    font-size: 16px;
+    border-radius: 15px;
+    width: 140px;
+    height: 40px;
+    font-size: 20px;
   }
 
   .payments {
@@ -209,4 +218,5 @@ i {
   }
 }
 
-  </style>
+
+</style>

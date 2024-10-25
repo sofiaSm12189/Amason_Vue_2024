@@ -175,7 +175,7 @@ hr {
   position: fixed;
   bottom: 10.8vw;
   left: 0;
-  width: auto;
+  width: 100%;
   margin: 0;
   padding: 0;
   height: auto;
