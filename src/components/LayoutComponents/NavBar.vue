@@ -1,6 +1,9 @@
 <template>
   <nav>
-    <label class="logo">Amason</label>
+
+    <button @click="goToHome" aria-label="Go to Home" class="logo-button">
+      <img src="@/assets/Amason_White.svg" alt="Logo" class="logo-img" style="width: 128px; height: auto;">
+    </button>
 
     <div class="search-container">
       <input type="text" placeholder="Buscar artículo" aria-label="Buscar">
@@ -87,10 +90,12 @@ nav {
   z-index: 1000;
 }
 
-.logo {
-  font-size: 2rem;
-  font-weight: bold;
-  margin: 0 10px;
+.logo-button {
+  background: none; 
+  border: none; 
+  padding: 0; 
+  cursor: pointer;
+
 }
 
 .search-container {
