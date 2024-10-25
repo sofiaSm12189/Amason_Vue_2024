@@ -6,7 +6,7 @@
     </div>
     <hr v-if="cartItems.length > 0">
     <div class="cartItem--container" v-if="cartItems.length > 0">
-      <popUpCartItem />
+      <popUpCartItem/>
     </div>
     
     <hr v-if="cartItems.length > 0">
@@ -30,13 +30,18 @@ export default {
     popUpCartItem,
   },
   computed: {
+
     ...mapGetters(['cartItems', 'formattedTotalAmount']),
+  
   },
   methods: {
+
     ...mapActions(['fetchCartItems']),
+
     goToCart() {
       this.$router.push('/carrito');
     },
+
   },
   mounted() {
     this.fetchCartItems();

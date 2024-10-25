@@ -33,13 +33,18 @@
 import { mapGetters } from 'vuex';
 
 export default {
-  components: {},
+  name: 'SummaryOrder',
   computed: {
     ...mapGetters(['cartItems', 'formattedTotalAmount']),
   },
   mounted() {
     this.fetchCartItems();
   },
+  methods: {
+    fetchCartItems() {
+      this.$store.dispatch('fetchCartItems');
+    }
+  }
 };
 </script>
 
