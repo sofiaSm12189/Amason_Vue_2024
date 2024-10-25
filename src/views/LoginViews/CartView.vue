@@ -3,66 +3,69 @@
     <div class="container">
       <div class="container--title-options">
         <div class="title--container">
-        <h2>Carrito de compras</h2>
-        <a href="#" @click.prevent="toggleSelectAll">
-          {{ selectedAll ? "Deseleccionar todos los artículos" : "Seleccionar todos los artículos" }}
-        </a>
+          <h2>Carrito de compras</h2>
+          <a href="#" @click.prevent="toggleSelectAll">
+            {{
+              selectedAll ? 'Deseleccionar todos los artículos' : 'Seleccionar todos los artículos'
+            }}
+          </a>
+        </div>
+        <div class="delete-container" v-if="selectedCount > 0">
+          <button class="delete-btn" @click.prevent="deleteSelectedItems">
+            Eliminar artículos
+          </button>
+        </div>
       </div>
-      <div class="delete-container" v-if="selectedCount > 0">
-        <button class="delete-btn" @click="deleteSelectedItems">Eliminar artículos</button>
-      </div>
-      </div>
-      
-
-      <CarritoItem 
-        :products="products" 
-        :selected-all="selectedAll" 
-      />
+      <!-- Pasar cartItems al componente CarritoItem -->
+      <CarritoItem :products="cartItems" :selected-all="selectedAll" />
     </div>
-
     <div class="order">
       <SummaryOrder />
-
     </div>
-    
   </div>
 </template>
 
 <script>
-import CarritoItem from '../../components/CartComponents/CartItem.vue';
-import SummaryOrder from '../../components/CartComponents/SummaryOrder.vue';
-
+import CarritoItem from '../../components/CartComponents/CartItem.vue'
+import SummaryOrder from '../../components/CartComponents/SummaryOrder.vue'
+import { mapGetters, mapMutations } from 'vuex'
 
 export default {
+  computed: {
+    ...mapGetters(['cartItems']), // Obtener los productos desde Vuex
+    ...mapMutations(['removeAllProductsFromCart'])
+  },
   components: {
     CarritoItem,
-    SummaryOrder,
+    SummaryOrder
   },
   data() {
     return {
       selectedAll: false,
-      selectedCount: 0, // Nuevo estado para contar los artículos seleccionados
-      products: [
-        { image: 'https://www.steren.cr/media/catalog/product/cache/b69086f136192bea7a4d681a8eaf533d/image/21867108a/audifonos-bluetooth-con-cancelacion-de-ruido-negros.jpg', name: 'Audifonos',
-          description: 'XIAOMI-auriculares inalámbricos Mini con Bluetooth 5,3, cascos TWS con Control táctil, deportivos, resistentes al agua, para juegos', price: 15, delivery: 2, quantity: 1 },
-          { image: 'https://www.steren.cr/media/catalog/product/cache/b69086f136192bea7a4d681a8eaf533d/image/21867108a/audifonos-bluetooth-con-cancelacion-de-ruido-negros.jpg', name: 'Audifonos',
-          description: 'XIAOMI-auriculares inalámbricos Mini con Bluetooth 5,3, cascos TWS con Control táctil, deportivos, resistentes al agua, para juegos', price: 15, delivery: 2, quantity: 1 },
-          { image: 'https://www.steren.cr/media/catalog/product/cache/b69086f136192bea7a4d681a8eaf533d/image/21867108a/audifonos-bluetooth-con-cancelacion-de-ruido-negros.jpg', name: 'Audifonos',
-          description: 'XIAOMI-auriculares inalámbricos Mini con Bluetooth 5,3, cascos TWS con Control táctil, deportivos, resistentes al agua, para juegos', price: 15, delivery: 2, quantity: 1 }
-      ],
-    };
+      selectedCount: 0
+    }
   },
   methods: {
     toggleSelectAll() {
-      this.selectedAll = !this.selectedAll;
-      this.selectedCount = this.selectedAll ? this.products.length : 0;
-      this.$emit('update-selection', this.selectedCount);
-
+      this.selectedAll = !this.selectedAll
+      this.selectedCount = this.selectedAll ? this.cartItems.length : 0
+      this.$emit('update-selection', this.selectedCount)
+      this.cartItems.forEach((item, index) => {
+        this.$refs[`cartItem${index}`].setSelected(this.selectedAll)
+      })
     },
+    deleteSelectedItems() {
+      this.removeAllProductsFromCart()
+      console.log('Eliminar artículos seleccionados:', this.selectedCount)
+    }
   },
-};
+  created() {
+    this.$store.dispatch('fetchCartItems').then(() => {
+      console.log('Productos en el carrito:', this.cartItems) // Verifica si `cartItems` contiene datos
+    })
+  }
+}
 </script>
-
 
 <style scoped>
 .body {
@@ -73,13 +76,12 @@ export default {
   box-sizing: border-box;
   justify-content: space-around;
   align-items: space-around;
-  gap: 20px;
-
+  gap: 40px;
+  min-height: 70vh;
 }
 
 .container {
   display: flex;
-
   flex-direction: column;
   width: 100%;
   padding: 12px 0;
@@ -88,11 +90,10 @@ export default {
   border-radius: 12px;
   background-color: white;
   box-sizing: border-box;
-
   min-width: 500px;
 }
 
-.container--title-options{
+.container--title-options {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -100,12 +101,12 @@ export default {
 
 .title--container {
   display: inline-block;
-  padding: 10px 30px
+  padding: 10px 30px;
 }
 
 .title--container h2 {
   font-size: 24px;
-  font-weight:bolder;
+  font-weight: bolder;
   margin: 10px 0;
 }
 
@@ -121,26 +122,25 @@ hr {
   height: 1.5px;
   background: rgb(106, 106, 106);
   margin-top: 20px;
-
 }
 
-
-.body>.container {
+.body > .container {
   flex: 3;
 }
 
-.body>.order {
+.body > .order {
   flex: 1;
 }
 
 .order {
+  position: relative;
+  max-width: 376px;
   height: fit-content;
-
   gap: 40px;
-  padding: 20px;
   border-radius: 12px;
   box-sizing: border-box;
   width: 100%;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -164,5 +164,25 @@ hr {
 .delete-btn:hover {
   background-color: #b71c1c;
 }
-
+.order-bottom {
+  display: none;
+}
+@media (max-width: 854px) {
+  .body {
+    height: 100%;
+  }
+  .order {
+  position: fixed;
+  bottom: 10.8vw;
+  left: 0;
+  width: auto;
+  margin: 0;
+  padding: 0;
+  height: auto;
+  background-color: #e24bb5;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  z-index: 2000; 
+  }
+}
 </style>

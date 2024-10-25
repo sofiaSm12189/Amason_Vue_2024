@@ -1,7 +1,7 @@
 <template>
 <div class="login">
     <component :is="currentComponent" @toggle="toggleComponent">
-        <img src="../../assets/Logo.png" alt="Amason Logo">
+        <img src="@/assets/Amason_Black.svg" alt="Logo" class="logo-img" style="width: 250px; height: auto;">
     </component>
 </div>
 </template>

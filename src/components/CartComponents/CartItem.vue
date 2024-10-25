@@ -1,64 +1,93 @@
 <template>
-
-  <div v-for="(item, index) in products" :key="index" class="details-card">
+  <div v-for="(product, index) in products" :key="product.id" class="details-card">
     <CarritoCheckbox :checked="selectedAll" @update:checked="updateSelection(index, $event)" />
     <div class="image-card">
-      <img :src="item.image" :alt="item.alt" />
+      <img :src="product.image" :alt="product.alt" />
     </div>
     <div class="description-item">
       <div class="bold">
-        <p>{{ item.name }}</p>
-
+        <p>{{ product.product_name }}</p>
       </div>
       <div class="description">
-        <p>{{ item.description }}</p>
+        <p>Descripción: {{ product.product_description }}</p>
       </div>
       <div class="bold">
-        <p>USD${{ item.price }}</p>
+        <p>Precio: ₡{{ product.product_price }}</p>
       </div>
       <div class="group">
         <div class="quantity">
-          <button class="quantity-btn" @click="decreaseQuantity">-</button>
-          <p class="quantity-display">{{ quantity }}</p>
-          <button class="quantity-btn" @click="increaseQuantity">+</button>
+          <button class="quantity-btn" @click="decreaseQuantity(index)">-</button>
+          <p class="quantity-display">{{ product.quantity }}</p>
+          <button class="quantity-btn" @click="increaseQuantity(index)">+</button>
         </div>
-        <button class="btn-delete" @click="deleteItem(index)">
-          <i class="fa-solid fa-trash-can fa-2xl" style="color: #c8240d;"></i>
+        <button class="btn-delete" @click.prevent="removeProductUnits(index)">
+          <i class="fa-solid fa-trash-can fa-2xl" style="color: #c8240d"></i>
         </button>
       </div>
     </div>
   </div>
-  
 </template>
 
 <script>
-import CarritoCheckbox from '../icons/CheckboxCart.vue';
+import CarritoCheckbox from './CheckboxCart.vue'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
+  computed: {
+    ...mapGetters(['cartItems'])
+  },
   components: {
-    CarritoCheckbox,
+    CarritoCheckbox
   },
   props: {
     products: {
       type: Array,
-      required: true,
+      required: true
     },
     selectedAll: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
   methods: {
-    updateSelection(index, checked) {
-      this.$emit('update-selection', checked ? 1 : -1);
+    ...mapActions(['removeProductUnits']), // Agregar acción aquí
+
+    increaseQuantity(index) {
+      this.$emit('update-quantity', { index, quantity: this.products[index].quantity + 1 })
     },
-  },
-};
+
+    async decreaseQuantity(index) {
+      const product = this.products[index]
+
+      // Si la cantidad es mayor que 1, reduce la cantidad
+      if (product.quantity > 1) {
+        this.$emit('update-quantity', { index, quantity: product.quantity - 1 })
+      } else {
+        // Si la cantidad es 1, elimina el producto
+        try {
+          await this.removeProductUnits({
+            idproducttoremove: product.id,
+            quantitytoremove: 1
+          })
+        } catch (error) {
+          console.error('Error al eliminar el producto del carrito:', error)
+        }
+      }
+    },
+
+    setSelected(isSelected) {
+      this.checked = isSelected // Cambia el estado del checkbox
+    }
+  }
+}
 </script>
+
+
 
 <style>
 .details-card {
-  margin-left: 18px;
+  margin-left: 15px;
+  margin-right: 15px;
   display: flex;
   justify-content: space-between;
   border-top: var(--sds-size-stroke-border) solid rgba(0, 0, 0, 0.46);
@@ -66,7 +95,6 @@ export default {
   margin-bottom: 15px;
   border-bottom: 1px solid #e0e0e0;
   flex-wrap: wrap;
-  /* Para que los elementos se ajusten en pantallas pequeñas */
 }
 
 .details-card .image-card {
@@ -91,12 +119,10 @@ export default {
 .details-card .description-item .description,
 .details-card .description-item .bold,
 .details-card .description-item .delivery {
-
   margin-bottom: 1px;
 }
 
 .details-card .description-item .description {
-
   width: 100%;
   /* Asegura que ocupe todo el ancho disponible en pantallas pequeñas */
 
@@ -133,7 +159,6 @@ export default {
 }
 
 .details-card .description-item .group {
-
   width: 100%;
 
   align-self: flex-end;
@@ -171,7 +196,6 @@ export default {
   background: transparent;
   cursor: pointer;
 }
-
 
 @media (min-width: 768px) {
   .details-card {

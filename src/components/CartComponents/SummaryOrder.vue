@@ -1,13 +1,13 @@
 <template>
   <div class="summary">
     <div class="information">
-      <div class="inf">
+      <div class="units">
         <div class="tex">Artículos:</div>
-        <div class="price">(3)</div>
+        <div class="bold">{{ cartItems.length }}</div>
       </div>
-      <div class="inf">
+      <div class="total">
         <div class="tex">Total:</div>
-        <div class="price">USD$400</div>
+        <div class="bold">{{ formattedTotalAmount }}</div>
       </div>
       <div class="gray-line"></div>
     </div>
@@ -27,14 +27,25 @@
       </div>
     </div>
   </div>
-
-
 </template>
+
+<script>
+import { mapGetters } from 'vuex';
+
+export default {
+  components: {},
+  computed: {
+    ...mapGetters(['cartItems', 'formattedTotalAmount']),
+  },
+  mounted() {
+    this.fetchCartItems();
+  },
+};
+</script>
 
 <style scoped>
 .summary {
   width: 100%;
-  min-width: 300px;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
@@ -49,13 +60,14 @@
   justify-content: space-around;
 }
 
-.information .inf {
+.information .units, .information .total {
   width: 100%;
   display: flex;
   justify-content: space-between;
 }
 
-.information .inf .tex {
+
+.information .units .tex, .information .total .tex {
   font-size: 18px;
   font-weight: 400;
   color: #4b5563;
@@ -63,8 +75,7 @@
   line-height: 30px;
 }
 
-
-.information .inf .price {
+.information .total .bold, .information .units .bold {
   font-size: 18px;
   font-weight: 600;
   color: #111827;
@@ -85,7 +96,7 @@
 }
 
 .btn {
-  margin: 10px 0;
+  margin: 30px 0;
   width: 100%;
   height: 60px;
   background-color: #f1a80b;
@@ -97,27 +108,30 @@
   cursor: pointer;
   text-align: center;
   justify-self: space-around;
-
 }
 
 .payments {
-  margin-top: auto;
-  width: 100%;
+  width: calc(100% + 40px);
+  margin-left: -20px;
+  margin-right: -20px;
+  margin-bottom: -25px;
   min-height: 80px;
   display: flex;
-  gap: 20px;
+  gap: 10px;
   align-items: center;
-  padding: 10px 0;
+  padding: 20px 0;
   border-bottom-left-radius: 12px;
   border-bottom-right-radius: 12px;
   background-color: #fdfdfd;
   justify-content: space-around;
+  border: 1px solid #d1d5db;
+  flex-wrap: wrap;
+  box-sizing: border-box;
 }
 
 .payments .method {
   width: 60px;
   height: 45px;
-
   border-radius: 6px;
   display: flex;
   align-items: center;
@@ -129,20 +143,70 @@
   height: auto;
 }
 
-@media (max-width:720px) {
-  .payments {
-    width: 100%;
-    height: 100%;
+i {
+  font-size: 2.6rem; /* Equivale a 40px si el tamaño base es 16px */
+}
+
+/* Ajustes en pantallas medianas */
+@media (max-width: 1300px) {
+  i {
+    font-size: 2.6rem; /* Equivale a 42px */
+  }
+}
+
+/* Ajustes en pantallas pequeñas */
+@media (max-width: 720px) {
+  i {
+    font-size: 2.6rem; /* Equivale a 44px */
+  }
+}
+
+@media (max-width: 854px) {
+  .summary {
+     position: sticky;
+    bottom: 0;
+    left: 0;
+    width: 200vw;
+    flex-direction: row;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    border-top: 1px solid #d1d5db;
+    padding: 0 4vw;
+    justify-content: space-around;
+    align-content: center; 
   }
 
-  .payments .method {
-    width: 60px;
-    height: 45px;
+  .information {
+    background-color: aqua;
+    display: flex;
+    width: 30%;
+    align-self: center;
+    height: 5vw;
+    left: 70px;
+    align-items: baseline;
+    -webkit-box-align: baseline;
+  }
+
+  .information .total {
+    font-size: 16px;
+  }
+
+  .payments, .information .total .tex, .information .units, .information .gray-line {
+    display: none;
+  }
+
+  .btn {
+    width: 120px;
+    height: 30px;
+    font-size: 16px;
+  }
+
+  .payments {
+    padding-top: 10px;
   }
 
   i {
-    font-size: 1.7vw;
-
+    font-size: 1.4rem;
   }
 }
-</style>
+
+  </style>
