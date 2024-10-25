@@ -1,8 +1,12 @@
 <template>
   <nav>
-
     <button @click="goToHome" aria-label="Go to Home" class="logo-button">
-      <img src="@/assets/Amason_White.svg" alt="Logo" class="logo-img" style="width: 128px; height: auto;">
+      <img
+        src="@/assets/Amason_White.svg"
+        alt="Logo"
+        class="logo-img"
+        style="width: 128px; height: auto"
+      />
     </button>
 
     <div class="search-container">
@@ -31,12 +35,13 @@
           <div class="line-2">Carrito</div>
         </router-link>
         <div class="cart-toggle">
-          <PopUpCart />
+        <PopUpCart />
         </div>
       </li>
     </ul>
 
     <div class="bottom-nav">
+      
       <div class="containerOption">
         <router-link to="/Menu" class="nav-icon" aria-label="Inicio">
           <i class="fas fa-home"></i>
@@ -91,9 +96,9 @@ nav {
 }
 
 .logo-button {
-  background: none; 
-  border: none; 
-  padding: 0; 
+  background: none;
+  border: none;
+  padding: 0;
   cursor: pointer;
 
 }
@@ -222,17 +227,17 @@ ul li a:hover {
 
   .bottom-nav {
     position: fixed;
-  height: 8vh; /* Aumenta la altura si es necesario */
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background-color: #4babe2;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  padding: 10px 0;
+    height: 8vh; /* Aumenta la altura si es necesario */
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #4babe2;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px 0;
   box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
-  z-index: 999;
+    z-index: 999;
   }
 
   .containerOption {
@@ -251,7 +256,7 @@ ul li a:hover {
   }
 }
 
-.router-link-active .fas, 
+.router-link-active .fas,
 .router-link-active span {
   color: rgb(48, 45, 45);
   font-weight: bold;
