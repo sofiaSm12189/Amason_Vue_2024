@@ -7,9 +7,7 @@ import MenuView from '../views/LoginViews/MenuView.vue'
 import TicketsView from '../views/LoginViews/TicketsView.vue'
 import ChatView from '../views/LoginViews/ChatView.vue'
 import CreateTicketView from '@/views/LoginViews/Tickets/CreateTicketView.vue'
-//import HelpCenterView from '../views/HelpCenterView.vue'
-//import HelpCenter from '@/components/TicketsComponents/HelpCenter.vue'
-//import ReturnsView from '../views/ReturnsView.vue'
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
