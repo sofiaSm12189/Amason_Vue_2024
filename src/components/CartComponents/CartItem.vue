@@ -1,4 +1,5 @@
 <template>
+
   <div v-for="(item, index) in products" :key="index" class="details-card">
     <CarritoCheckbox :checked="selectedAll" @update:checked="updateSelection(index, $event)" />
     <div class="image-card">
@@ -7,6 +8,7 @@
     <div class="description-item">
       <div class="bold">
         <p>{{ item.name }}</p>
+
       </div>
       <div class="description">
         <p>{{ item.description }}</p>
@@ -25,7 +27,7 @@
         </button>
       </div>
     </div>
-  </div>
+  
 </template>
 
 <script>
@@ -68,6 +70,7 @@ export default {
 
 .details-card .image-card {
   flex-shrink: 0;
+  margin-left: -1vh;
   align-content: center;
 }
 
@@ -87,12 +90,15 @@ export default {
 .details-card .description-item .description,
 .details-card .description-item .bold,
 .details-card .description-item .delivery {
+
   margin-bottom: 1px;
 }
 
 .details-card .description-item .description {
+
   width: 100%;
   /* Asegura que ocupe todo el ancho disponible en pantallas pequeñas */
+
   flex-shrink: 0;
   color: #000;
   font-family: Arial;
@@ -126,7 +132,9 @@ export default {
 }
 
 .details-card .description-item .group {
+
   width: 100%;
+
   align-self: flex-end;
   justify-content: space-between;
   align-items: center;

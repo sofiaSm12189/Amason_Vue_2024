@@ -24,12 +24,14 @@
       <SummaryOrder />
 
     </div>
+    
   </div>
 </template>
 
 <script>
 import CarritoItem from '../../components/CartComponents/CartItem.vue';
 import SummaryOrder from '../../components/CartComponents/SummaryOrder.vue';
+
 
 export default {
   components: {
@@ -55,6 +57,7 @@ export default {
       this.selectedAll = !this.selectedAll;
       this.selectedCount = this.selectedAll ? this.products.length : 0;
       this.$emit('update-selection', this.selectedCount);
+
     },
   },
 };
@@ -76,6 +79,7 @@ export default {
 
 .container {
   display: flex;
+
   flex-direction: column;
   width: 100%;
   padding: 12px 0;
@@ -84,6 +88,7 @@ export default {
   border-radius: 12px;
   background-color: white;
   box-sizing: border-box;
+
   min-width: 500px;
 }
 
@@ -130,6 +135,7 @@ hr {
 
 .order {
   height: fit-content;
+
   gap: 40px;
   padding: 20px;
   border-radius: 12px;
@@ -158,4 +164,5 @@ hr {
 .delete-btn:hover {
   background-color: #b71c1c;
 }
+
 </style>
