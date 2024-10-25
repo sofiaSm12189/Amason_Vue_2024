@@ -2,7 +2,6 @@
   <div class="container" id="container">
     <slot></slot>
     <div class="form-container sign">
-      
       <form @submit.prevent="submitForm">
         <h1>Iniciar Sesión</h1>
         <label for="email">Email</label>
@@ -12,7 +11,7 @@
         <input type="password" v-model="password" required />
 
         <button type="submit">Login</button>
-        <p v-if="error" class="error">{{ error }}</p>
+        <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
         <p>¿No tienes una cuenta?</p>
         <button type="button" @click="$emit('toggle')">Registrarse</button>
       </form>
@@ -28,17 +27,19 @@ export default {
     return {
       email: '',
       password: '',
+      errorMessage: null,
       error: null
     };
   },
   methods: {
     async submitForm() {
+      this.errorMessage = null;
+      
       try {
-        this.error = null;
         await loginUser({ email: this.email, password: this.password });
         this.$router.push('/Menu');
       } catch (error) {
-        this.error = 'Por favor, revise sus credenciales e intente nuevamente.';
+        this.errorMessage = error.message;
       }
     }
   }
@@ -48,7 +49,8 @@ export default {
 <style scoped>
 .error {
   color: red;
-  margin-top: 10px;
+  font-size: 17px;
+  font-weight: 400;
   text-align: center;
 }
 </style>
