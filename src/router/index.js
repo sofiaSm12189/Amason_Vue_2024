@@ -4,7 +4,7 @@ import SesionView from '../views/LoginViews/SesionView.vue'
 import MainLayout from '../components/LayoutComponents/MainLayout.vue'
 import MenuView from '../views/LoginViews/MenuView.vue'
 
-import TicketsView from '../views/LoginViews/Tickets/TicketsView.vue'
+import TicketsView from '../views/LoginViews/TicketsView.vue'
 import ChatView from '../views/LoginViews/ChatView.vue'
 import CreateTicketView from '@/views/LoginViews/Tickets/CreateTicketView.vue'
 //import HelpCenterView from '../views/HelpCenterView.vue'
