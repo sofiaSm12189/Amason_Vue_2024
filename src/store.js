@@ -31,6 +31,37 @@ export default new Vuex.Store({
         console.error('Error fetching cart items:', error);
       }
     },
+    async removeProductFromCart({ commit, state }, productId) {
+      try {
+        const index = state.cart.findIndex(product => product.product_id === productId);
+        if (index === -1) {
+          throw new Error('Product not found in cart');
+        }
+
+        const response = await api.post('/cart/remove-product', {
+          idproducttoremove: productId,
+          user_id: localStorage.getItem('pivotId')
+        }, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
+        });
+
+        if (response.status === 200) {
+          commit('removeProduct', index);
+
+          const newTotalAmount = state.cart.reduce((total, product) => {
+            return total + (product.product_price * product.quantity);
+          }, 0);
+          commit('setTotalAmount', newTotalAmount);
+        } else {
+          console.error('Error response from server:', response);
+        }
+      } catch (error) {
+        console.error('Error removing product from cart:', error);
+      }
+    },
   },
   getters: {
     cartItems: (state) => state.cart,
@@ -39,7 +70,7 @@ export default new Vuex.Store({
       return new Intl.NumberFormat('es-CR', {
         style: 'currency',
         currency: 'CRC',
-      }).format(state.totalAmount); // Formatea el total a colones
+      }).format(state.totalAmount);
     },
   },
 });
