@@ -1,6 +1,6 @@
 <template>
   <div v-for="(item, index) in products" :key="index" class="details-card">
-    <CarritoCheckbox />
+    <CarritoCheckbox :checked="selectedAll" @update:checked="updateSelection(index, $event)" />
     <div class="image-card">
       <img :src="item.image" :alt="item.alt" />
     </div>
@@ -29,42 +29,30 @@
 </template>
 
 <script>
-import CarritoCheckbox from '../icons/CheckboxCart.vue'
+import CarritoCheckbox from '../icons/CheckboxCart.vue';
 
 export default {
   components: {
-    CarritoCheckbox
+    CarritoCheckbox,
   },
   props: {
     products: {
       type: Array,
-      required: true
-    }
-  },
-  data() {
-    return {
-      quantity: 1
-    }
+      required: true,
+    },
+    selectedAll: {
+      type: Boolean,
+      default: false,
+    },
   },
   methods: {
-    increaseQuantity() {
-      this.quantity++
+    updateSelection(index, checked) {
+      this.$emit('update-selection', checked ? 1 : -1);
     },
-    decreaseQuantity() {
-      if (this.quantity > 1) {
-        this.quantity--
-      }
-    },
-    deleteItem(index) {
-      this.$emit('delete', index)
-      alert('Elemento eliminado.')
-    },
-    shareItem() {
-      alert('Compartido exitosamente.')
-    }
-  }
-}
+  },
+};
 </script>
+
 <style>
 .details-card {
   margin-left: 18px;
@@ -74,7 +62,8 @@ export default {
   padding: 10px;
   margin-bottom: 15px;
   border-bottom: 1px solid #e0e0e0;
-  flex-wrap: wrap; /* Para que los elementos se ajusten en pantallas pequeñas */
+  flex-wrap: wrap;
+  /* Para que los elementos se ajusten en pantallas pequeñas */
 }
 
 .details-card .image-card {
@@ -102,7 +91,8 @@ export default {
 }
 
 .details-card .description-item .description {
-  width: 100%; /* Asegura que ocupe todo el ancho disponible en pantallas pequeñas */
+  width: 100%;
+  /* Asegura que ocupe todo el ancho disponible en pantallas pequeñas */
   flex-shrink: 0;
   color: #000;
   font-family: Arial;
@@ -216,13 +206,13 @@ export default {
   }
 
   .details-card .image-card {
-    width: 100%; 
+    width: 100%;
     text-align: center;
   }
 
   .details-card .image-card img {
-    width: 100%; 
-    max-width: 150px; 
+    width: 100%;
+    max-width: 150px;
     height: auto;
   }
 
@@ -244,7 +234,7 @@ export default {
   }
 
   .description-item .group {
-    flex-direction: column; 
+    flex-direction: column;
     align-items: flex-start;
     width: 100%;
   }
@@ -252,7 +242,7 @@ export default {
   .description-item .group .btn-delete {
     align-self: flex-end;
     order: -1;
-    margin-top: -60px; /* Ajusta este valor según sea necesario */
+    margin-top: -60px;
   }
 }
 </style>

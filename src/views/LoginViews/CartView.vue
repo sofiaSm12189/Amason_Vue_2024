@@ -1,22 +1,28 @@
 <template>
   <div class="body">
-
     <div class="container">
-      <div class="title--container">
+      <div class="container--title-options">
+        <div class="title--container">
         <h2>Carrito de compras</h2>
-        <a href="#">Seleccionar todos los artículos</a>
-        <hr>
+        <a href="#" @click.prevent="toggleSelectAll">
+          {{ selectedAll ? "Deseleccionar todos los artículos" : "Seleccionar todos los artículos" }}
+        </a>
       </div>
+      <div class="delete-container" v-if="selectedCount > 0">
+        <button class="delete-btn" @click="deleteSelectedItems">Eliminar artículos</button>
+      </div>
+      </div>
+      
 
-      <CarritoItem :products="[
-        { image: 'https://www.steren.cr/media/catalog/product/cache/b69086f136192bea7a4d681a8eaf533d/image/21867108a/audifonos-bluetooth-con-cancelacion-de-ruido-negros.jpg', name: 'Audifonos', description: 'XIAOMI-auriculares inalámbricos Mini con Bluetooth 5,3, cascos TWS con Control táctil, deportivos, resistentes al agua, para juegos', price: 15, delivery: 2, quantity: 1 },
-        { image: 'https://www.steren.cr/media/catalog/product/cache/b69086f136192bea7a4d681a8eaf533d/image/21867108a/audifonos-bluetooth-con-cancelacion-de-ruido-negros.jpg', name: 'Audifonos', description: 'XIAOMI-auriculares inalámbricos Mini con Bluetooth 5,3, cascos TWS con Control táctil, deportivos, resistentes al agua, para juegos', price: 15, delivery: 2, quantity: 1 },
-        { image: 'https://www.steren.cr/media/catalog/product/cache/b69086f136192bea7a4d681a8eaf533d/image/21867108a/audifonos-bluetooth-con-cancelacion-de-ruido-negros.jpg', name: 'Audifonos', description: 'XIAOMI-auriculares inalámbricos Mini con Bluetooth 5,3, cascos TWS con Control táctil, deportivos, resistentes al agua, para juegos', price: 15, delivery: 2, quantity: 1 },
-      ]" @delete="handleDelete" />
-
+      <CarritoItem 
+        :products="products" 
+        :selected-all="selectedAll" 
+      />
     </div>
+
     <div class="order">
       <SummaryOrder />
+
     </div>
   </div>
 </template>
@@ -25,15 +31,30 @@
 import CarritoItem from '../../components/CartComponents/CartItem.vue';
 import SummaryOrder from '../../components/CartComponents/SummaryOrder.vue';
 
-
 export default {
   components: {
     CarritoItem,
     SummaryOrder,
   },
+  data() {
+    return {
+      selectedAll: false,
+      selectedCount: 0, // Nuevo estado para contar los artículos seleccionados
+      products: [
+        { image: 'https://www.steren.cr/media/catalog/product/cache/b69086f136192bea7a4d681a8eaf533d/image/21867108a/audifonos-bluetooth-con-cancelacion-de-ruido-negros.jpg', name: 'Audifonos',
+          description: 'XIAOMI-auriculares inalámbricos Mini con Bluetooth 5,3, cascos TWS con Control táctil, deportivos, resistentes al agua, para juegos', price: 15, delivery: 2, quantity: 1 },
+          { image: 'https://www.steren.cr/media/catalog/product/cache/b69086f136192bea7a4d681a8eaf533d/image/21867108a/audifonos-bluetooth-con-cancelacion-de-ruido-negros.jpg', name: 'Audifonos',
+          description: 'XIAOMI-auriculares inalámbricos Mini con Bluetooth 5,3, cascos TWS con Control táctil, deportivos, resistentes al agua, para juegos', price: 15, delivery: 2, quantity: 1 },
+          { image: 'https://www.steren.cr/media/catalog/product/cache/b69086f136192bea7a4d681a8eaf533d/image/21867108a/audifonos-bluetooth-con-cancelacion-de-ruido-negros.jpg', name: 'Audifonos',
+          description: 'XIAOMI-auriculares inalámbricos Mini con Bluetooth 5,3, cascos TWS con Control táctil, deportivos, resistentes al agua, para juegos', price: 15, delivery: 2, quantity: 1 }
+      ],
+    };
+  },
   methods: {
-    handleDelete(index) {
-      this.products.splice(index, 1);
+    toggleSelectAll() {
+      this.selectedAll = !this.selectedAll;
+      this.selectedCount = this.selectedAll ? this.products.length : 0;
+      this.$emit('update-selection', this.selectedCount);
     },
   },
 };
@@ -64,6 +85,12 @@ export default {
   background-color: white;
   box-sizing: border-box;
   min-width: 500px;
+}
+
+.container--title-options{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .title--container {
@@ -112,5 +139,23 @@ hr {
   flex-direction: column;
   align-items: center;
   background-color: white;
+}
+
+.delete-container {
+  margin: 15px;
+}
+
+.delete-btn {
+  background-color: #c8240d;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.delete-btn:hover {
+  background-color: #b71c1c;
 }
 </style>
