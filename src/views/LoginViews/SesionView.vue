@@ -1,7 +1,7 @@
 <template>
 <div class="login">
     <component :is="currentComponent" @toggle="toggleComponent">
-        <img src="../../assets/Logo.png" alt="Amason Logo">
+        <img src="@/assets/Amason_Black.svg" alt="Logo" class="logo-img" style="width: 250px; height: auto;">
     </component>
 </div>
 </template>
@@ -11,6 +11,7 @@ import { ref, computed } from 'vue';
 import SignInCard from '../../components/LoginComponents/SignInCard.vue';
 import SignUpCard from '../../components/LoginComponents/SignUpCard.vue';
 
+localStorage.clear();
 const isSignUp = ref(false);
 
 const currentComponent = computed(() => (isSignUp.value ? SignUpCard : SignInCard));
@@ -42,7 +43,7 @@ const toggleComponent = () => {
     position:relative;
     overflow: hidden;
     width: 45vw;
-    height: 35vw;
+    height: 35vh;
     max-width: 768px;
     min-height: 80vh;
     display: flex;
@@ -52,11 +53,18 @@ const toggleComponent = () => {
     transition: width 0.3s, height 0.3s;
 }
 
+:deep(h1) {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #333;
+    text-align: center;
+}
+
 :deep(.container p) {
     font-size: 1rem;
     line-height: 1.5rem;
     letter-spacing: 0.3px;
-    margin: 20px 0;
 }
 
 :deep(.container button) {
@@ -104,6 +112,7 @@ const toggleComponent = () => {
     height: 100%;
     border-radius: 10px;
     margin-top: 1rem;
+    width: 30vw;
 }
 
 :deep(.container input) {
@@ -113,7 +122,7 @@ const toggleComponent = () => {
     padding: 10px 30px;
     font-size: 1rem;
     border-radius: 8px;
-    width: 100%;
+    width: 60%;
     outline: none;
 }
 
@@ -137,17 +146,18 @@ const toggleComponent = () => {
     margin-bottom: 1rem;
 }
 
+
+
 @media (max-width: 1024px) {
     :depp(.container) {
         width: 70vw;
-
     }
 }
 
 @media (max-width: 768px) {
     :deep(.container) {
         width: 70vw;
-        min-height: 50vh;
+        min-height: 80vh;
         padding: 15px;
     }
 
@@ -161,29 +171,4 @@ const toggleComponent = () => {
     }
 }
 
-@media (max-width: 480px) {
-    :depp(.container) {
-        width: 70vw;
-        border-radius: 20px;
-        min-height: 50vh;
-        padding: 10px;
-    }
-
-    :deep(.container h1) {
-        font-size: 1.25rem;
-    }
-
-    :deep(.container button) {
-        padding: 8px 25px;
-        font-size: 0.8rem;
-    }
-
-    :deep(.container input) {
-        padding: 8px 10px;
-    }
-
-    :deep(.container a) {
-        font-size: 0.75rem;
-    }
-}
 </style>

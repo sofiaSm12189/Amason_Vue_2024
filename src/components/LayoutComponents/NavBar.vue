@@ -1,19 +1,18 @@
 <template>
   <nav>
-    <input type="checkbox" id="check" aria-label="Toggle navigation" @change="toggleBodyScroll">
-    <label for="check" class="checkbtn">
-      <i class="fas fa-bars" aria-hidden="true"></i>
-    </label>
-    <label class="logo">Amason</label>
+    <router-link to="/Menu">
+      <img src="@/assets/Amason_White.svg" alt="Logo" class="logo-img" style="width: 128px; height: auto;">
+    </router-link>
     <div class="search-container">
       <input type="text" placeholder="Buscar artículo" aria-label="Buscar">
       <button type="button" aria-label="Buscar">
         <i class="fas fa-search" aria-hidden="true"></i>
       </button>
     </div>
+
     <ul>
       <li>
-        <a class="active" href="#">
+        <a href="#">
           <div class="line-1">Hola, usuario</div>
           <div class="line-2">Cuenta y listas</div>
         </a>
@@ -24,27 +23,55 @@
           <div class="line-2">pedidos</div>
         </a>
       </li>
-      <li>
-        <a href="#">
-          <div class="line-1">Ver carrito</div>
+      <li class="cart-container">
+        <router-link to="/Carrito">
+          <div class="line-1"><i class="fa-solid fa-cart-shopping"></i></div>
           <div class="line-2">Carrito</div>
-        </a>
+        </router-link>
+        <div class="cart-toggle">
+        <PopUpCart />
+        </div>
       </li>
     </ul>
+
+    <div class="bottom-nav">
+      
+      <div class="containerOption">
+        <router-link to="/Menu" class="nav-icon" aria-label="Inicio">
+          <i class="fas fa-home"></i>
+          <span>Inicio</span>
+        </router-link>
+      </div>
+      <div class="containerOption">
+        <router-link to="/account" class="nav-icon" aria-label="Cuenta">
+          <i class="fas fa-user"></i>
+          <span>Cuenta</span>
+        </router-link>
+      </div>
+      <div class="containerOption">
+        <router-link to="/orders" class="nav-icon" aria-label="Pedidos">
+          <i class="fas fa-box"></i>
+          <span>Pedidos</span>
+        </router-link>
+      </div>
+      <div class="containerOption">
+        <router-link to="/Carrito" class="nav-icon" aria-label="Carrito">
+          <i class="fas fa-shopping-cart"></i>
+          <span>Carrito</span>
+        </router-link>
+      </div>
+    </div>
   </nav>
 </template>
 
+
 <script>
+import PopUpCart from '../CartComponents/PopUpCart.vue';
+
 export default {
-  methods: {
-    toggleBodyScroll(event) {
-      if (event.target.checked) {
-        document.body.classList.add('no-scroll');
-      } else {
-        document.body.classList.remove('no-scroll');
-      }
-    }
-  }
+  components: {
+    PopUpCart
+  },
 };
 </script>
 
@@ -56,31 +83,34 @@ nav {
   justify-content: space-between;
   align-items: center;
   padding: 35px 20px;
-  position: fixed;
+  position: sticky;
   top: 0;
   width: 100%;
   z-index: 1000;
 }
 
-.logo {
-  font-size: 2rem;
-  font-weight: bold;
+.logo-button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+
 }
 
 .search-container {
   display: flex;
   align-items: center;
-  width: 67%;
+  width: 100%;
   justify-content: center;
+  margin: 0 10px;
 }
 
 .search-container input {
-  padding: 5px;
-  padding-left: 15px;
+  padding: 5px 15px;
   border: none;
   border-radius: 5px 0 0 5px;
   outline: none;
-  width: 85%;
+  width: 90%;
   line-height: 2rem;
   font-size: 1rem;
   background-color: #fff;
@@ -89,21 +119,14 @@ nav {
 .search-container button {
   padding: 5px 10px;
   border: none;
-  background-color: white;
-  color: #4babe2;
-  border-radius: 0 5px 5px 0;
+  background-color: #f1a80b;
   cursor: pointer;
   line-height: 2rem;
-  background-color: #f1a80b;
-}
-
-.search-container button i {
-  line-height: 1.5;
-  color: black;
+  border-radius: 0 5px 5px 0;
 }
 
 .line-1 {
-  position: relative;;
+  position: relative;
   white-space: nowrap;
 }
 
@@ -111,6 +134,30 @@ nav {
   position: relative;
   white-space: nowrap;
   font-weight: bold;
+}
+
+.cart-container {
+  position: relative;
+}
+
+.cart-toggle {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: none;
+  z-index: 1000;
+  border-radius: 8px;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.cart-container:hover .cart-toggle {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
 }
 
 ul {
@@ -121,11 +168,10 @@ ul {
   font-size: 1rem;
   justify-content: center;
   align-items: center;
-  width: 44%;
 }
 
 ul li {
-  padding: 0 5px;
+  padding: 0 8px;
   width: 100%;
   text-align: center;
   display: flex;
@@ -135,7 +181,6 @@ ul li {
 
 ul li a {
   display: block;
-  width: 100%;
   padding: 5px 0;
   color: white;
   text-decoration: none;
@@ -153,55 +198,72 @@ ul li a:hover {
   display: none;
 }
 
-#check {
+.bottom-nav {
   display: none;
 }
 
 @media (max-width: 854px) {
+  nav {
+    height: 12vh;
+  }
+
   .logo {
     font-size: 1.5rem;
   }
-  .checkbtn {
-    display: block;
-    order: 1;
-    margin-right: 20px;
-  }
 
   .search-container {
-    width: 50%;
-  }
-
-  .line-1 {
-    display: none;
+    width: 100%;
   }
 
   ul {
+    display: none;
+  }
+
+  .bottom-nav {
     position: fixed;
-    top: 80px;
-    right: -100%;
-    background-color: #4babe2;
+    height: 8vh; /* Aumenta la altura si es necesario */
+    bottom: 0;
+    left: 0;
     width: 100%;
-    height: 100vh;
+    background-color: #4babe2;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px 0;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+  }
+
+  .containerOption {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    transition: all 0.3s;
+    margin: 0 10px;
   }
 
-  ul li {
-    margin: 20px 0;
-    width: 100%;
+  .nav-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
   }
+}
 
-  ul li a {
-    font-size: 20px;
-    text-align: center;
-  }
+.router-link-active .fas,
+.router-link-active span {
+  color: rgb(48, 45, 45);
+  font-weight: bold;
+}
 
-  #check:checked ~ ul {
-    right: 0;
-  }
+i {
+  margin-bottom: 7px;
+}
+
+.bottom-nav a {
+  color: rgb(255, 255, 255);
+  font-size: 0.9em;
+  margin: 5px 0;
 }
 </style>
 
