@@ -1,7 +1,7 @@
 <template>
     <div class="dashboard-container">
         <aside class="sidebar">
-            <img class="logo" src="@/assets/logoSinFondo.png" alt="Logo AMASON" />
+            <img class="logo" src="@/assets/Amason_Black.svg" alt="Logo AMASON" />
             <nav class="menu">
                 <button @click="view = 'create'" :class="{ active: view === 'create' }">
                     Crear Tienda
@@ -21,8 +21,8 @@
 </template>
 
 <script>
-import addStores from "./addStores.vue";
-import manageStores from "./manageStores.vue";
+import addStores from "../../components/controlPanelComponents/addStores.vue";
+import manageStores from "../../components/controlPanelComponents/manageStores.vue";
 
 export default {
     components: { addStores, manageStores },
