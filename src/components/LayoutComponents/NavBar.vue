@@ -3,7 +3,6 @@
     <router-link to="/Menu">
       <img src="@/assets/Amason_White.svg" alt="Logo" class="logo-img" style="width: 128px; height: auto;">
     </router-link>
-
     <div class="search-container">
       <input type="text" placeholder="Buscar artículo" aria-label="Buscar">
       <button type="button" aria-label="Buscar">
@@ -231,7 +230,7 @@ ul li a:hover {
     justify-content: space-around;
     align-items: center;
     padding: 10px 0;
-  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
     z-index: 999;
   }
 
