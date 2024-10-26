@@ -1,8 +1,9 @@
 <template>
-  <div v-for="(product, index) in products" :key="product.id" class="details-card">
+  <div class="details-card" v-for="(product, index) in cartItems" :key="index" >
     <CarritoCheckbox :checked="selectedAll" @update:checked="updateSelection(index, $event)" />
     <div class="image-card">
-      <img :src="product.image" :alt="product.alt" />
+      <img
+        src="https://www.steren.cr/media/catalog/product/cache/b69086f136192bea7a4d681a8eaf533d/image/21867108a/audifonos-bluetooth-con-cancelacion-de-ruido-negros.jpg">
     </div>
     <div class="description-item">
       <div class="bold">
@@ -20,7 +21,7 @@
           <p class="quantity-display">{{ product.quantity }}</p>
           <button class="quantity-btn" @click="increaseQuantity(index)">+</button>
         </div>
-        <button class="btn-delete" @click.prevent="removeProductUnits(index)">
+        <button class="btn-delete" @click.prevent="removeProduct(product.product_id)">
           <i class="fa-solid fa-trash-can fa-2xl" style="color: #c8240d"></i>
         </button>
       </div>
@@ -39,50 +40,24 @@ export default {
   components: {
     CarritoCheckbox
   },
-  props: {
-    products: {
-      type: Array,
-      required: true
-    },
-    selectedAll: {
-      type: Boolean,
-      default: false
-    }
+  computed: {
+    ...mapGetters(['cartItems']),
   },
   methods: {
-    ...mapActions(['removeProductUnits']), // Agregar acción aquí
-
-    increaseQuantity(index) {
-      this.$emit('update-quantity', { index, quantity: this.products[index].quantity + 1 })
+    ...mapActions(['removeProductFromCart', 'updateProductQuantity']),
+    removeProduct(productId) {
+      this.removeProductFromCart(productId);
     },
-
-    async decreaseQuantity(index) {
-      const product = this.products[index]
-
-      // Si la cantidad es mayor que 1, reduce la cantidad
-      if (product.quantity > 1) {
-        this.$emit('update-quantity', { index, quantity: product.quantity - 1 })
-      } else {
-        // Si la cantidad es 1, elimina el producto
-        try {
-          await this.removeProductUnits({
-            idproducttoremove: product.id,
-            quantitytoremove: 1
-          })
-        } catch (error) {
-          console.error('Error al eliminar el producto del carrito:', error)
-        }
+    updateQuantity(productId, quantity) {
+      const parsedQuantity = parseInt(quantity, 10);
+      if (parsedQuantity > 0) {
+        this.updateProductQuantity({ productId, quantity: parsedQuantity });
       }
     },
+  },
 
-    setSelected(isSelected) {
-      this.checked = isSelected // Cambia el estado del checkbox
-    }
-  }
 }
 </script>
-
-
 
 <style>
 .details-card {
@@ -124,8 +99,6 @@ export default {
 
 .details-card .description-item .description {
   width: 100%;
-  /* Asegura que ocupe todo el ancho disponible en pantallas pequeñas */
-
   flex-shrink: 0;
   color: #000;
   font-family: Arial;
@@ -232,5 +205,23 @@ export default {
   }
 }
 
+  .details-card .group .quantity button.quantity-btn {
+    width: 30px;
+    height: 30px;
+    font-size: 3vw;
+  }
+
+  .description-item .group {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .description-item .group .btn-delete {
+    align-self: flex-end;
+    order: -1;
+    margin-top: -60px;
+  }
+}
 
 </style>

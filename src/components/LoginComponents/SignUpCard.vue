@@ -29,7 +29,7 @@
         </select>
 
         <button class="Enviar">Confirmar</button>
-        <p></p>
+        <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
         <button type="button" @click="$emit('toggle')">¿Ya tienes una cuenta?</button>
       </form>
     </div>
@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { registerUser } from '../../../api/auth';
 
 export default {
   data() {
@@ -46,48 +46,48 @@ export default {
       email: '',
       password: '',
       confirmPassword: '',
-      role: ''
-    }
+      role: '',
+      errorMessage: '',
+      error: null
+    };
   },
   methods: {
     async register() {
+      // Validación de contraseñas coincidentes y tipo de usuario
+      if (this.password !== this.confirmPassword) {
+        this.errorMessage = 'Las contraseñas no coinciden';
+        return;
+      }
+
+      if (!this.role) {
+        this.errorMessage = 'Por favor, seleccione un tipo de usuario.';
+        return;
+      }
+
       try {
-        // Validar que las contraseñas coincidan
-        if (this.password !== this.confirmPassword) {
-          alert('Las contraseñas no coinciden')
-          return
-        }
-
-        if (!this.role) {
-          alert('Por favor, seleccione un tipo de usuario.')
-          return
-        }
-
-        // Realizar la solicitud de registro a la API
-        const response = await axios.post('http://localhost:8000/api/register', {
+        await registerUser({
           name: this.name,
           email: this.email,
           password: this.password,
           password_confirmation: this.confirmPassword,
           role: this.role
-        })
-
-        // Guarda el token en el localStorage para futuras peticiones
-        const token = response.data.token
-        localStorage.setItem('token', token)
-
-        // Configura Axios para incluir el token en los headers de las siguientes peticiones
-        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
-
-        // Redirigir a la página principal o al menú
-        this.$emit('toggle')
+        });
+        
+        // Cambio a pantalla de inicio de sesión
+        this.$emit('toggle');
       } catch (error) {
-        console.error('Error en el registro:', error)
-        alert('Hubo un error en el registro. Verifica los datos ingresados.')
+        // Mostrar mensaje de error específico
+        this.errorMessage = error.message;
       }
     }
   }
-}
+};
 </script>
 
-<style scoped></style>
+<style scoped>
+.error {
+  color: red;
+  font-weight: 400;
+  text-align: center;
+}
+</style>

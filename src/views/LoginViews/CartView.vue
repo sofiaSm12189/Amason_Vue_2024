@@ -16,8 +16,7 @@
           </button>
         </div>
       </div>
-      <!-- Pasar cartItems al componente CarritoItem -->
-      <CarritoItem :products="cartItems" :selected-all="selectedAll" />
+      <CarritoItem/>
     </div>
     <div class="order">
       <SummaryOrder />
@@ -28,7 +27,8 @@
 <script>
 import CarritoItem from '../../components/CartComponents/CartItem.vue'
 import SummaryOrder from '../../components/CartComponents/SummaryOrder.vue'
-import { mapGetters, mapMutations } from 'vuex'
+
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   computed: {
@@ -39,14 +39,16 @@ export default {
     CarritoItem,
     SummaryOrder
   },
-  data() {
-    return {
-      selectedAll: false,
-      selectedCount: 0
-    }
+  computed: {
+  ...mapGetters(['cartItems', 'formattedTotalAmount']),
   },
   methods: {
-    toggleSelectAll() {
+  ...mapActions(['fetchCartItems']),
+  goToCart() {
+  this.$router.push('/carrito');
+  },
+
+toggleSelectAll() {
       this.selectedAll = !this.selectedAll
       this.selectedCount = this.selectedAll ? this.cartItems.length : 0
       this.$emit('update-selection', this.selectedCount)
@@ -54,17 +56,11 @@ export default {
         this.$refs[`cartItem${index}`].setSelected(this.selectedAll)
       })
     },
-    deleteSelectedItems() {
-      this.removeAllProductsFromCart()
-      console.log('Eliminar artículos seleccionados:', this.selectedCount)
-    }
-  },
-  created() {
-    this.$store.dispatch('fetchCartItems').then(() => {
-      console.log('Productos en el carrito:', this.cartItems) // Verifica si `cartItems` contiene datos
-    })
-  }
-}
+    },
+    mounted() {
+    this.fetchCartItems();
+    },
+    };
 </script>
 
 <style scoped>

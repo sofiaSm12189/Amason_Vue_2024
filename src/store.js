@@ -13,59 +13,56 @@ export default new Vuex.Store({
     setTotalAmount(state, totalAmount) {
       state.totalAmount = totalAmount;
     },
-    removeProduct(state, idProductToRemove) { // Cambio de "RemoveProduct" a "removeProduct"
-      const index = state.cart.findIndex(item => item.id === idProductToRemove);
-      if (index !== -1) {
-        state.cart.splice(index, 1);
-      }
+    removeProduct(state, index) {
+      state.cart.splice(index, 1);
     },
-    updatedQuantity(state, { productId, newQuantity }) {
-      const product = state.cartItems.find(item => item.product_id === productId)
-      if (product) {
-        product.quantity = newQuantity
-      }
-    },
-    removeFromCart(state, productId) {
-      state.cartItems = state.cartItems.filter(item => item.product_id !== productId)
-    }
   },
   actions: {
     async fetchCartItems({ commit }) {
       try {
         const userId = localStorage.getItem('pivotId');
         if (!userId) {
-          throw new Error('No se econtró el usuario');
+          throw new Error('User ID not found in localStorage');
         }
         const response = await api.get(`/cart/${userId}`);
         commit('setCart', response.data.cart_products);
         commit('setTotalAmount', response.data.total_amount);
       } catch (error) {
-        console.error('Error encontrando el artículo:', error);
+        console.error('Error fetching cart items:', error);
       }
     },
-      async removeProductFromCart({ commit }, idProductToRemove) {
-        try {
-          const response = await fetch('/cart/removeProductFromCart', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ idproducttoremove: idProductToRemove }),
-          });
-    
-          if (response.ok) {
-            const data = await response.json();
-            commit('removeProduct', idProductToRemove); // Actualizar el estado en Vuex
-            return data;
-          } else {
-            throw new Error('Error al eliminar el producto en el servidor');
-          }
-        } catch (error) {
-          console.error('Error al eliminar el producto del carrito:', error);
-          throw new Error('No se pudo eliminar el producto del carrito.');
+    async removeProductFromCart({ commit, state }, productId) {
+      try {
+        const index = state.cart.findIndex(product => product.product_id === productId);
+        if (index === -1) {
+          throw new Error('Product not found in cart');
         }
+
+        const response = await api.post('/cart/remove-product', {
+          idproducttoremove: productId,
+          user_id: localStorage.getItem('pivotId')
+        }, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
+        });
+
+        if (response.status === 200) {
+          commit('removeProduct', index);
+
+          const newTotalAmount = state.cart.reduce((total, product) => {
+            return total + (product.product_price * product.quantity);
+          }, 0);
+          commit('setTotalAmount', newTotalAmount);
+        } else {
+          console.error('Error response from server:', response);
+        }
+      } catch (error) {
+        console.error('Error removing product from cart:', error);
       }
-    },  
+    },
+  },
   getters: {
     cartItems: (state) => state.cart,
     totalAmount: (state) => state.totalAmount,
@@ -73,7 +70,7 @@ export default new Vuex.Store({
       return new Intl.NumberFormat('es-CR', {
         style: 'currency',
         currency: 'CRC',
-      }).format(state.totalAmount); // Formatea el total a colones
+      }).format(state.totalAmount);
     },
   },
 });

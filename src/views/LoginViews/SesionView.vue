@@ -65,7 +65,6 @@ const toggleComponent = () => {
     font-size: 1rem;
     line-height: 1.5rem;
     letter-spacing: 0.3px;
-    margin: 20px 0;
 }
 
 :deep(.container button) {
@@ -171,6 +170,5 @@ const toggleComponent = () => {
         padding: 8px 12px;
     }
 }
-
 
 </style>

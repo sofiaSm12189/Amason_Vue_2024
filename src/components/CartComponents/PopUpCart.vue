@@ -6,7 +6,7 @@
     </div>
     <hr v-if="cartItems.length > 0">
     <div class="cartItem--container" v-if="cartItems.length > 0">
-      <popUpCartItem />
+      <popUpCartItem/>
     </div>
     
     <hr v-if="cartItems.length > 0">
@@ -30,13 +30,18 @@ export default {
     popUpCartItem,
   },
   computed: {
+
     ...mapGetters(['cartItems', 'formattedTotalAmount']),
+  
   },
   methods: {
+
     ...mapActions(['fetchCartItems']),
+
     goToCart() {
       this.$router.push('/carrito');
     },
+
   },
   mounted() {
     this.fetchCartItems();
@@ -49,13 +54,13 @@ export default {
   font-family: sans-serif;
   width: 290px;
   height: auto;
+  max-height: 500px;
   padding: 20px;
   background: #fff;
   border-radius: 6px;
   box-shadow: 0px 30px 130px -8px rgba(0, 0, 0, 0.25);
   color: black;
   text-align: left;
-  max-height: 600px;
   box-sizing: content-box;
 }
 
@@ -77,7 +82,7 @@ export default {
 }
 
 .cartItem--container {
-  max-height: 330px;
+  max-height: 340px;
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -89,11 +94,9 @@ export default {
   font-size: .8em;
 }
 
-.cart--vacio{
-  
+.cart--vacio {
   width:100%;
   font-weight: 600;
-
 }
 
 .minicart hr {

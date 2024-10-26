@@ -1,14 +1,8 @@
 <template>
   <nav>
-    <button @click="goToHome" aria-label="Go to Home" class="logo-button">
-      <img
-        src="@/assets/Amason_White.svg"
-        alt="Logo"
-        class="logo-img"
-        style="width: 128px; height: auto"
-      />
-    </button>
-
+    <router-link to="/Menu">
+      <img src="@/assets/Amason_White.svg" alt="Logo" class="logo-img" style="width: 128px; height: auto;">
+    </router-link>
     <div class="search-container">
       <input type="text" placeholder="Buscar artículo" aria-label="Buscar">
       <button type="button" aria-label="Buscar">
@@ -61,7 +55,7 @@
         </router-link>
       </div>
       <div class="containerOption">
-        <router-link to="/carrito" class="nav-icon" aria-label="Carrito">
+        <router-link to="/Carrito" class="nav-icon" aria-label="Carrito">
           <i class="fas fa-shopping-cart"></i>
           <span>Carrito</span>
         </router-link>
