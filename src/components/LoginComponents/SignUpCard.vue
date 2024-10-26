@@ -25,8 +25,14 @@
 
         <button class="Enviar">Confirmar</button>
 
+//CART
+        <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+//VENDEDORES
+
         <!-- Mostrar mensaje de éxito -->
         <p v-if="successMessage" class="success-message">{{ successMessage }}</p>
+
+
 
         <button type="button" @click="$emit('toggle')">¿Ya tienes una cuenta?</button>
       </form>
@@ -35,7 +41,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { registerUser } from '../../../api/auth';
 
 export default {
   data() {
@@ -45,30 +51,46 @@ export default {
       password: '',
       confirmPassword: '',
       role: '',
+
+//CART
+      errorMessage: '',
+      error: null
+    };
+//VENDEDORES
       successMessage: '' // Propiedad para almacenar el mensaje de éxito
     }
+
+
   },
   methods: {
     async register() {
+      // Validación de contraseñas coincidentes y tipo de usuario
+      if (this.password !== this.confirmPassword) {
+        this.errorMessage = 'Las contraseñas no coinciden';
+        return;
+      }
+
+      if (!this.role) {
+        this.errorMessage = 'Por favor, seleccione un tipo de usuario.';
+        return;
+      }
+
       try {
-        // Validar que las contraseñas coincidan
-        if (this.password !== this.confirmPassword) {
-          alert('Las contraseñas no coinciden')
-          return
-        }
-
-        if (!this.role) {
-          alert('Por favor, seleccione un tipo de usuario.')
-          return
-        }
-
-        // Realizar la solicitud de registro a la API
-        const response = await axios.post('http://localhost:8000/api/register', {
+        await registerUser({
           name: this.name,
           email: this.email,
           password: this.password,
           password_confirmation: this.confirmPassword,
           role: this.role
+//CART
+        });
+        
+        // Cambio a pantalla de inicio de sesión
+        this.$emit('toggle');
+      } catch (error) {
+        // Mostrar mensaje de error específico
+        this.errorMessage = error.message;
+//VENDEDORES
         })
 
         // Guarda el token en el localStorage para futuras peticiones
@@ -103,16 +125,23 @@ export default {
           console.error('Error desconocido:', error);
           alert('Ocurrió un error desconocido');
         }
+
       }
     }
   }
-}
+};
 </script>
 
 <style scoped>
+.error {
+  color: red;
+  font-weight: 400;
+  text-align: center;
+
 .success-message {
   color: green;
   font-size: 1.2em;
   margin-top: 10px;
+
 }
 </style>
