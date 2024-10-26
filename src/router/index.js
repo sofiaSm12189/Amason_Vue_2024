@@ -6,7 +6,7 @@ import MenuView from '../views/LoginViews/MenuView.vue'
 
 import TicketsView from '../views/LoginViews/TicketsView.vue'
 import ChatView from '../views/LoginViews/ChatView.vue'
-import CreateTicketView from '@/views/LoginViews/Tickets/CreateTicketView.vue'
+import CreateTicketView from '../views/LoginViews/CreateTicketView.vue'
 
 
 const router = createRouter({
