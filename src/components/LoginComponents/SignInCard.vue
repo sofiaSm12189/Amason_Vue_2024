@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { loginUser } from '../../../api/auth';
+import axios from 'axios';
 
 export default {
   data() {
@@ -28,7 +28,6 @@ export default {
       email: '',
       password: '',
       errorMessage: null,
-      error: null
     };
   },
   methods: {
@@ -36,36 +35,29 @@ export default {
       this.errorMessage = null;
       
       try {
-
-//CART
-        await loginUser({ email: this.email, password: this.password });
-        this.$router.push('/Menu');
-//VENDEDORES
+        // Enviar datos de inicio de sesión y recibir la respuesta
         const response = await axios.post('http://localhost:8000/api/login', {
           email: this.email,
           password: this.password
         });
         
-        // Guarda el token en el localStorage para utilizarlo en futuras peticiones
+        // Guardar el token en localStorage y configurar el encabezado para futuras peticiones
         const token = response.data.token;
         const roles = response.data.roles; // Recibe los roles desde la API
         localStorage.setItem('token', token);
-
-        // Configura Axios para incluir el token en los headers de las siguientes peticiones
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-       
-        const roleNames = roles.map(role => role.name);//se captura el nombre del roll del user
-
-         // Verifica si el usuario es "seller"
-          if (roleNames.includes('seller')) {
-          this.$router.push('/controlPanel'); // Redirige al panel de control si es "seller"
+        
+        // Mapear y verificar roles para redirigir al usuario a la página adecuada
+        const roleNames = roles.map(role => role.name); // Captura el nombre del rol del usuario
+        if (roleNames.includes('seller')) {
+          this.$router.push('/sellerDashboard'); // Redirige al panel de control si el usuario es "seller"
         } else {
-          this.$router.push('/Menu'); // Si no es "seller", redirige al menú u otra página
+          this.$router.push('/Menu'); // Redirige al menú si el usuario no es "seller"
         }
-
-
+        
       } catch (error) {
-        this.errorMessage = error.message;
+        // Manejo de errores de inicio de sesión
+        this.errorMessage = error.response?.data?.message || 'Error al iniciar sesión. Intente nuevamente.';
       }
     }
   }

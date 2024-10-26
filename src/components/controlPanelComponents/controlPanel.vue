@@ -2,7 +2,7 @@
   <div class="dashboard-container">
     <!-- Barra lateral -->
     <aside class="sidebar">
-      <img class="logo" src="@/assets/Logo.png" alt="Logo AMASON" />
+      <img class="logo" src="@/assets/logoSinFondo.png" alt="Logo AMASON" />
       <nav class="menu">
         <button @click="view = 'create'" :class="{ active: view === 'create' }">
           Crear Tienda
