@@ -43,10 +43,6 @@ methods: {
 
 ...mapActions(['fetchCartItems']),
 
-goToCart() {
-  this.$router.push('/carrito');
-},
-
 toggleSelectAll() {
       this.selectedAll = !this.selectedAll
       this.selectedCount = this.selectedAll ? this.cartItems.length : 0
