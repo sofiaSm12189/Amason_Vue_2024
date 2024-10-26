@@ -27,26 +27,25 @@
 <script>
 import CarritoItem from '../../components/CartComponents/CartItem.vue'
 import SummaryOrder from '../../components/CartComponents/SummaryOrder.vue'
-
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  computed: {
-    ...mapGetters(['cartItems']), // Obtener los productos desde Vuex
-    ...mapMutations(['removeAllProductsFromCart'])
-  },
   components: {
     CarritoItem,
     SummaryOrder
   },
   computed: {
-  ...mapGetters(['cartItems', 'formattedTotalAmount']),
-  },
-  methods: {
-  ...mapActions(['fetchCartItems']),
-  goToCart() {
+
+...mapGetters(['cartItems', 'formattedTotalAmount']),
+
+},
+methods: {
+
+...mapActions(['fetchCartItems']),
+
+goToCart() {
   this.$router.push('/carrito');
-  },
+},
 
 toggleSelectAll() {
       this.selectedAll = !this.selectedAll
@@ -56,11 +55,13 @@ toggleSelectAll() {
         this.$refs[`cartItem${index}`].setSelected(this.selectedAll)
       })
     },
-    },
-    mounted() {
-    this.fetchCartItems();
-    },
-    };
+
+},
+mounted() {
+this.fetchCartItems();
+},
+};
+
 </script>
 
 <style scoped>
@@ -86,7 +87,6 @@ toggleSelectAll() {
   border-radius: 12px;
   background-color: white;
   box-sizing: border-box;
-  min-width: 500px;
 }
 
 .container--title-options {
@@ -171,7 +171,7 @@ hr {
   position: fixed;
   bottom: 10.8vw;
   left: 0;
-  width: 100%;
+  width: auto;
   margin: 0;
   padding: 0;
   height: auto;

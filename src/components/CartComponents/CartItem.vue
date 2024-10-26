@@ -34,9 +34,6 @@ import CarritoCheckbox from './CheckboxCart.vue'
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
-  computed: {
-    ...mapGetters(['cartItems'])
-  },
   components: {
     CarritoCheckbox
   },
@@ -55,7 +52,6 @@ export default {
       }
     },
   },
-
 }
 </script>
 
@@ -205,6 +201,34 @@ export default {
   }
 }
 
+@media (max-width: 768px) {
+  .details-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .details-card .image-card {
+    width: 100%;
+    text-align: center;
+  }
+
+  .details-card .image-card img {
+    width: 100%;
+    max-width: 150px;
+    height: auto;
+  }
+
+  .details-card .description-item {
+    margin-left: 0;
+    width: 100%;
+    padding: 10px 0;
+  }
+
+  .details-card .group .quantity {
+    width: 100%;
+    justify-content: space-between;
+  }
+
   .details-card .group .quantity button.quantity-btn {
     width: 30px;
     height: 30px;
@@ -223,5 +247,4 @@ export default {
     margin-top: -60px;
   }
 }
-
 </style>
