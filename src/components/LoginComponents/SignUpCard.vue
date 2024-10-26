@@ -24,11 +24,9 @@
         </select>
 
         <button class="Enviar">Confirmar</button>
-
-        <!-- Mostrar mensajes de error o éxito -->
         <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+        <!-- Mostrar mensaje de éxito -->
         <p v-if="successMessage" class="success-message">{{ successMessage }}</p>
-
         <button type="button" @click="$emit('toggle')">¿Ya tienes una cuenta?</button>
       </form>
     </div>
@@ -37,7 +35,6 @@
 
 <script>
 import { registerUser } from '../../../api/auth';
-import axios from 'axios';
 
 export default {
   data() {
@@ -48,8 +45,11 @@ export default {
       confirmPassword: '',
       role: '',
       errorMessage: '',
+      error: null,
       successMessage: '' // Propiedad para almacenar el mensaje de éxito
-    };
+    }
+
+
   },
   methods: {
     async register() {
@@ -58,13 +58,14 @@ export default {
         this.errorMessage = 'Las contraseñas no coinciden';
         return;
       }
+
       if (!this.role) {
         this.errorMessage = 'Por favor, seleccione un tipo de usuario.';
         return;
       }
 
       try {
-        const response = await registerUser({
+        await registerUser({
           name: this.name,
           email: this.email,
           password: this.password,
@@ -72,38 +73,24 @@ export default {
           role: this.role
         });
 
-        // Guarda el token en el localStorage
-        const token = response.data.token;
-        localStorage.setItem('token', token);
-
-        // Configura Axios para incluir el token en los headers de las siguientes peticiones
-        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-
-        // Mostrar mensaje de éxito
-        this.successMessage = '¡Usuario registrado con éxito!';
+        this.successMessage = '¡Usuario registrado con éxito!'
 
         // Vaciar los campos del formulario
-        this.name = '';
-        this.email = '';
-        this.password = '';
-        this.confirmPassword = '';
-        this.role = '';
+        this.name = ''
+        this.email = ''
+        this.password = ''
+        this.confirmPassword = ''
+        this.role = ''
 
         // Eliminar el mensaje de éxito después de 3 segundos
         setTimeout(() => {
-          this.successMessage = '';
-        }, 3000);
+          this.successMessage = ''
+          this.$emit('toggle')
+        }, 3000)
 
-        // Cambio a pantalla de inicio de sesión
-        this.$emit('toggle');
+
       } catch (error) {
-        if (error.response && error.response.data) {
-          this.errorMessage = error.response.data.message || 'Ocurrió un error';
-          console.error('Detalles del error:', error.response.data);
-        } else {
-          this.errorMessage = 'Ocurrió un error desconocido';
-          console.error('Error desconocido:', error);
-        }
+        this.errorMessage = error.message;
       }
     }
   }
@@ -120,5 +107,6 @@ export default {
   color: green;
   font-size: 1.2em;
   margin-top: 10px;
+
 }
 </style>

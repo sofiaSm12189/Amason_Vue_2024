@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import { loginUser } from '../../../api/auth';
 
 export default {
   data() {
@@ -28,6 +28,7 @@ export default {
       email: '',
       password: '',
       errorMessage: null,
+      error: null
     };
   },
   methods: {
@@ -35,29 +36,20 @@ export default {
       this.errorMessage = null;
       
       try {
-        // Enviar datos de inicio de sesión y recibir la respuesta
-        const response = await axios.post('http://localhost:8000/api/login', {
-          email: this.email,
-          password: this.password
-        });
-        
-        // Guardar el token en localStorage y configurar el encabezado para futuras peticiones
-        const token = response.data.token;
-        const roles = response.data.roles; // Recibe los roles desde la API
-        localStorage.setItem('token', token);
-        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        
-        // Mapear y verificar roles para redirigir al usuario a la página adecuada
-        const roleNames = roles.map(role => role.name); // Captura el nombre del rol del usuario
-        if (roleNames.includes('seller')) {
-          this.$router.push('/sellerDashboard'); // Redirige al panel de control si el usuario es "seller"
+
+        await loginUser({ email: this.email, password: this.password });
+  
+        const role = localStorage.getItem('roles');
+        console.log(role);
+          if (role.includes('seller')) {
+          this.$router.push('/controlPanel');
         } else {
-          this.$router.push('/Menu'); // Redirige al menú si el usuario no es "seller"
+          this.$router.push('/Menu');
         }
-        
+
+
       } catch (error) {
-        // Manejo de errores de inicio de sesión
-        this.errorMessage = error.response?.data?.message || 'Error al iniciar sesión. Intente nuevamente.';
+        this.errorMessage = error.message;
       }
     }
   }

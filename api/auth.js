@@ -7,10 +7,14 @@ export async function loginUser(userData) {
     const response = await apiClient.post('/login', userData);
     const token = response.data.token;
     const pivotId = response.data.roles[0].pivot.user_id;
+    const roles = response.data.roles;
+    console.log(roles);
+    const roleNames = roles.map(role => role.name);
     
     // Guardar token y pivotId en localStorage
     localStorage.setItem('token', token);
     localStorage.setItem('pivotId', pivotId);
+    localStorage.setItem('roles', roleNames);
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     
     return response;
