@@ -14,22 +14,26 @@
         <input type="password" v-model="password" placeholder="Contraseña" required />
 
         <label for="confirmPassword">Confirmar Contraseña</label>
-        <input
-          type="password"
-          v-model="confirmPassword"
-          placeholder="Confirmar contraseña"
-          required
-        />
+        <input type="password" v-model="confirmPassword" placeholder="Confirmar contraseña" required />
 
         <label for="role">Tipo de Usuario</label>
         <select v-model="role" required>
           <option disabled value="">Seleccione el tipo de usuario</option>
-          <option value="admin">Admin</option>
-          <option value="vendedor">Vendedor</option>
+          <option value="user">Cliente</option>
+          <option value="seller">Vendedor</option>
         </select>
 
         <button class="Enviar">Confirmar</button>
+
+//CART
         <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+//VENDEDORES
+
+        <!-- Mostrar mensaje de éxito -->
+        <p v-if="successMessage" class="success-message">{{ successMessage }}</p>
+
+
+
         <button type="button" @click="$emit('toggle')">¿Ya tienes una cuenta?</button>
       </form>
     </div>
@@ -47,9 +51,16 @@ export default {
       password: '',
       confirmPassword: '',
       role: '',
+
+//CART
       errorMessage: '',
       error: null
     };
+//VENDEDORES
+      successMessage: '' // Propiedad para almacenar el mensaje de éxito
+    }
+
+
   },
   methods: {
     async register() {
@@ -71,6 +82,7 @@ export default {
           password: this.password,
           password_confirmation: this.confirmPassword,
           role: this.role
+//CART
         });
         
         // Cambio a pantalla de inicio de sesión
@@ -78,6 +90,42 @@ export default {
       } catch (error) {
         // Mostrar mensaje de error específico
         this.errorMessage = error.message;
+//VENDEDORES
+        })
+
+        // Guarda el token en el localStorage para futuras peticiones
+        const token = response.data.token
+        localStorage.setItem('token', token)
+
+        // Configura Axios para incluir el token en los headers de las siguientes peticiones
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+
+        // Mostrar mensaje de éxito
+        this.successMessage = '¡Usuario registrado con éxito!'
+
+        // Vaciar los campos del formulario
+        this.name = ''
+        this.email = ''
+        this.password = ''
+        this.confirmPassword = ''
+        this.role = ''
+
+        // Eliminar el mensaje de éxito después de 3 segundos
+        setTimeout(() => {
+          this.successMessage = ''
+        }, 3000)
+
+        // Redirigir a la página principal o al menú (opcional)
+        // this.$router.push('/')
+      } catch (error) {
+        if (error.response && error.response.data) {
+          console.error('Detalles del error:', error.response.data);
+          alert('Error: ' + JSON.stringify(error.response.data));  // Muestra más detalles del error al usuario
+        } else {
+          console.error('Error desconocido:', error);
+          alert('Ocurrió un error desconocido');
+        }
+
       }
     }
   }
@@ -89,5 +137,11 @@ export default {
   color: red;
   font-weight: 400;
   text-align: center;
+
+.success-message {
+  color: green;
+  font-size: 1.2em;
+  margin-top: 10px;
+
 }
 </style>
