@@ -12,8 +12,9 @@
                         Productos
                     </button>
                     <button class="btn-report" @click="generateTopSellingReport(index)">
-                        Más Vendidos
-                    </button>
+                Más Vendidos
+              </button>
+
                     <button class="btn-edit" @click="editStore(index)">Editar</button>
                     <button class="btn-delete" @click="deleteStore(index)">
                         Eliminar
@@ -32,18 +33,20 @@ export default {
         updateStores: Function,
     },
     methods: {
-        editStore(index) {// el codigo que esta aqui es solo visual, es decir, todavia no esta funcionando con la base porque eso nos toca en la tercera iteracion
-            const newName = prompt("Nuevo nombre:", this.stores[index].name);
-            const newDescription = prompt(
-                "Nueva descripción:",
-                this.stores[index].description
-            );
-            if (newName && newDescription) {
-                this.stores[index].name = newName;
-                this.stores[index].description = newDescription;
-                alert("¡Tienda actualizada!");
-            }
-        },
+        editStore(index) {
+    const newName = prompt("Nuevo nombre:", this.stores[index].name);
+    const newDescription = prompt(
+        "Nueva descripción:",
+        this.stores[index].description
+    );
+    if (newName && newDescription) {
+        const updatedStores = [...this.stores]; // Create a copy of the stores array
+        updatedStores[index].name = newName; // Modify the copy
+        updatedStores[index].description = newDescription; // Modify the copy
+        this.$emit("update-stores", updatedStores, index); // Emit the updated copy
+        alert("¡Tienda actualizada!");
+    }
+},
         deleteStore(index) {// el codigo que esta aqui es solo visual, es decir, todavia no esta funcionando con la base porque eso nos toca en la tercera iteracion
             if (confirm("¿Seguro que deseas eliminar esta tienda?")) {
                 this.$emit("update-stores", index, true); 
@@ -55,10 +58,10 @@ export default {
             
         },
         generateTopSellingReport(index) {
-            alert(`Generando reporte de productos más vendidos para ${this.stores[index].name}`);
-            
+    const storeId = this.stores[index].id; // Suponiendo que cada tienda tiene un ID único
+    this.$router.push({ path: `/report/${storeId}` });
+}
 
-        },
     },
 };
 </script>

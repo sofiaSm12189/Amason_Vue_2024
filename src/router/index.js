@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import ReportComponent from '../components/controlPanelComponents/ReportComponents.vue'; // O usando la ruta relativa
 
 import SesionView from '../views/LoginViews/SesionView.vue'
 import MainLayout from '../components/LayoutComponents/MainLayout.vue'
@@ -49,7 +50,14 @@ const router = createRouter({
       path: '/chat',
       name: 'Chat',
       component: ChatView
+    },
+    {
+      path: '/report/:storeId',
+      name: 'ReportComponent',
+      component: ReportComponent,
+      props: true, // Permite pasar el ID de la tienda como prop
     }
+
   ]
 })
 
