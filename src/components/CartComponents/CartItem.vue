@@ -29,6 +29,7 @@
   </div>
 </template>
 
+
 <script>
 import CarritoCheckbox from './CheckboxCart.vue'
 import { mapActions, mapGetters } from 'vuex'
@@ -43,12 +44,18 @@ export default {
   methods: {
     ...mapActions(['removeProductFromCart', 'updateProductQuantity']),
     removeProduct(productId) {
-      this.removeProductFromCart(productId);
+      if (confirm('¿Estás seguro de que deseas eliminar este producto?')) {
+        this.removeProductFromCart(productId);
+      }
     },
-    updateQuantity(productId, quantity) {
-      const parsedQuantity = parseInt(quantity, 10);
-      if (parsedQuantity > 0) {
-        this.updateProductQuantity({ productId, quantity: parsedQuantity });
+    increaseQuantity(index) {
+      const product = this.cartItems[index];
+      this.updateProductQuantity({ productId: product.product_id, quantity: product.quantity + 1, action: 'add' });
+    },
+    decreaseQuantity(index) {
+      const product = this.cartItems[index];
+      if (product.quantity > 1) {
+        this.updateProductQuantity({ productId: product.product_id, quantity: product.quantity - 1, action: 'remove' });
       }
     },
   },

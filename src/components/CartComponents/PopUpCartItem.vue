@@ -17,7 +17,8 @@
           <p class="cantidad">
             <i class="fa-solid fa-hashtag"></i> Cantidad:
             <input type="number" class="input-quantity" :value="product.quantity"
-              @blur="updateQuantity(product.product_id, $event.target.value)" min="1">
+            @change="updateQuantity(product.product_id, $event.target.value)" 
+            min="1">
           </p>
           <p class="price"><i class="fa-solid fa-colon-sign"></i> Precio: {{ product.product_price }}</p>
         </div>
@@ -25,6 +26,7 @@
     </li>
   </ul>
 </template>
+
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
@@ -36,7 +38,9 @@ export default {
   methods: {
     ...mapActions(['removeProductFromCart', 'updateProductQuantity']),
     removeProduct(productId) {
-      this.removeProductFromCart(productId);
+      if (confirm('¿Estás seguro de que deseas eliminar este producto?')) {
+        this.removeProductFromCart(productId);
+      }
     },
     updateQuantity(productId, quantity) {
       const parsedQuantity = parseInt(quantity, 10);
