@@ -42,7 +42,7 @@ export default {
         const role = localStorage.getItem('roles');
         console.log(role);
           if (role.includes('seller')) {
-          this.$router.push('/controlPanel');
+          this.$router.push('/sellerDashboard');
         } else {
           this.$router.push('/Menu');
         }
