@@ -53,20 +53,28 @@
         this.store = this.stores.find(store => store.id === storeId);
       },
       fetchTopSellingProducts(storeId) {
-        // Realiza la solicitud a la API con las fechas ingresadas por el usuario
-        fetch(`/api/stores/${storeId}/top-selling-products?start_date=${this.startDate}&end_date=${this.endDate}`)
-.then(response => {
-            if (!response.ok) throw new Error('Error al obtener los productos más vendidos');
-            return response.json();
-          })
-          .then(data => {
-            this.topSellingProducts = data;
-          })
-          .catch(error => {
-            console.error(error);
-            this.topSellingProducts = []; // Manejo de errores
-          });
-      },
+    fetch(`/api/stores/${storeId}/top-selling-products`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            start_date: this.startDate,
+            end_date: this.endDate
+        })
+    })
+    .then(response => {
+        if (!response.ok) throw new Error('Error al obtener los productos más vendidos');
+        return response.json();
+    })
+    .then(data => {
+        this.topSellingProducts = data;
+    })
+    .catch(error => {
+        console.error(error);
+        this.topSellingProducts = []; // Manejo de errores
+    });
+}
       
     },
   };
@@ -80,32 +88,56 @@
   }
   
   h1 {
-    color: #0077b6;
-  }
-  
-  .date-filter {
-    margin-bottom: 20px;
-  }
-  
-  .date-filter label {
-    margin-right: 10px;
-  }
-  
-  .date-filter input {
-    margin-right: 10px;
-  }
-  
-  .top-selling-products {
-    margin-top: 20px;
-  }
-  
-  .top-selling-products ul {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .top-selling-products li {
-    padding: 5px;
-    border-bottom: 1px solid #ccc;
-  }
+  color: #0077b6;
+  text-align: center;
+}
+.date-filter {
+  float: right; /* Alinea el contenedor a la derecha */
+  width: 300px; /* Ajusta el ancho del contenedor */
+  background-color: #3f9bb682; /* Color de fondo similar */
+  border: 1px solid #ddd; /* Borde ligero */
+  border-radius: 5px; /* Bordes redondeados */
+  padding: 15px; /* Espaciado interno */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para efecto de elevación */
+}
+
+.date-filter label {
+  display: block; /* Muestra cada etiqueta en una nueva línea */
+  margin-top: 10px;
+}
+
+.date-filter input,
+.date-filter button {
+  width: 100%; /* Hace que el input y el botón ocupen todo el ancho del contenedor */
+  margin-top: 10px;
+}
+.top-selling-products {
+  background-color: #ffffff; /* Fondo blanco para el cuadro */
+  border: 1px solid #ddd; /* Borde ligero */
+  border-radius: 5px; /* Bordes redondeados */
+  padding: 20px; /* Espaciado interno */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para efecto de elevación */
+  margin-top: 20px;
+}
+
+.top-selling-products h3 {
+  margin-top: 0; /* Elimina el margen superior */
+  font-size: 1.2em; /* Ajusta el tamaño de fuente */
+  color: #333; /* Color de texto oscuro */
+}
+
+.top-selling-products ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.top-selling-products li {
+  padding: 10px; /* Espacio entre cada producto */
+  border-bottom: 1px solid #eee; /* Borde inferior claro */
+}
+
+.top-selling-products li:last-child {
+  border-bottom: none; /* Elimina el borde inferior del último elemento */
+}
   </style>
