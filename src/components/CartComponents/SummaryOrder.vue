@@ -29,18 +29,27 @@
   </div>
 </template>
 
+
 <script>
 import { mapGetters } from 'vuex'
 
 export default {
-  components: {},
+  name: 'SummaryOrder',
   computed: {
     ...mapGetters(['cartItems', 'formattedTotalAmount'])
   },
   mounted() {
-    this.fetchCartItems()
+
+
+    this.fetchCartItems();
+  },
+  methods: {
+    fetchCartItems() {
+      this.$store.dispatch('fetchCartItems');
+    }
   }
-}
+};
+
 </script>
 
 <style scoped>
@@ -146,20 +155,18 @@ export default {
 }
 
 i {
-  font-size: 2.6rem; /* Equivale a 40px si el tamaño base es 16px */
+  font-size: 2.6rem;
 }
 
-/* Ajustes en pantallas medianas */
 @media (max-width: 1300px) {
   i {
-    font-size: 2.6rem; /* Equivale a 42px */
+    font-size: 2.6rem;
   }
 }
 
-/* Ajustes en pantallas pequeñas */
 @media (max-width: 720px) {
   i {
-    font-size: 2.6rem; /* Equivale a 44px */
+    font-size: 2.6rem;
   }
 }
 
@@ -184,9 +191,8 @@ i {
     width: 25%;
     align-self: center;
     height: 5vw;
-   
   }
-
+  
   .information .total {
     font-size: 20px;
   }
@@ -217,6 +223,4 @@ i {
     font-size: 1.4rem;
   }
 }
-
-
 </style>
