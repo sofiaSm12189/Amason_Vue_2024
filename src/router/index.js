@@ -4,22 +4,19 @@ import SesionView from '../views/LoginViews/SesionView.vue'
 import MainLayout from '../components/LayoutComponents/MainLayout.vue'
 import MenuView from '../views/LoginViews/MenuView.vue'
 import CartView from '@/views/LoginViews/CartView.vue'
-import controlPanel from '@/components/controlPanelComponents/controlPanel.vue'
-
-
 import TicketsView from '../views/LoginViews/TicketsView.vue'
 import ChatView from '../views/LoginViews/ChatView.vue'
 import CreateTicketView from '../views/LoginViews/CreateTicketView.vue'
 import UpdateTicket from '@/components/TicketsComponents/UpdateTicket.vue'
 import sellerDashboard from '@/views/LoginViews/sellerDashboard.vue'
-import ProductList from '@/components/MenuComponents/ListOfProducts&ProductDetails/ProductList.vue'; // Ajusta el path si es necesario
+import ProductList from '@/components/MenuComponents/ListOfProducts&ProductDetails/ProductList.vue';
 
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
    
-    { path: '/sellerDashboard', name: 'sellerDashboard', component: sellerDashboard },
+    
     {
       path: '/tickets',
       name: 'Tickets',
@@ -74,9 +71,9 @@ const router = createRouter({
         component: ChatView
       },
       {
-            path: '/controlPanel',
-            name: 'controlPanel',
-            component: controlPanel
+            path: '/sellerDashboard', 
+            name: 'sellerDashboard', 
+            component: sellerDashboard
       },
 
     ]
