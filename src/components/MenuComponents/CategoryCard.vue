@@ -1,5 +1,5 @@
 <template>
-  <div class="category-card">
+  <div class="category-card" @click="selectCategory">
     <h2 class="item-headline">{{ category.title }}</h2>
     <div class="items">
       <div
@@ -29,6 +29,11 @@ export default {
       patitoImage,
     };
   },
+  methods: {
+    selectCategory() {
+      this.$emit('category-selected', this.category); // Emitir evento cuando se selecciona una categoría
+    }
+  }
 };
 </script>
 
@@ -38,7 +43,6 @@ export default {
   border-radius: 8px;
   border: 1px solid #d9d9d9;
   box-sizing: border-box;
-  
   padding: 12px;
   width: 300px;
   align-content: center;

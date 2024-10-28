@@ -1,26 +1,24 @@
 <template>
-  <div v-if="showModal" class="modal-overlay">
+  <div :class="{ 'modal-overlay': true, 'hidden': !showModal }">
     <div class="modal-content">
       <span class="close" @click="closeModal">&times;</span>
-      <h1 class="form-title text-2xl font-bold mb-6 text-gray-800 text-center">Crear Nuevo Producto</h1>
-      <form @submit.prevent="handleSubmit" class="space-y-6">
-        <div>
-          <label for="name" class="form-label block text-gray-700 font-medium mb-2">Nombre del Producto</label>
+      <h2 class="modal-title">Crear Nuevo Producto</h2>
+      <form @submit.prevent="handleSubmit">
+        <div class="form-group">
+          <label for="name">Nombre del Producto</label>
           <input
+            type="text"
             id="name"
-            name="name"
             v-model="product.name"
             required
-            class="form-input w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-        <div>
-          <label for="category" class="form-label block text-gray-700 font-medium mb-2">Categoría</label>
+        <div class="form-group">
+          <label for="category">Categoría</label>
           <select
             id="category"
             v-model="product.category"
             required
-            class="form-select w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option disabled value="">Seleccionar categoría</option>
             <option value="electronics">Electrónicos</option>
@@ -28,12 +26,37 @@
             <option value="books">Libros</option>
           </select>
         </div>
-        <button
-          type="submit"
-          class="form-button w-full bg-orange-500 hover:bg-orange-600 text-white py-4 rounded-lg font-bold text-lg"
-        >
-          Crear Producto
-        </button>
+        <div class="form-group">
+          <label for="price">Precio</label>
+          <input
+            type="text"
+            id="price"
+            v-model="product.price"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="stock">Stock</label>
+          <input
+            type="number"
+            id="stock"
+            v-model="product.stock"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="description">Descripción</label>
+          <textarea
+            id="description"
+            v-model="product.description"
+            rows="3"
+            required
+          ></textarea>
+        </div>
+        <div class="form-actions">
+          <button type="button" @click="closeModal" class="cancel-button">Cancelar</button>
+          <button type="submit" class="save-button">Crear Producto</button>
+        </div>
       </form>
     </div>
   </div>
@@ -41,7 +64,7 @@
 
 <script>
 export default {
-  props: ['showModal'], // recibe si se debe mostrar el modal o no
+  props: ['showModal'],
   data() {
     return {
       product: {
@@ -55,17 +78,20 @@ export default {
   },
   methods: {
     handleSubmit() {
-      console.log('Product submitted:', this.product);
-      // Aquí puedes agregar la lógica para enviar los datos al backend
+      this.$emit('create', this.product); // Emitir el producto creado
+      this.closeModal();
     },
     closeModal() {
-      this.$emit('close-modal'); // Emitir evento para cerrar el modal
+      this.$emit('close-modal');
     }
   }
 };
 </script>
 
 <style scoped>
+.hidden {
+  display: none;
+}
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -79,11 +105,12 @@ export default {
 }
 
 .modal-content {
-  background-color: white;
+  background-color: #fff;
   padding: 20px;
   border-radius: 8px;
-  width: 500px;
+  width: 350px;
   position: relative;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
 .close {
@@ -91,10 +118,57 @@ export default {
   top: 10px;
   right: 15px;
   font-size: 24px;
+  color: #333;
   cursor: pointer;
 }
 
-.form-title {
+.modal-title {
+  font-size: 20px;
+  margin-bottom: 20px;
   text-align: center;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  color: #007098;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.cancel-button {
+  background-color: #e74c3c;
+  color: #f0f0f0;
+  border: 1px solid #e74c3c;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.save-button {
+  background-color: #0ea5e9;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
 </style>
