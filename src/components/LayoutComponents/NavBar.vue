@@ -219,7 +219,7 @@ ul li a:hover {
   display: none;
 }
 
-@media (max-width: 854px) {
+@media (max-width: 1030px) {
   nav {
     height: 12vh;
   }
