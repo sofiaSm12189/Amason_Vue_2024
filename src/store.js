@@ -74,7 +74,7 @@ export default new Vuex.Store({
         const response = await api.post('/cart/update-units', {
           idproducttoupdate: productId,
           quantity: 1,
-          action,
+          action: action,
         }, {
           headers: {
             'Content-Type': 'application/json',
