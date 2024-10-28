@@ -1,6 +1,11 @@
 <template>
   <div class="categories-card">
-    <CategoryCard v-for="(category, index) in categories" :key="index" :category="category" />
+    <CategoryCard
+      v-for="(category, index) in categories"
+      :key="index"
+      :category="category"
+      @category-selected="goToProductList"
+    />
   </div>
 </template>
 
@@ -69,6 +74,15 @@ export default {
           ]
         }
       ]
+    }
+  },
+  methods: {
+    goToProductList(category) {
+      // Redirigir a la vista ProductList pasando la categoría seleccionada
+      this.$router.push({ 
+        name: 'ProductList', 
+        query: { category: category.title } 
+      });
     }
   }
 }

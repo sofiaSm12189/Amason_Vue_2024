@@ -2,8 +2,8 @@
   <div class="product-list-container">
     <h2>Mis Productos</h2>
 
-      <!-- Botón para abrir el modal de Crear Producto -->
-      <button class="create-button" @click="openCreateModal">Crear Producto</button>
+    <!-- Botón para agregar producto -->
+    <button class="add-product-button" @click="openCreateModal">Agregar Producto</button>
 
     <table class="product-table">
       <thead>
@@ -37,11 +37,12 @@
       @save="saveProductChanges"
     />
 
-     <!-- Modal para crear producto -->
-     <CreateProduct
+    <!-- Modal para crear producto (se renderiza condicionalmente con v-if) -->
+    <CreateProduct
       v-if="showCreateModal"
-      @close="closeCreateModal"
-      @save="createNewProduct"
+      :showModal="showCreateModal"
+      @close-modal="closeCreateModal"
+      @create="addNewProduct"
     />
 
     <!-- Modal de advertencia para eliminar producto -->
@@ -60,7 +61,7 @@
 
 <script>
 import EditProductModal from './EditProductModal.vue';
-import CreateProduct from './CreateProduct.vue'; // Importa el componente CreateProduct
+import CreateProduct from './CreateProduct.vue';
 
 export default {
   components: {
@@ -70,14 +71,13 @@ export default {
   data() {
     return {
       showEditModal: false,
-      showCreateModal: false, // Controla la visibilidad del modal de Crear Producto
-
+      showCreateModal: false, // Estado controlado
       showDeleteModal: false,
-      selectedProduct: null
+      selectedProduct: null,
     };
   },
   props: {
-    products: Array
+    products: Array,
   },
   methods: {
     formatCurrency(value) {
@@ -87,44 +87,41 @@ export default {
       }).format(value);
     },
     openEditModal(product) {
-      this.selectedProduct = { ...product }; // Clonar el producto
+      this.selectedProduct = { ...product };
       this.showEditModal = true;
     },
     closeEditModal() {
       this.showEditModal = false;
     },
     saveProductChanges(updatedProduct) {
-      // Actualizar la lista de productos
-      const index = this.products.findIndex(p => p.id === updatedProduct.id);
+      const index = this.products.findIndex((p) => p.id === updatedProduct.id);
       if (index !== -1) {
         this.$set(this.products, index, updatedProduct);
       }
       this.showEditModal = false;
     },
     openCreateModal() {
-      this.showCreateModal = true;
+      this.showCreateModal = true; // Abre el modal de creación
     },
     closeCreateModal() {
-      this.showCreateModal = false;
-    }, 
-    createNewProduct() {
-      // Lógica para agregar el nuevo producto
-   
-      this.showCreateModal = false;
+      this.showCreateModal = false; // Cierra el modal de creación
+    },
+    addNewProduct(newProduct) {
+      this.$emit('create-product', newProduct); // Emite el producto creado
+      this.showCreateModal = false; // Cierra el modal después de crear
     },
     confirmDelete(product) {
-      this.selectedProduct = product; // Guardar el producto que se desea eliminar
+      this.selectedProduct = product;
       this.showDeleteModal = true;
     },
     cancelDelete() {
       this.showDeleteModal = false;
     },
     deleteProduct(productId) {
-      // Lógica para eliminar el producto
-      this.$emit('delete-product', productId); // Emitir un evento para que el componente padre maneje la eliminación
-      this.showDeleteModal = false; // Cerrar el modal después de eliminar
-    }
-  }
+      this.$emit('delete-product', productId);
+      this.showDeleteModal = false;
+    },
+  },
 };
 </script>
 
@@ -139,6 +136,18 @@ h2 {
   font-weight: bold;
   margin-bottom: 20px;
 }
+
+.add-product-button {
+  display: inline-block;
+  background-color: #0ea5e9;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
 .product-table {
   width: 100%;
   border-collapse: collapse;
@@ -180,9 +189,6 @@ h2 {
 .delete-button {
   background-color: #e74c3c;
   color: white;
-}
-.product-table tr {
-  height: 70px;
 }
 
 .delete-modal-overlay {

@@ -6,7 +6,7 @@
       <form @submit.prevent="saveChanges">
         <div class="form-group">
           <label for="name">Nombre</label>
-          <input type="text" id="name" v-model="product.name" />
+          <input type="text" id="name" v-model="localProduct.name" />
         </div>
         <div class="form-group">
           <label for="price">Precio</label>
@@ -29,7 +29,8 @@ export default {
   data() {
     return {
       showModal: true,
-      price: this.product.price.toString().replace('.', ',') // Convertir el punto decimal a coma
+      localProduct: { ...this.product }, // Crear una copia local del producto
+      price: this.product.price.toString().replace('.', ','), // Convertir el punto decimal a coma
     };
   },
   methods: {
@@ -38,13 +39,14 @@ export default {
     },
     updatePrice(event) {
       // Convertir la coma a punto para trabajar con el valor numérico
-      this.product.price = parseFloat(event.target.value.replace(',', '.'));
+      this.price = event.target.value.replace(',', '.');
+      this.localProduct.price = parseFloat(this.price);
     },
     saveChanges() {
       // Simulación de llamada a una API para actualizar los datos del producto
       setTimeout(() => {
-        console.log('Producto actualizado en el servidor:', this.product);
-        this.$emit('save', this.product);
+        console.log('Producto actualizado en el servidor:', this.localProduct);
+        this.$emit('save', this.localProduct); // Emitir el producto actualizado
         this.closeModal();
       });
     }
