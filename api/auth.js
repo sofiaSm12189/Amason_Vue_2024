@@ -80,3 +80,12 @@ export function logoutUser() {
 
   window.location.href = '/'
 }
+
+export async function createProduct(productData) {
+  try {
+      const response = await apiClient.post('/products', productData);
+      return response;
+  } catch (error) {
+      throw new Error('Error al crear el producto');
+  }
+}
