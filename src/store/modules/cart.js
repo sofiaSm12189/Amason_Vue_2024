@@ -19,6 +19,10 @@ const cart = {
     updateProductQuantity(state, { index, quantity }) {
       state.cart[index].quantity = quantity;
     },
+    clearCart(state) {
+      state.cart = [];
+      state.totalAmount = 0;
+    },
   },
   actions: {
     async fetchCartItems({ commit }) {
@@ -93,6 +97,26 @@ const cart = {
         }
       } catch (error) {
         console.error('Error updating product quantity:', error);
+      }
+    },
+    async removeAllProductsFromCart({ commit }) {
+      try {
+        const response = await api.post('/cart/removeall', {
+          user_id: localStorage.getItem('pivotId')
+        }, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          }
+        });
+
+        if (response.status === 200) {
+          commit('clearCart');
+        } else {
+          console.error('Error response from server:', response);
+        }
+      } catch (error) {
+        console.error('Error removing all products from cart:', error);
       }
     },
   },

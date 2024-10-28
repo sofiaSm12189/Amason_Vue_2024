@@ -17,9 +17,14 @@
         </div>
       </div>
       <transition-group name="fade" tag="list">
-        <CarritoItem v-for="(item, index) in cartItems" :key="item.product_id" :product="item"
-          :is-selected="selectedItems[index] || false" @update-selection="updateSelection(index, $event)"
-          ref="cartItem" />
+        <CarritoItem
+          v-for="(item, index) in cartItems"
+          :key="item.product_id"
+          :product="item"
+          :is-selected="selectedItems[index] || false"
+          @update-selection="updateSelection(index, $event)"
+          ref="cartItem"
+        />
       </transition-group>
     </div>
     <div class="order">
@@ -31,7 +36,7 @@
 <script>
 import CarritoItem from '../../components/CartComponents/CartItem.vue'
 import SummaryOrder from '../../components/CartComponents/SummaryOrder.vue'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   components: {
@@ -41,40 +46,40 @@ export default {
   data() {
     return {
       selectedAll: false,
-      selectedItems: [],
+      selectedItems: []
     }
   },
   computed: {
-
     ...mapGetters('cart', ['cartItems', 'formattedTotalAmount']),
+
     selectedCount() {
-      return this.selectedItems.filter(item => item).length
+      return this.selectedItems.filter((item) => item).length
     }
   },
   methods: {
-
+    ...mapActions('cart', ['removeAllProductsFromCart']),
 
     toggleSelectAll() {
-      this.selectedAll = !this.selectedAll;
-      this.selectedItems = this.cartItems.map(() => this.selectedAll);
+      this.selectedAll = !this.selectedAll
+      this.selectedItems = this.cartItems.map(() => this.selectedAll)
     },
 
     updateSelection(index, isSelected) {
-      this.$set(this.selectedItems, index, isSelected);
+      this.$set(this.selectedItems, index, isSelected)
     },
     deleteSelectedItems() {
-      this.cartItems.forEach((item, index) => {
-        if (this.selectedItems[index]) {
-          this.removeProduct(item.product_id);
+      try {
+        if (confirm('¿Estás seguro de que deseas eliminar este producto?')) {
+          this.removeAllProductsFromCart()
+          this.$toast.success('Carrito vaciado exitosamente')
         }
-      });
-      this.selectedItems = [];
-    },
-
-  },
-
-};
-
+      } catch (error) {
+        this.$toast.error('Hubo un error al vaciar el carrito')
+        console.error(error)
+      }
+    }
+  }
+}
 </script>
 
 <style scoped>
@@ -133,11 +138,11 @@ hr {
   margin-top: 20px;
 }
 
-.body>.container {
+.body > .container {
   flex: 3;
 }
 
-.body>.order {
+.body > .order {
   flex: 1;
 }
 
@@ -180,14 +185,15 @@ hr {
 
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease;
 }
 
 .fade-enter,
 .fade-leave-to
 
-/* .fade-leave-active en Vue <2.1.8 */
-  {
+/* .fade-leave-active en Vue <2.1.8 */ {
   opacity: 0;
   transform: scale(0.95);
 }
@@ -215,7 +221,6 @@ hr {
   .body {
     padding: 0;
     gap: 0px;
-
   }
 
   .container {
@@ -232,8 +237,6 @@ hr {
     padding: 12px 0;
     margin-bottom: 2%;
     background-color: white;
-
   }
-
 }
 </style>
