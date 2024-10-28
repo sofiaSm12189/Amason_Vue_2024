@@ -196,7 +196,7 @@ hr {
   display: none;
 }
 
-@media (max-width: 854px) {
+@media (max-width: 1030px) {
   .body {
     height: 100%;
   }
@@ -208,9 +208,6 @@ hr {
     width: 100%;
     margin: 0;
     padding: 0;
-    height: auto;
-    background-color: #e24bb5;
-    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
     display: flex;
     z-index: 2000;
   }
@@ -222,7 +219,7 @@ hr {
   }
 
   .container {
-    height: 100%;
+    height: auto;
   }
 }
 

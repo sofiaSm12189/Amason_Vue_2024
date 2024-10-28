@@ -150,19 +150,7 @@ i {
   font-size: 2.6rem;
 }
 
-@media (max-width: 1300px) {
-  i {
-    font-size: 2.6rem;
-  }
-}
-
-@media (max-width: 720px) {
-  i {
-    font-size: 2.6rem;
-  }
-}
-
-@media (max-width: 854px) {
+@media (max-width: 1030px) {
   .summary {
     position: fixed;
     height: 8vh;
@@ -174,13 +162,13 @@ i {
     background-color: #4babe2;
     display: flex;
     align-items: center;
-    gap: 50px;
+    gap: 20px;
     justify-content: flex-end;
   }
 
   .information {
     display: flex;
-    width: 25%;
+    width: auto;
     align-self: center;
     height: 5vw;
   }
@@ -189,30 +177,23 @@ i {
     font-size: 20px;
   }
 
-  .information .total .tex, .information .total .bold{
-    font-size: 20px;
+  .information .total .bold{
+    font-size: 1.1rem;
      color: white;
   }
 
   .payments,
   .information .units,
-  .information .gray-line {
+  .information .gray-line, .information .total .tex{
     display: none;
   }
 
   .btn {
     border-radius: 15px;
-    width: 140px;
-    height: 40px;
-    font-size: 20px;
-  }
-
-  .payments {
-    padding-top: 10px;
-  }
-
-  i {
-    font-size: 1.4rem;
+    width: auto;
+    padding: 1vh;
+    height: auto;
+    font-size: 1rem;
   }
 }
 </style>

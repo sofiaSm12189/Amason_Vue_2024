@@ -246,11 +246,6 @@ export default {
     height: 30px;
       font-size: 4.5vw; 
 }
-
- 
 }
-
-
-
 
 </style>
