@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import ReportComponent from '../components/controlPanelComponents/ReportComponents.vue'; // O usando la ruta relativa
 
 import SesionView from '../views/LoginViews/SesionView.vue'
 import MainLayout from '../components/LayoutComponents/MainLayout.vue'
@@ -75,6 +76,12 @@ const router = createRouter({
             name: 'sellerDashboard', 
             component: sellerDashboard
       },
+        {
+      path: '/report/:storeId',
+      name: 'ReportComponent',
+      component: ReportComponent,
+      props: true,
+    }
 
     ]
 })
