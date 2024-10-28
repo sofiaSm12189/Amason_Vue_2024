@@ -1,57 +1,56 @@
 <template>
   <ul>
-    <li class="minicart--item" v-for="(product, index) in cartItems" :key="index">
+    <li class="minicart--item">
       <div class="minicart--item--details--container">
         <div class="placeholder">
           <img
-            src="https://www.steren.cr/media/catalog/product/cache/b69086f136192bea7a4d681a8eaf533d/image/21867108a/audifonos-bluetooth-con-cancelacion-de-ruido-negros.jpg"
-            alt="">
-
-          <a href="#" class="remove" @click.prevent="removeProduct(product.product_id)">
+          src="https://www.steren.cr/media/catalog/product/cache/b69086f136192bea7a4d681a8eaf533d/image/21867108a/audifonos-bluetooth-con-cancelacion-de-ruido-negros.jpg">
+          <a href="#" class="remove" @click.prevent="removeProduct(item.product_id)">
             <i class="fa-solid fa-trash"></i>
           </a>
         </div>
         <div class="minicart--item--details">
-          <p class="title">{{ product.product_name }}</p>
-          <p class="vendedor"><i class="fa-solid fa-bag-shopping"></i> Descripción: {{ product.user_id }}</p>
+          <p class="title">{{ item.product_name }}</p>
+          <p class="vendedor"><i class="fa-solid fa-bag-shopping"></i> Descripción: {{ item.user_id }}</p>
           <p class="quantity"><i class="fa-solid fa-hashtag"></i> Cantidad:
             <span>
-              <button class="quantity-btn" @click="decreaseQuantity(index)">-</button>
-              {{ product.quantity }}
-              <button class="quantity-btn" @click="increaseQuantity(index)">+</button>
+              <button class="quantity-btn" @click="decreaseQuantity(item)">-</button>
+              {{ item.quantity }}
+              <button class="quantity-btn" @click="increaseQuantity(item)">+</button>
             </span>
           </p>
-          <p class="price"><i class="fa-solid fa-colon-sign"></i> Precio: {{ product.product_price }}</p>
+          <p class="price"><i class="fa-solid fa-colon-sign"></i> Precio: {{ item.product_price }}</p>
         </div>
       </div>
     </li>
   </ul>
 </template>
 
-
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapActions } from 'vuex';
+
 
 export default {
-  computed: {
-    ...mapGetters(['cartItems']),
+  props: {
+    item: {
+      type: Object,
+      required: true,
+    },
   },
   methods: {
-    ...mapActions(['removeProductFromCart', 'updateProductQuantity']),
-    removeProduct(productId) {
-      if (confirm('¿Estás seguro de que deseas eliminar este producto?')) {
-        this.removeProductFromCart(productId);
-      }
+    ...mapActions('cart', ['removeProductFromCart', 'updateProductQuantity']),
+    removeProduct(product_id) {
+      
+        this.removeProductFromCart(product_id);
+      
     },
-    increaseQuantity(index) {
-      const product = this.cartItems[index];
-      this.updateProductQuantity({ productId: product.product_id, quantity: product.quantity + 1, action: 'add' });
-    },
-    decreaseQuantity(index) {
-      const product = this.cartItems[index];
-      if (product.quantity > 1) {
-        this.updateProductQuantity({ productId: product.product_id, quantity: product.quantity - 1, action: 'remove' });
-      }
+    increaseQuantity(product) {
+    this.updateProductQuantity({ productId: product.product_id, quantity: product.quantity + 1, action: 'add' });
+  },
+  decreaseQuantity(product) {
+    if (product.quantity > 1) {
+      this.updateProductQuantity({ productId: product.product_id, quantity: product.quantity - 1, action: 'remove' });
+    }
     },
   },
 };
