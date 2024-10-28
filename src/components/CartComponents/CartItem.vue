@@ -10,10 +10,10 @@
         <p>{{ product.product_name }}</p>
       </div>
       <div class="description">
-        <p>Descripción: {{ product.product_description }}</p>
+        <p>{{ product.product_description }}</p>
       </div>
       <div class="bold">
-        <p>Precio: ₡{{ product.product_price }}</p>
+        <p>₡{{ product.product_price }}</p>
       </div>
       <div class="group">
         <div class="quantity">
@@ -104,7 +104,6 @@ export default {
   width: 100%;
   flex-shrink: 0;
   color: #000;
-  font-family: Arial;
   font-size: 18px;
   font-style: normal;
   font-weight: 400;
@@ -115,9 +114,7 @@ export default {
   align-self: flex-start;
   line-height: 140%;
   color: #000;
-  font-family: Inter;
   font-size: 18px;
-  font-style: normal;
   font-weight: 700;
   line-height: 140%;
   text-align: right;
@@ -127,7 +124,6 @@ export default {
   align-self: flex-start;
   line-height: 140%;
   color: #000;
-  font-family: Inter;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
@@ -136,7 +132,6 @@ export default {
 
 .details-card .description-item .group {
   width: 100%;
-
   align-self: flex-end;
   justify-content: space-between;
   align-items: center;
@@ -160,7 +155,7 @@ export default {
   height: 1vw;
   background: none;
   border: none;
-  font-size: 1vw;
+  font-size: 1.5vw;
   color: #808080;
   cursor: pointer;
 }
@@ -173,7 +168,7 @@ export default {
   cursor: pointer;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 860px) {
   .details-card {
     flex-wrap: nowrap;
     padding: 20px;
@@ -194,19 +189,62 @@ export default {
   }
 
   .details-card .group .quantity {
-    width: 80px;
+    width: 100px;
     height: 40px;
   }
 
   .details-card .group .quantity button.quantity-btn {
     width: 30px;
-    height: 30px;
+    height: 60px;
+   
   }
 
   .description-item .group .btn-delete {
     padding: 30px;
   }
 }
+
+@media (max-width: 550px) {
+  
+  .details-card {
+    flex-direction: row;
+    flex-wrap: nowrap;
+  }
+
+  .details-card .image-card img {
+    width: 90px;
+    align-self: flex-start;
+    }
+
+  .details-card .description-item {
+    margin-left: 10px;
+    height: auto;
+  } 
+
+  .details-card .description-item .description,
+  .details-card .description-item .bold,
+  .details-card .description-item .delivery {
+    font-size: 14px;
+    line-height: 0.1;
+    
+  }
+
+  .details-card .group .quantity {
+    width: 100px;
+    height: 35px;
+   
+  }
+
+  .details-card .group .quantity button.quantity-btn {
+    width: 30px;
+    height: 30px;
+      font-size: 4.5vw; 
+}
+
+ 
+}
+
+
 
 
 </style>

@@ -176,5 +176,29 @@ hr {
   display: flex;
   z-index: 2000; 
   }
+  .body {
+  padding: 0;
+  gap: 0px;
+    
 }
+
+.container {
+    height: 100%;
+  }
+}
+
+@media (max-width: 550px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100%;
+    padding: 12px 0;
+    margin-bottom: 2%;
+    background-color: white;
+
+  }
+ 
+}
+
 </style>
