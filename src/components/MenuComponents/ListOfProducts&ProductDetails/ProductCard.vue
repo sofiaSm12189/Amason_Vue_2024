@@ -1,22 +1,14 @@
-
 <template>
-  
-  <div class="w-full border border-gray-300 rounded-lg overflow-hidden shadow-md">
-    <div class="p-4">
-      <img
-        :src="product.image"
-        :alt="product.name"
-        width="200"
-        height="200"
-        class="w-full h-48 object-contain mb-2"
-      />
-      <h3 class="font-semibold text-lg mb-1 line-clamp-2">{{ product.name }}</h3>
-      <p class="text-xl font-bold mb-2">${{ product.price.toFixed(2) }}</p>
-  
+
+  <div class="product-container">
+
+    <img :src="product.image" :alt="product.name" />
+    <h3>{{ product.name }}</h3>
+    <div class="price-addCart">
+      <p class="price">${{ product.price.toFixed(2) }}</p>
       <router-link to="/Carrito" class="icon" aria-label="Carrito">
         <i class="fa-solid fa-cart-plus fa-xl"></i>
-        </router-link>
-   
+      </router-link>
     </div>
   </div>
 </template>
@@ -32,95 +24,39 @@ export default {
 };
 </script>
 
-<style>
-
-.icon {
-    display: flex;
-    justify-content: flex-end;
-    text-decoration: none;
-    color: inherit;
-    padding: 0.5rem;
-  }
-  
-.w-full {
-  width: 100%;
-}
-.border {
-  border-width: 1px;
-}
-.border-gray-300 {
-  border-color: #d1d5db;
-}
-.rounded-lg {
-  border-radius: 0.5rem;
-}
-.overflow-hidden {
-  overflow: hidden;
-}
-.shadow-md {
+<style scoped>
+.product-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 40px 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.5s; 
+  margin: 5px 8px;
 }
-.p-4 {
-  padding: 1rem;
+
+.product-container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); 
+} 
+
+.price-addCart {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+
 }
-.h-48 {
-  height: 12rem;
+
+.price {
+  font-size: 1.2rem;
+  font-weight: bold;
 }
-.object-contain {
-  object-fit: contain;
-}
-.font-semibold {
-  font-weight: 600;
-}
-.text-lg {
-  font-size: 1.125rem;
-}
-.line-clamp-2 {
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-}
-.text-yellow-400 {
-  color: #fbbf24;
-}
-.text-gray-300 {
-  color: #d1d5db;
-}
-.text-sm {
-  font-size: 0.875rem;
-}
-.text-gray-600 {
-  color: #4b5563;
-}
-.text-xl {
-  font-size: 1.25rem;
-}
-.font-bold {
-  font-weight: 700;
-}
-.car-button {
-  background-color: #ff9900; 
-    color: white; 
-    padding: 15px 30px; 
-    font-size: 16px; 
-    font-weight: bold; 
-    border: none; 
-    border-radius: 8px; 
-    width: 100%; /* Botón ocupa todo el ancho del contenedor */
-    text-align: center; 
-    cursor: pointer; 
-    transition: background-color 0.3s ease; 
-}
-.car-button:hover {
-  background-color: #e58900 !important;
-}
-.text-white {
-  color: white;
-}
-.p-2 {
-  padding: 0.5rem;
-}
-.rounded {
-  border-radius: 0.25rem;
+
+i {
+  cursor: pointer;
+  color: black;
 }
 </style>

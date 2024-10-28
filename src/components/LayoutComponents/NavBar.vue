@@ -145,6 +145,11 @@ nav {
   white-space: nowrap;
 }
 
+.line-1 i{
+  font-size: .8em;
+  margin: 0;
+}
+
 .line-2 {
   position: relative;
   white-space: nowrap;
