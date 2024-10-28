@@ -1,4 +1,6 @@
+
 <template>
+  
   <div class="w-full border border-gray-300 rounded-lg overflow-hidden shadow-md">
     <div class="p-4">
       <img
@@ -10,10 +12,11 @@
       />
       <h3 class="font-semibold text-lg mb-1 line-clamp-2">{{ product.name }}</h3>
       <p class="text-xl font-bold mb-2">${{ product.price.toFixed(2) }}</p>
-      <button class="car-button">
-        <span class="mr-2">🛒</span>
-        Agregar al carrito
-      </button>
+  
+      <router-link to="/Carrito" class="icon" aria-label="Carrito">
+        <i class="fa-solid fa-cart-plus fa-xl"></i>
+        </router-link>
+   
     </div>
   </div>
 </template>
@@ -30,7 +33,15 @@ export default {
 </script>
 
 <style>
-/* Styles for ProductCard */
+
+.icon {
+    display: flex;
+    justify-content: flex-end;
+    text-decoration: none;
+    color: inherit;
+    padding: 0.5rem;
+  }
+  
 .w-full {
   width: 100%;
 }
