@@ -36,8 +36,8 @@ export default new Vuex.Store({
     },
     async removeProductFromCart({ commit, state }, productId) {
       try {
-        const index = state.cart.findIndex(product => product.product_id === productId);
-        if (index === -1) {
+        const showCart = state.cart.findIndex(productincart => productincart.product_id === productId);
+        if (showCart === -1) {
           throw new Error('Product not found in cart');
         }
 
@@ -52,10 +52,10 @@ export default new Vuex.Store({
         });
 
         if (response.status === 200) {
-          commit('removeProduct', index);
+          commit('removeProduct', showCart);
 
-          const newTotalAmount = state.cart.reduce((total, product) => {
-            return total + (product.product_price * product.quantity);
+          const newTotalAmount = state.cart.reduce((total, productincart) => {
+            return total + (productincart.product_price * productincart.quantity);
           }, 0);
           commit('setTotalAmount', newTotalAmount);
         } else {
@@ -73,7 +73,7 @@ export default new Vuex.Store({
         }
         const response = await api.post('/cart/update-units', {
           idproducttoupdate: productId,
-          quantity,
+          quantity: 1,
           action,
         }, {
           headers: {

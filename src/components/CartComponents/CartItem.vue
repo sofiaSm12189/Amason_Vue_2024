@@ -21,7 +21,7 @@
           <p class="quantity-display">{{ product.quantity }}</p>
           <button class="quantity-btn" @click="increaseQuantity(index)">+</button>
         </div>
-        <button class="btn-delete" @click.prevent="removeProduct(product.product_id)">
+        <button class="btn-delete" @click="removeProduct(product.product_id)">
           <i class="fa-solid fa-trash-can fa-2xl" style="color: #c8240d"></i>
         </button>
       </div>
