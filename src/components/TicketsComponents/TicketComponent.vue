@@ -1,6 +1,6 @@
 <template>
   <div>
-    <NavBar /> <!-- Asegúrate de que el NavBar esté directamente dentro de la plantilla principal -->
+    <NavBar /> 
 
     <div class="page-wrapper">
       <div class="background"></div> 
@@ -34,8 +34,12 @@
               <td data-label="Descripción">{{ ticket.description }}</td>
               <td data-label="Estado">{{ ticket.status }}</td>
               <td data-label="Acciones">
-                <button @click="viewTicket(ticket.id)" class="btn btn-details">Ver Detalles</button>
-                <button @click="updateTicket(ticket.id)" class="btn btn-update">Actualizar</button>
+                <router-link to="/details-ticket">
+                  <button class="btn btn-details">Ver Detalles</button>
+                </router-link>
+                <router-link to="/update-ticket">
+                  <button class="btn btn-update">Actualizar Ticket</button>
+                </router-link>
               </td>
             </tr>
           </tbody>
@@ -44,7 +48,7 @@
     </div>
 
     <footer>
-      <FooterLayout /> <!-- Incluye FooterLayout aquí -->
+      <FooterLayout /> 
     </footer>
   </div>
 </template>
@@ -54,7 +58,7 @@ import NavBar from '@/components/LayoutComponents/NavBar.vue';
 import FooterLayout from '@/components/LayoutComponents/FooterLayout.vue';
 
 export default {
-  components: { NavBar, FooterLayout }, // Agrega ambos componentes aquí para que Vue los reconozca como usados
+  components: { NavBar, FooterLayout }, 
 
   data() {
     return {
