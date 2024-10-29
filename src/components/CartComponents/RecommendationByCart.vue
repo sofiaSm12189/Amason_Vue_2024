@@ -2,13 +2,22 @@
   <div v-if="recomendaciones.length" class="recomendaciones">
     <h3>Productos Recomendados</h3>
     <div class="recomendaciones-container">
-      <button @click="prevProduct" class="nav-button" :disabled="currentIndex === 0">←</button>
-      <div class="producto" v-if="currentProduct">
-        <h4>{{ currentProduct.name }}</h4>
-        <p>Precio: ${{ currentProduct.price }}</p>
-
+      <button @click="prevProduct" class="nav-button"><i class="fa-solid fa-arrow-left"></i></button>
+      <div class="productos">
+        <div
+          v-for="(producto, index) in displayedProducts"
+          :key="producto.product_id"
+          :class="{
+            'producto': true,
+            'producto--current': index === 1,
+            'producto--small': index !== 1,
+          }"
+        >
+          <h4>{{ producto.name }}</h4>
+          <p>Precio: ${{ producto.price }}</p>
+        </div>
       </div>
-      <button @click="nextProduct" class="nav-button" :disabled="currentIndex === recomendaciones.length - 1">→</button>
+      <button @click="nextProduct" class="nav-button"><i class="fa-solid fa-arrow-right"></i></button>
     </div>
   </div>
 </template>
@@ -20,12 +29,17 @@ export default {
   data() {
     return {
       recomendaciones: [],
-      currentIndex: 0,  // Índice del producto actual
+      currentIndex: 0,
     };
   },
   computed: {
-    currentProduct() {
-      return this.recomendaciones[this.currentIndex]; // Obtener el producto actual
+    displayedProducts() {
+      const total = this.recomendaciones.length;
+      return [
+        this.recomendaciones[(this.currentIndex - 1 + total) % total],
+        this.recomendaciones[this.currentIndex],
+        this.recomendaciones[(this.currentIndex + 1) % total]
+      ];
     }
   },
   async mounted() {
@@ -35,21 +49,18 @@ export default {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }
       });
-      this.recomendaciones = response.data; // Asegúrate de que el API devuelva directamente una lista de productos
+      this.recomendaciones = response.data;
     } catch (error) {
       console.error('Error al obtener recomendaciones:', error);
     }
   },
   methods: {
     nextProduct() {
-      if (this.currentIndex < this.recomendaciones.length - 1) {
-        this.currentIndex++;
-      }
+      this.currentIndex = (this.currentIndex + 1) % this.recomendaciones.length;
     },
     prevProduct() {
-      if (this.currentIndex > 0) {
-        this.currentIndex--;
-      }
+      this.currentIndex =
+        (this.currentIndex - 1 + this.recomendaciones.length) % this.recomendaciones.length;
     }
   }
 };
@@ -57,15 +68,15 @@ export default {
 
 <style scoped>
 .recomendaciones {
-  margin-top: 10px;
-  text-align: center; /* Centrar el contenido */
+  margin-top: 20px;
+  text-align: center;
 }
 
 .recomendaciones-container {
   display: flex;
-  justify-content: center; /* Centrar los botones y el producto */
+  justify-content: center;
   align-items: center;
-  margin-top: 5px; /* Espacio entre el título y los productos */
+  margin-top: 10px;
 }
 
 .nav-button {
@@ -79,13 +90,56 @@ export default {
   margin: 0 10px;
 }
 
-.nav-button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
+.nav-button:hover {
+  background-color: #106384;
+  transform: scale(1.05);
+  animation: fa-beat 1.5s infinite;
+}
+
+.productos {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
 }
 
 .producto {
-  width: 200px; /* Ancho fijo para el producto */
+  width: 200px;
+  
   text-align: center;
+  margin: 0 20px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  opacity: 0.6;
+}
+
+.producto--current {
+  transform: scale(1.2);
+  opacity: 1;
+  font-weight: bold;
+}
+
+.producto--small {
+  transform: scale(0.8);
+  opacity: 0.5;
+}
+
+.producto h4,
+.producto p {
+  margin: 5px 0;
+}
+
+/* Responsive - Muestra solo el producto central en móviles */
+@media (max-width: 900px) {
+  .productos {
+    justify-content: center;
+  }
+  
+  .producto--small {
+    display: none; /* Oculta los productos laterales */
+  }
+  
+  .producto--current {
+    transform: scale(1); /* Ajusta el tamaño del producto central */
+    opacity: 1;
+  }
 }
 </style>
