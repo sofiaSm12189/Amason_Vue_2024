@@ -20,71 +20,29 @@ export default {
     return {
       categories: [
         {
-          title: 'Electronics',
+          title: 'Tecnología',
+          categoryId: 1,
           items: [
-            { title: 'Phone', img: 'phone.jpg' },
+            { title: 'Phone', img: 'phone.jpg',  },
             { title: 'Laptop', img: 'laptop.jpg' },
             { title: 'Headphones', img: 'headphones.jpg' },
             { title: 'Camera', img: 'camera.jpg' }
           ]
         },
-        {
-          title: 'Clothing',
-          items: [
-            { title: 'T-shirt', img: 'tshirt.jpg' },
-            { title: 'Jeans', img: 'jeans.jpg' },
-            { title: 'Jacket', img: 'jacket.jpg' },
-            { title: 'Shoes', img: 'shoes.jpg' }
-          ]
-        },
-        {
-          title: 'Books',
-          items: [
-            { title: 'Fiction', img: 'fiction.jpg' },
-            { title: 'Science', img: 'science.jpg' },
-            { title: 'Biography', img: 'biography.jpg' },
-            { title: 'Fantasy', img: 'fantasy.jpg' }
-          ]
-        },
-        {
-          title: 'Toys & Games',
-          items: [
-            { title: 'Board Games', img: 'boardgames.jpg' },
-            { title: 'Action Figures', img: 'actionfigures.jpg' },
-            { title: 'Puzzles', img: 'puzzles.jpg' },
-            { title: 'Dolls', img: 'dolls.jpg' }
-          ]
-        },
-        {
-          title: 'Automotive',
-          items: [
-            { title: 'Car Tires', img: 'tires.jpg' },
-            { title: 'Engine Oil', img: 'engineoil.jpg' },
-            { title: 'Car Mats', img: 'carmats.jpg' },
-            { title: 'Seat Covers', img: 'seatcovers.jpg' }
-          ]
-        },
-        {
-          title: 'Beauty & Personal Care',
-          items: [
-            { title: 'Makeup', img: 'makeup.jpg' },
-            { title: 'Skincare', img: 'skincare.jpg' },
-            { title: 'Haircare', img: 'haircare.jpg' },
-            { title: 'Perfume', img: 'perfume.jpg' }
-          ]
-        }
+        
+
       ]
     }
   },
   methods: {
-    goToProductList(category) {
-      // Redirigir a la vista ProductList pasando la categoría seleccionada
-      this.$router.push({ 
-        name: 'ProductList', 
-        query: { category: category.title } 
-      });
-    }
+  goToProductList(category) {
+    this.$router.push({
+      name: 'ProductList',
+      query: { categoryId: category.categoryId, title: category.title } // Cambiado a `categoryId`
+    });
   }
+}
+
 }
 </script>
 

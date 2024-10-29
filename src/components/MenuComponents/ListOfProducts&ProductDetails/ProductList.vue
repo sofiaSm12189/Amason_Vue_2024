@@ -1,7 +1,7 @@
 <template>
   <div class="list-cotainer">
 
-    <h2><i class="fa-solid fa-laptop"></i> Tecnología <i class="fa-solid fa-headset"></i></h2>
+    <h2>{{ title }}</h2>
     <div class="product-list-cotainer">
       <ProductCard v-for="product in products" :key="product.id" :product="product" />
     </div>
@@ -11,17 +11,38 @@
 
 <script>
 import ProductCard from "./ProductCard.vue";
-import { products } from "./mock-data";
+import axios from "axios";
 
 export default {
   components: { ProductCard },
   data() {
     return {
-      products,
+      products: [],
+      title: '',
     };
   },
+  async created() {
+    const categoryId = this.$route.query.categoryId;
+    const title = this.$route.query.title;
+    if (categoryId) {
+      this.title = title;
+      await this.fetchProductsByCategory(categoryId, title);
+    }
+  },
+  methods: {
+    async fetchProductsByCategory(categoryId) {
+      try {
+        const response = await axios.get(`http://localhost:8000/api/products/category/${categoryId}`);
+        this.products = response.data;
+      } catch (error) {
+        console.error("Error al cargar productos por categoría:", error);
+      }
+    }
+  },
+
 };
 </script>
+
 
 <style scoped>
 
