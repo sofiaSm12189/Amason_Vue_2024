@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import ReportComponent from '../components/controlPanelComponents/ReportComponents.vue'; // O usando la ruta relativa
+import ReportComponent from '../components/controlPanelComponents/ReportComponents.vue';
 
 import SesionView from '../views/LoginViews/SesionView.vue'
 import MainLayout from '../components/LayoutComponents/MainLayout.vue'
@@ -62,9 +62,10 @@ const router = createRouter({
         component: CreateTicketView
       },
       {
-        path: '/update-ticket',
+        path: '/update-ticket/:id',
         name: 'UpdateTicket',
-        component: UpdateTicket
+        component: UpdateTicket,
+        props: true
       },
       {
         path: '/chat',
