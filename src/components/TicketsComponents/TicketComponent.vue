@@ -92,6 +92,7 @@ export default {
 
     // Asignar los datos de los tickets a la variable
     this.tickets = response.data.map(ticket => ({
+      id: ticket.id || ticket.ticket_id,
       order: ticket.order_package,            // 'order_package' mapeado a 'order'
       claimType: ticket.claim_type,           // 'claim_type' mapeado a 'claimType'
       subject: ticket.subject,                // 'subject' se queda igual

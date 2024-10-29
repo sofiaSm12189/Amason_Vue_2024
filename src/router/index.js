@@ -62,9 +62,10 @@ const router = createRouter({
         component: CreateTicketView
       },
       {
-        path: '/update-ticket',
+        path: '/update-ticket/:id',
         name: 'UpdateTicket',
-        component: UpdateTicket
+        component: UpdateTicket,
+        props: true
       },
       {
         path: '/chat',
