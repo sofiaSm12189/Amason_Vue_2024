@@ -110,7 +110,8 @@ const cart = {
               product_id: product.product_id, 
               product_name: product.product_name, 
               product_price: product.product_price, 
-              product_stock: product.product_stock, 
+              product_stock: product.product_stock,
+              product_image: product.product_image,
               quantity: 1 
             });
           }
