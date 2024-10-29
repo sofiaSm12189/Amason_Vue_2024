@@ -2,18 +2,29 @@
 
   <div class="product-container">
 
-    <img :src="product.image" :alt="product.name" />
-    <h3>{{ product.name }}</h3>
+    <img :src="product.product_image" :alt="product.product_name" />
+    <h3>{{ product.product_name }}</h3>
     <div class="price-addCart">
-      <p class="price">${{ product.price.toFixed(2) }}</p>
-      <i @click="addProductToCart(product)" class="fas fa-cart-plus fa-2x"></i>
-    </div>
+  <p class="price">${{ product.product_price.toFixed(2) }}</p>
+  <i 
+    @click="addProduct(product)" 
+    class="fas fa-cart-plus fa-2x" 
+    :class="{ 'loading': isAdding }"
+    :style="{ cursor: isAdding ? 'not-allowed' : 'pointer' }"
+    :disabled="isAdding"
+  ></i>
+</div>
   </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex'; 
 export default {
+  data() {
+  return {
+    isAdding: false,
+  };
+},
   props: {
     product: {
       type: Object,
@@ -21,10 +32,20 @@ export default {
     },
   },
   methods: {
-    ...mapActions('cart', ['addProductToCart']),
+  ...mapActions('cart', ['addProductToCart']),
 
-    
+  async addProduct(product) {
+    this.isAdding = true;  // Cambia el estado a "agregando"
+    try {
+      await this.addProductToCart(product);
+    } catch (error) {
+      console.error('Error adding product to cart:', error);
+    } finally {
+      this.isAdding = false;  // Restaura el estado
+    }
   },
+},
+
 };
 </script>
 
@@ -63,4 +84,15 @@ i {
   cursor: pointer;
   color: black;
 }
+
+.loading {
+  color: #4babe2;
+  animation: spin 1s infinite; 
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 </style>

@@ -10,7 +10,8 @@
 </template>
 
 <script>
-import CategoryCard from '@/components/MenuComponents/CategoryCard.vue'
+import CategoryCard from '@/components/MenuComponents/CategoryCard.vue';
+import api from '../../../services/api';
 
 export default {
   components: {
@@ -18,31 +19,43 @@ export default {
   },
   data() {
     return {
-      categories: [
-        {
-          title: 'Tecnología',
-          categoryId: 1,
-          items: [
-            { title: 'Phone', img: 'phone.jpg',  },
-            { title: 'Laptop', img: 'laptop.jpg' },
-            { title: 'Headphones', img: 'headphones.jpg' },
-            { title: 'Camera', img: 'camera.jpg' }
-          ]
-        },
-        
-
-      ]
+      categories: []
     }
   },
   methods: {
-  goToProductList(category) {
-    this.$router.push({
-      name: 'ProductList',
-      query: { categoryId: category.categoryId, title: category.title } // Cambiado a `categoryId`
-    });
+    async fetchCategories() {
+      try {
+        const response = await api.get('/categorias');
+        if (response.status === 200) {
+          this.categories = response.data.map(category => {
+            // Agregar 4 items quemados
+            const dummyItems = [
+              { title: 'Celular', name: 'item1', img: 'item1.jpg' },
+              { title: 'Laptop', name: 'item2', img: 'item2.jpg' },
+              { title: 'Audifonos', name: 'item3', img: 'item3.jpg' },
+              { title: 'Camaras', name: 'item4', img: 'item4.jpg' }
+            ];
+            return {
+              ...category,
+              items: dummyItems // Asignar los items a la categoría
+            };
+          });
+          console.log('Categories:', this.categories);
+        }
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    },
+    goToProductList(category) {
+      this.$router.push({
+        name: 'ProductList',
+        query: { categoryId: category.id, title: category.name }
+      });
+    }
+  },
+  mounted() {
+    this.fetchCategories();
   }
-}
-
 }
 </script>
 
