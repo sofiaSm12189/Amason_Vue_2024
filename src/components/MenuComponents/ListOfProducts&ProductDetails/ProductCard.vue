@@ -6,20 +6,24 @@
     <h3>{{ product.name }}</h3>
     <div class="price-addCart">
       <p class="price">${{ product.price.toFixed(2) }}</p>
-      <router-link to="/Carrito" class="icon" aria-label="Carrito">
-        <i class="fa-solid fa-cart-plus fa-xl"></i>
-      </router-link>
+      <i @click="addProductToCart(product)" class="fas fa-cart-plus fa-2x"></i>
     </div>
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex'; 
 export default {
   props: {
     product: {
       type: Object,
       required: true,
     },
+  },
+  methods: {
+    ...mapActions('cart', ['addProductToCart']),
+
+    
   },
 };
 </script>

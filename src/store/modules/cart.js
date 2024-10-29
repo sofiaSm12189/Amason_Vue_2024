@@ -1,5 +1,13 @@
 import api from '../../../services/api';
 
+const calculateTotalAmount = (cart) => {
+  return cart.reduce((total, p) => {
+    const price = parseFloat(p.product_price) || 0;
+    const quantity = parseInt(p.quantity) || 0;
+    return total + (price * quantity);
+  }, 0);
+};
+
 const cart = {
   namespaced: true,
   state: {
@@ -9,15 +17,26 @@ const cart = {
   mutations: {
     setCart(state, products) {
       state.cart = products;
+      state.totalAmount = calculateTotalAmount(state.cart);
     },
-    setTotalAmount(state, totalAmount) {
-      state.totalAmount = totalAmount;
+    addProduct(state, product) {
+      const existingProduct = state.cart.find(p => p.product_id === product.product_id);
+      if (existingProduct) {
+        existingProduct.quantity += product.quantity;
+      } else {
+        state.cart.push(product);
+      }
+      state.totalAmount = calculateTotalAmount(state.cart);
     },
     removeProduct(state, index) {
       state.cart.splice(index, 1);
+      state.totalAmount = calculateTotalAmount(state.cart);
     },
     updateProductQuantity(state, { index, quantity }) {
-      state.cart[index].quantity = quantity;
+      if (quantity > 0) {
+        state.cart[index].quantity = quantity;
+      }
+      state.totalAmount = calculateTotalAmount(state.cart);
     },
     clearCart(state) {
       state.cart = [];
@@ -31,20 +50,48 @@ const cart = {
         if (!userId) {
           throw new Error('User ID not found in localStorage');
         }
-        const response = await api.get(`/cart/${userId}`);
+        const response = await api.get(`/cart/`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }});
         commit('setCart', response.data.cart_products);
-        commit('setTotalAmount', response.data.total_amount);
       } catch (error) {
         console.error('Error fetching cart items:', error);
       }
     },
+    async addProductToCart({ commit, dispatch, state }, product) {
+      try {
+        const response = await api.post('/cart/add', {
+          idproduct: product.product_id,
+          quantity: 1,
+        }, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
+        });
+        if (response.status === 201) {
+          const existingProductIndex = state.cart.findIndex(p => p.product_id === product.product_id);
+          if (existingProductIndex !== -1) {
+            await dispatch('updateProductQuantity', { productId: product.product_id, quantity: state.cart[existingProductIndex].quantity + 1, action: 'add' });
+          } else {
+            commit('addProduct', { ...product, quantity: 1 });
+          }
+          const newTotalAmount = calculateTotalAmount(state.cart);
+          commit('setTotalAmount', newTotalAmount);
+          console.log(newTotalAmount);
+        }
+      } catch (error) {
+        console.error('Error adding product to cart:', error);
+      }
+    },
     async removeProductFromCart({ commit, state }, productId) {
       try {
-        const showCart = state.cart.findIndex(productincart => productincart.product_id === productId);
-        if (showCart === -1) {
+        const productIndex = state.cart.findIndex(p => p.product_id === productId);
+        if (productIndex === -1) {
           throw new Error('Product not found in cart');
         }
-
         const response = await api.post('/cart/remove-product', {
           idproducttoremove: productId,
           user_id: localStorage.getItem('pivotId')
@@ -54,13 +101,9 @@ const cart = {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
           }
         });
-
         if (response.status === 200) {
-          commit('removeProduct', showCart);
-
-          const newTotalAmount = state.cart.reduce((total, productincart) => {
-            return total + (productincart.product_price * productincart.quantity);
-          }, 0);
+          commit('removeProduct', productIndex);
+          const newTotalAmount = calculateTotalAmount(state.cart);
           commit('setTotalAmount', newTotalAmount);
         } else {
           console.error('Error response from server:', response);
@@ -85,12 +128,9 @@ const cart = {
             'Authorization': `Bearer ${localStorage.getItem('token')}`,
           }
         });
-
         if (response.status === 200) {
           commit('updateProductQuantity', { index, quantity });
-          const newTotalAmount = state.cart.reduce((total, product) => {
-            return total + (product.product_price * product.quantity);
-          }, 0);
+          const newTotalAmount = calculateTotalAmount(state.cart);
           commit('setTotalAmount', newTotalAmount);
         } else {
           console.error('Error response from server:', response);
@@ -109,7 +149,6 @@ const cart = {
             'Authorization': `Bearer ${localStorage.getItem('token')}`,
           }
         });
-
         if (response.status === 200) {
           commit('clearCart');
         } else {
