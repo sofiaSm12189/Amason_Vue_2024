@@ -29,19 +29,27 @@
     </div>
     <div class="order">
       <SummaryOrder />
+      
     </div>
+    
+    
   </div>
+  <div class="recommendation">
+      <RecommendationByCart />
+    </div>
 </template>
 
 <script>
 import CarritoItem from '../../components/CartComponents/CartItem.vue'
 import SummaryOrder from '../../components/CartComponents/SummaryOrder.vue'
+import RecommendationByCart from '../../components/CartComponents/RecommendationByCart.vue'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
   components: {
     CarritoItem,
-    SummaryOrder
+    SummaryOrder,
+    RecommendationByCart
   },
   data() {
     return {
@@ -146,6 +154,10 @@ hr {
   flex: 1;
 }
 
+.body > .recommendation {
+  flex: 1;
+}
+
 .order {
   position: relative;
   max-width: 376px;
@@ -159,6 +171,21 @@ hr {
   flex-direction: column;
   align-items: center;
   background-color: white;
+}
+
+.recommendation {
+  max-width: 376px;
+  height: fit-content;
+  gap: 40px;
+  border-radius: 12px;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  margin: 0px auto; /* Centrando y agregando espacio superior */
 }
 
 .delete-container {
