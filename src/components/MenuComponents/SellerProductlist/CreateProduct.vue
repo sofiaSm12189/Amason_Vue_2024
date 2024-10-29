@@ -1,5 +1,5 @@
 <template>
-  <div :class="{ 'modal-overlay': true, 'hidden': !showModal }">
+  <div v-if="showModal" class="modal-overlay">
     <div class="modal-content">
       <span class="close" @click="closeModal">&times;</span>
       <h2 class="modal-title">Crear Nuevo Producto</h2>
@@ -14,18 +14,22 @@
           />
         </div>
         <div class="form-group">
-          <label for="category">Categoría</label>
+          <label for="category_id">Category</label>
           <select
             id="category"
-            v-model="product.category"
+            v-model.number="product.category_id" 
             required
           >
-            <option disabled value="">Seleccionar categoría</option>
-            <option value="electronics">Electrónicos</option>
-            <option value="clothing">Ropa</option>
-            <option value="books">Libros</option>
+            <option disabled value="">Select category</option>
+            <option value="1">Electronics</option>
+            <option value="2">Clothing</option>
+            <option value="3">Books</option>
+            <option value="4">Toys & Games</option>
+            <option value="5">Automotive</option>
+            <option value="6">Beauty & Personal Care</option>
           </select>
         </div>
+
         <div class="form-group">
           <label for="price">Precio</label>
           <input
@@ -63,35 +67,64 @@
 </template>
 
 <script>
+import { createProduct } from '../../../../api/auth'; // O la ruta correcta
+
 export default {
-  props: ['showModal'],
+  props: {
+    showModal: {
+      type: Boolean,
+      required: true, // Opción si es obligatorio
+    }
+  },
   data() {
     return {
       product: {
         name: '',
-        category: '',
+        category_id: '',  // Este será el ID numérico de la categoría
         price: '',
         stock: '',
-        description: ''
-      }
+        description: '',
+        id_store: 1 // Asignar directamente aquí el ID de la tienda
+      },
+      errorMessage: null,
     };
   },
   methods: {
-    handleSubmit() {
-      this.$emit('create', this.product); // Emitir el producto creado
-      this.closeModal();
-    },
     closeModal() {
-      this.$emit('close-modal');
-    }
+      this.$emit('close-modal'); // Emitir el evento para cerrar el modal
+    },
+    async handleSubmit() {
+  try {
+    console.log('Enviando datos del producto:', this.product);
+    await createProduct(this.product);
+    
+    // Emitir un evento para indicar que el producto fue creado
+    this.$emit('product-created');  // Notifica al padre para cerrar el modal
+
+    // Limpiar los campos del formulario
+    this.product = {
+      name: '',
+      category_id: '',
+      price: '',
+      stock: '',
+      description: '',
+      id_store: 1
+    };
+
+    // Mostrar un mensaje de éxito (opcional)
+    alert('¡Producto creado con éxito!');
+  } catch (error) {
+    console.error('Error al crear el producto:', error.message);
+    this.errorMessage = error.message;
+  }
+}
+
+
   }
 };
 </script>
 
 <style scoped>
-.hidden {
-  display: none;
-}
 .modal-overlay {
   position: fixed;
   top: 0;

@@ -15,7 +15,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="product in products" :key="product.id">
+        <tr v-for="product in localProducts" :key="product.id">
           <td>
             <img :src="product.imageUrl" :alt="product.name" class="product-image" />
           </td>
@@ -23,7 +23,7 @@
           <td>{{ formatCurrency(product.price) }}</td>
           <td class="action-buttons">
             <button class="edit-button" @click="openEditModal(product)">Editar</button>
-            <button class="delete-button" @click="confirmDelete(product)">Eliminar</button>
+            <button class="delete-button" @click="confirmDelete(product.id)">Eliminar</button>
           </td>
         </tr>
       </tbody>
@@ -37,7 +37,7 @@
       @save="saveProductChanges"
     />
 
-    <!-- Modal para crear producto (se renderiza condicionalmente con v-if) -->
+    <!-- Modal para crear producto -->
     <CreateProduct
       v-if="showCreateModal"
       :showModal="showCreateModal"
@@ -45,39 +45,46 @@
       @create="addNewProduct"
     />
 
-    <!-- Modal de advertencia para eliminar producto -->
-    <div v-if="showDeleteModal" class="delete-modal-overlay">
-      <div class="delete-modal">
-        <h3>¿Estás seguro que deseas eliminar {{ selectedProduct.name }}?</h3>
-        <p>Esta acción no se puede deshacer.</p>
-        <div class="modal-buttons">
-          <button class="cancel-button" @click="cancelDelete">Cancelar</button>
-          <button class="confirm-delete-button" @click="deleteProduct(selectedProduct.id)">Eliminar</button>
-        </div>
-      </div>
-    </div>
+    <DeleteConfirmationModal
+      v-if="showDeleteModal"
+      :showModal="showDeleteModal"
+      :productId="deleteProductId"
+      @close="cancelDelete"
+      @confirm="deleteProduct"
+    />
   </div>
 </template>
 
 <script>
 import EditProductModal from './EditProductModal.vue';
 import CreateProduct from './CreateProduct.vue';
+import DeleteConfirmationModal from './DeleteConfirmationModal.vue';
+import axios from 'axios';
 
 export default {
   components: {
     EditProductModal,
-    CreateProduct
+    CreateProduct,
+    DeleteConfirmationModal
   },
   data() {
     return {
+      localProducts: [...this.products], // Copia local de products
       showEditModal: false,
-      showCreateModal: false, // Estado controlado
+      showCreateModal: false,
       showDeleteModal: false,
+      deleteProductId: null, // ID del producto a eliminar
       selectedProduct: null,
     };
   },
   props: {
     products: Array,
+  },
+  watch: {
+    products(newProducts) {
+      // Sincronizar la copia local cuando `products` cambie
+      this.localProducts = [...newProducts];
+    }
   },
   methods: {
     formatCurrency(value) {
@@ -94,9 +101,9 @@ export default {
       this.showEditModal = false;
     },
     saveProductChanges(updatedProduct) {
-      const index = this.products.findIndex((p) => p.id === updatedProduct.id);
+      const index = this.localProducts.findIndex((p) => p.id === updatedProduct.id);
       if (index !== -1) {
-        this.$set(this.products, index, updatedProduct);
+        this.$set(this.localProducts, index, updatedProduct);
       }
       this.showEditModal = false;
     },
@@ -107,23 +114,45 @@ export default {
       this.showCreateModal = false; // Cierra el modal de creación
     },
     addNewProduct(newProduct) {
-      this.$emit('create-product', newProduct); // Emite el producto creado
-      this.showCreateModal = false; // Cierra el modal después de crear
+      this.localProducts.push(newProduct); // Añadimos el nuevo producto a la copia local
+      this.$emit('update-products', this.localProducts); // Emitimos el cambio al componente padre
+      this.showCreateModal = false;
     },
-    confirmDelete(product) {
-      this.selectedProduct = product;
-      this.showDeleteModal = true;
+    confirmDelete(productId) {
+      if (productId) {
+        this.deleteProductId = productId;
+        this.showDeleteModal = true;
+      } else {
+        console.error("ID del producto no está definido");
+      }
     },
     cancelDelete() {
       this.showDeleteModal = false;
+      this.deleteProductId = null;
     },
-    deleteProduct(productId) {
-      this.$emit('delete-product', productId);
-      this.showDeleteModal = false;
+    async deleteProduct(productId) {
+      try {
+        console.log("Producto a eliminar:", productId);
+        // Llamada a la API para eliminar el producto
+        await axios.delete(`http://localhost:8000/api/products/${productId}`);
+        
+        // Actualizamos la lista de productos localmente
+        this.localProducts = this.localProducts.filter(product => product.id !== productId);
+
+        // Emitimos el cambio al componente padre para actualizar la lista global
+        this.$emit('update-products', this.localProducts);
+
+        // Ocultar el modal y limpiar el ID del producto
+        this.showDeleteModal = false;
+        this.deleteProductId = null;
+      } catch (error) {
+        console.error('Error al eliminar el producto:', error);
+      }
     },
-  },
+  }
 };
 </script>
+
 
 <style scoped>
 .product-list-container {

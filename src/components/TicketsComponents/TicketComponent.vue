@@ -34,10 +34,10 @@
               <td data-label="Descripción">{{ ticket.description }}</td>
               <td data-label="Estado">{{ ticket.status }}</td>
               <td data-label="Acciones">
-                <router-link to="/details-ticket">
+                <router-link :to="`/details-ticket/${ticket.id}`">
                   <button class="btn btn-details">Ver Detalles</button>
                 </router-link>
-                <router-link to="/update-ticket">
+                <router-link :to="`/update-ticket/${ticket.id}`">
                   <button class="btn btn-update">Actualizar Ticket</button>
                 </router-link>
               </td>
@@ -56,41 +56,55 @@
 <script>
 import NavBar from '@/components/LayoutComponents/NavBar.vue';
 import FooterLayout from '@/components/LayoutComponents/FooterLayout.vue';
+import apiClient from '../../../services/api';  // Aquí estás importando tu cliente API
 
 export default {
   components: { NavBar, FooterLayout }, 
 
   data() {
     return {
-      tickets: [
-        {
-          id: 1,
-          order: 'Paquete 123',
-          claimType: 'Producto defectuoso',
-          subject: 'Problema con el producto',
-          description: 'El producto llegó dañado.',
-          status: 'Abierto'
-        },
-        {
-          id: 2,
-          order: 'Paquete 456',
-          claimType: 'Entrega tardía',
-          subject: 'El paquete no ha llegado',
-          description: 'Han pasado 10 días y no recibí el paquete.',
-          status: 'Abierto'
-        },
-        {
-          id: 3,
-          order: 'Paquete 789',
-          claimType: 'Otro',
-          subject: 'Consulta sobre el envío',
-          description: 'Quiero saber el estado del envío.',
-          status: 'Cerrado'
-        }
-      ]
+      tickets: []  // Inicialmente vacío, luego se llenará con los datos de la API
     };
   },
+
+  created() {
+    this.fetchUserTickets();
+  },
+
   methods: {
+    async fetchUserTickets() {
+      try {
+    // Obtener el token desde el almacenamiento local
+    const token = localStorage.getItem('token');  // Asegúrate de usar la misma clave para el token
+
+    // Verificar si el token existe
+    if (!token) {
+      throw new Error('Token de autenticación no disponible');
+    }
+
+    // Enviar la petición a la API usando apiClient
+    const response = await apiClient.get('/user-tickets', {
+      headers: {
+        'Content-Type': 'application/json',  // No es necesario 'multipart/form-data' en un GET
+        Authorization: `Bearer ${localStorage.getItem('token')}`,  // Adjuntar el token en el encabezado
+      },
+    });
+
+    // Asignar los datos de los tickets a la variable
+    this.tickets = response.data.map(ticket => ({
+      order: ticket.order_package,            // 'order_package' mapeado a 'order'
+      claimType: ticket.claim_type,           // 'claim_type' mapeado a 'claimType'
+      subject: ticket.subject,                // 'subject' se queda igual
+      description: ticket.description,        // 'description' se queda igual
+      status: ticket.status,                  // 'status' se queda igual
+      file: ticket.file,                      // 'file' se queda igual (si lo necesitas)
+      notifyBy: ticket.notify_by,             // 'notify_by' mapeado a 'notifyBy'
+      userId: ticket.user_id,                 // 'user_id' mapeado a 'userId'
+    }));
+  } catch (error) {
+        console.error("Error al obtener los tickets:", error);
+      }
+    },
     viewTicket(ticketId) {
       console.log("Ver detalles del ticket:", ticketId);
     },
@@ -100,6 +114,7 @@ export default {
   }
 };
 </script>
+
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');

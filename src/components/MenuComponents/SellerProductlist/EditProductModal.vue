@@ -5,12 +5,57 @@
       <h2 class="modal-title">Editar Producto</h2>
       <form @submit.prevent="saveChanges">
         <div class="form-group">
-          <label for="name">Nombre</label>
-          <input type="text" id="name" v-model="localProduct.name" />
+          <label for="name">Nombre del Producto</label>
+          <input
+            type="text"
+            id="name"
+            v-model="localProduct.name"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="category_id">Categoría</label>
+          <select
+            id="category"
+            v-model.number="localProduct.category_id"
+            required
+          >
+            <option disabled value="">Seleccione una categoría</option>
+            <option
+              v-for="category in categories"
+              :key="category.id"
+              :value="category.id"
+            >
+              {{ category.name }}
+            </option>
+          </select>
         </div>
         <div class="form-group">
           <label for="price">Precio</label>
-          <input type="text" id="price" v-model="price" @input="updatePrice" />
+          <input
+            type="text"
+            id="price"
+            v-model="localProduct.price"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="stock">Stock</label>
+          <input
+            type="number"
+            id="stock"
+            v-model="localProduct.stock"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="description">Descripción</label>
+          <textarea
+            id="description"
+            v-model="localProduct.description"
+            rows="3"
+            required
+          ></textarea>
         </div>
         <div class="form-actions">
           <button type="button" @click="closeModal" class="cancel-button">Cancelar</button>
@@ -24,33 +69,28 @@
 <script>
 export default {
   props: {
-    product: Object
+    product: Object,
+    categories: Array, // Recibimos las categorías desde el padre
   },
   data() {
     return {
       showModal: true,
-      localProduct: { ...this.product }, // Crear una copia local del producto
-      price: this.product.price.toString().replace('.', ','), // Convertir el punto decimal a coma
+      localProduct: { ...this.product }, // Creamos una copia local del producto
     };
   },
   methods: {
     closeModal() {
       this.$emit('close');
     },
-    updatePrice(event) {
-      // Convertir la coma a punto para trabajar con el valor numérico
-      this.price = event.target.value.replace(',', '.');
-      this.localProduct.price = parseFloat(this.price);
-    },
     saveChanges() {
       // Simulación de llamada a una API para actualizar los datos del producto
       setTimeout(() => {
         console.log('Producto actualizado en el servidor:', this.localProduct);
-        this.$emit('save', this.localProduct); // Emitir el producto actualizado
+        this.$emit('save', this.localProduct); // Emitimos el producto actualizado
         this.closeModal();
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

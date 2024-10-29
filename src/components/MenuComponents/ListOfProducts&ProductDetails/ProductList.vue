@@ -1,50 +1,50 @@
 <template>
-    <div class="min-h-screen bg-gray-100">
-  
-      <main class="container mx-auto py-8">
-        <h2 class="text-3xl font-bold mb-6">Tecnología</h2>
-        <div class="product-grid">
-          <ProductCard
-            v-for="product in products"
-            :key="product.id"
-            :product="product"
-          />
-        </div>
-      </main>
-  
-      
+  <div class="list-cotainer">
+
+    <h2><i class="fa-solid fa-laptop"></i> Tecnología <i class="fa-solid fa-headset"></i></h2>
+    <div class="product-list-cotainer">
+      <ProductCard v-for="product in products" :key="product.id" :product="product" />
     </div>
-  </template>
-  
-  <script>
-  import ProductCard from "./ProductCard.vue";
-  import { products } from "./mock-data";
-  
-  export default {
-    components: { ProductCard },
-    data() {
-      return {
-        products,
-      };
-    },
-  };
-  </script>
-  
-  <style>
-  /* Estilos de ProductListing */
-  .min-h-screen {
-    min-height: 100vh;
+
+  </div>
+</template>
+
+<script>
+import ProductCard from "./ProductCard.vue";
+import { products } from "./mock-data";
+
+export default {
+  components: { ProductCard },
+  data() {
+    return {
+      products,
+    };
+  },
+};
+</script>
+
+<style scoped>
+
+.list-cotainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 10vh;
+}
+
+.product-list-cotainer {
+  display: grid;
+  align-items: center;
+  width: 80vw;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 0.4fr));
+  justify-content: center;
+  gap: 1rem;
+}
+
+@media (width <= 1030){
+  .product-list-cotainer {
+    width: 90vw;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   }
-  .bg-gray-100 {
-    background-color: #f7fafc;
-  }
-  /* Grid dinámica para productos */
-  .product-grid {
-    display: grid;
-    gap: 1.5rem;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    grid-template-columns: repeat(8, minmax(150px, 1fr));
-    max-width: 100%;
-  }
-  </style>
-  
+}
+</style>

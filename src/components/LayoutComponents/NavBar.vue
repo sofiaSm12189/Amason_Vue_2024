@@ -145,6 +145,11 @@ nav {
   white-space: nowrap;
 }
 
+.line-1 i{
+  font-size: .8em;
+  margin: 0;
+}
+
 .line-2 {
   position: relative;
   white-space: nowrap;
@@ -219,7 +224,7 @@ ul li a:hover {
   display: none;
 }
 
-@media (max-width: 854px) {
+@media (max-width: 1030px) {
   nav {
     height: 12vh;
   }
