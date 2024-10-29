@@ -1,60 +1,32 @@
 <template>
   <div>
-    <NavBar /> 
-    <div class="background"></div> 
+    <NavBar />
+    <div class="background"></div>
     <div class="chat-container">
       <div class="chat-header">
         <h2>Asistente de Soporte</h2>
       </div>
       <div ref="chatMessagesContainer" class="chat-messages">
-        <div class="message bot-message">
-          <!--<p>Hola, soy el asistente de soporte. ¿En qué puedo ayudarte?</p>-->
-        </div>
-  
-        <div class="message bot-message">
-          <!--<p>¿Cuál es el motivo de tu reclamo?</p>
-          <select v-model="ticket.category" class="form-input" required>
-            <option value="" disabled selected>Selecciona un reclamo</option>
-            <option value="No se encuentra el paquete">No se encuentra el paquete</option>
-            <option value="Producto dañado">Producto dañado</option>
-            <option value="Error en la factura">Error en la factura</option>
-            <option value="Otro">Otro</option>
-          </select>-->
-        </div>
-  
-        <div class="message bot-message">
-         <!--<p>¿Cuál es el asunto del ticket?</p>
-          <input type="text" v-model="ticket.subject" class="form-input" required placeholder="Escribe el asunto" />-->
-        </div>
-  
-        <div class="message bot-message">
-          <!--<p>Describe el problema:</p>
-          <textarea v-model="ticket.description" class="form-input" required placeholder="Describe el problema..."></textarea>-->
-        </div>
-  
-        <div class="message bot-message">
-          <!--<p>¿Deseas recibir notificaciones?</p>
-          <label>
-            <input type="checkbox" v-model="ticket.notifyEmail" /> Email
-          </label>
-          <label>
-            <input type="checkbox" v-model="ticket.notifySMS" /> Mensaje de texto
-          </label>
-          <input v-if="ticket.notifySMS" type="text" v-model="ticket.phoneNumber" class="form-input" placeholder="Número de teléfono (ej. 6098 8877)" />-->
-        </div>
-
-        <!-- Mostrar mensajes enviados por el usuario -->
-        <div v-for="(message, index) in chatMessages" :key="index" class="message user-message">
-          <p>{{ message }}</p>
+        <!-- Mostrar mensajes del servidor -->
+        <div
+          v-for="(message, index) in chatMessages"
+          :key="index"
+          class="message"
+          :class="{
+            'user-message': message.user_id === currentUserId,
+            'bot-message': message.user_id !== currentUserId
+          }"
+        >
+          <p>{{ message.message }}</p>
         </div>
       </div>
       <div class="chat-input">
-        <textarea 
-          v-model="userMessage" 
-          placeholder="Escribe tu mensaje aquí..." 
+        <textarea
+          v-model="userMessage"
+          placeholder="Escribe tu mensaje aquí..."
           class="form-input"
-          @keydown.enter.prevent="sendMessage">
-        </textarea>
+          @keydown.enter.prevent="sendMessage"
+        ></textarea>
         <button @click="sendMessage" class="btn-send">Enviar</button>
       </div>
       <div class="footer1">
@@ -62,7 +34,7 @@
       </div>
     </div>
     <footer>
-      <FooterLayout /> 
+      <FooterLayout />
     </footer>
   </div>
 </template>
@@ -70,9 +42,11 @@
 <script>
 import NavBar from '@/components/LayoutComponents/NavBar.vue';
 import FooterLayout from '@/components/LayoutComponents/FooterLayout.vue';
+import apiClient from '../../../services/api'; // Importar el apiClient
 
 export default {
-  components: { NavBar, FooterLayout }, 
+  components: { NavBar, FooterLayout },
+  props: ['id'],
   data() {
     return {
       ticket: {
@@ -84,18 +58,46 @@ export default {
         phoneNumber: '',
       },
       userMessage: '',
-      chatMessages: [] // Lista de mensajes del chat
+      chatMessages: [],
+      ticketId: this.id,
+      currentUserId: null, // Almacena el ID del usuario logueado
     };
   },
+  mounted() {
+    this.currentUserId = localStorage.getItem('userId'); // Asegúrate de que esto se ajuste a tu implementación
+    this.loadMessages();
+  },
   methods: {
-    submitTicket() {
-      console.log("Ticket actualizado:", this.ticket);
-    },
-    sendMessage() {
-      if (this.userMessage.trim()) { // Enviar solo si hay texto
-        this.chatMessages.push(this.userMessage);
-        this.userMessage = ''; // Limpiar el campo de texto después de enviar
+    async loadMessages() {
+      try {
+        const response = await apiClient.get(`/tickets/${this.ticketId}/messages`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}` // Reemplaza con tu método de obtención del token
+          }
+        });
+        this.chatMessages = response.data;
         this.scrollToBottom();
+      } catch (error) {
+        console.error('Error cargando los mensajes:', error);
+      }
+    },
+    async sendMessage() {
+      if (this.userMessage.trim()) {
+        const newMessage = {
+          message: this.userMessage,
+        };
+        try {
+          await apiClient.post(`/tickets/${this.ticketId}/messages`, newMessage, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+          });
+          this.chatMessages.push({ message: this.userMessage, user_id: this.currentUserId }); // Asegúrate de que se guarda el ID del usuario
+          this.userMessage = '';
+          this.scrollToBottom();
+        } catch (error) {
+          console.error('Error enviando el mensaje:', error);
+        }
       }
     },
     scrollToBottom() {
@@ -103,10 +105,14 @@ export default {
         const container = this.$refs.chatMessagesContainer;
         container.scrollTop = container.scrollHeight;
       });
+    },
+    submitTicket() {
+      console.log("Ticket actualizado:", this.ticket);
     }
   },
 };
 </script>
+
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
@@ -254,5 +260,28 @@ export default {
   .btn-update {
     font-size: 0.95rem;
   }
+}
+
+.chat-messages {
+  display: flex;
+  flex-direction: column;
+  max-height: 400px; /* Ajusta el alto máximo del contenedor */
+  overflow-y: auto; /* Permite el desplazamiento vertical */
+}
+
+.message {
+  margin: 5px;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.user-message {
+  align-self: flex-start; /* Alinea a la izquierda */
+  background-color: #e1ffc7; /* Cambia el color de fondo para el mensaje del usuario */
+}
+
+.bot-message {
+  align-self: flex-end; /* Alinea a la derecha */
+  background-color: #c7e1ff; /* Cambia el color de fondo para los mensajes del bot */
 }
 </style>
