@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import ReportComponent from '../components/controlPanelComponents/ReportComponents.vue'; // O usando la ruta relativa
+import ReportComponent from '../components/controlPanelComponents/ReportComponents.vue';
 
 import SesionView from '../views/LoginViews/SesionView.vue'
 import MainLayout from '../components/LayoutComponents/MainLayout.vue'
