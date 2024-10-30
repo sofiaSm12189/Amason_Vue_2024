@@ -38,7 +38,6 @@
       </tbody>
     </table>
 
-    <!-- Modal para editar producto -->
     <EditProductModal
       v-if="showEditModal"
       :product="selectedProduct"
