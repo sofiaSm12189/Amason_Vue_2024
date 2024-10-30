@@ -2,7 +2,6 @@
   <div class="product-list-container">
     <h2>Mis Productos</h2>
 
-      <!-- Botón para abrir el modal de Crear Producto -->
       <button class="create-button" @click="openCreateModal">Crear Producto</button>
 
     <table class="product-table">
@@ -29,7 +28,6 @@
       </tbody>
     </table>
 
-    <!-- Modal para editar producto -->
     <EditProductModal
       v-if="showEditModal"
       :product="selectedProduct"
@@ -37,14 +35,12 @@
       @save="saveProductChanges"
     />
 
-     <!-- Modal para crear producto -->
      <CreateProduct
       v-if="showCreateModal"
       @close="closeCreateModal"
       @save="createNewProduct"
     />
 
-    <!-- Modal de advertencia para eliminar producto -->
     <div v-if="showDeleteModal" class="delete-modal-overlay">
       <div class="delete-modal">
         <h3>¿Estás seguro que deseas eliminar {{ selectedProduct.name }}?</h3>
@@ -60,7 +56,7 @@
 
 <script>
 import EditProductModal from './EditProductModal.vue';
-import CreateProduct from './CreateProduct.vue'; // Importa el componente CreateProduct
+import CreateProduct from './CreateProduct.vue'; 
 
 export default {
   components: {
@@ -70,7 +66,7 @@ export default {
   data() {
     return {
       showEditModal: false,
-      showCreateModal: false, // Controla la visibilidad del modal de Crear Producto
+      showCreateModal: false, 
 
       showDeleteModal: false,
       selectedProduct: null
@@ -87,14 +83,14 @@ export default {
       }).format(value);
     },
     openEditModal(product) {
-      this.selectedProduct = { ...product }; // Clonar el producto
+      this.selectedProduct = { ...product };
       this.showEditModal = true;
     },
     closeEditModal() {
       this.showEditModal = false;
     },
     saveProductChanges(updatedProduct) {
-      // Actualizar la lista de productos
+    
       const index = this.products.findIndex(p => p.id === updatedProduct.id);
       if (index !== -1) {
         this.$set(this.products, index, updatedProduct);
@@ -108,21 +104,21 @@ export default {
       this.showCreateModal = false;
     }, 
     createNewProduct() {
-      // Lógica para agregar el nuevo producto
+      
    
       this.showCreateModal = false;
     },
     confirmDelete(product) {
-      this.selectedProduct = product; // Guardar el producto que se desea eliminar
+      this.selectedProduct = product; 
       this.showDeleteModal = true;
     },
     cancelDelete() {
       this.showDeleteModal = false;
     },
     deleteProduct(productId) {
-      // Lógica para eliminar el producto
-      this.$emit('delete-product', productId); // Emitir un evento para que el componente padre maneje la eliminación
-      this.showDeleteModal = false; // Cerrar el modal después de eliminar
+      
+      this.$emit('delete-product', productId); 
+      this.showDeleteModal = false; 
     }
   }
 };

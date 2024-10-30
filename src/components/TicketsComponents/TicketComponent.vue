@@ -1,7 +1,4 @@
 <template>
-  <div>
-    <NavBar /> 
-
     <div class="page-wrapper">
       <div class="background"></div> 
 
@@ -47,18 +44,11 @@
       </div>
     </div>
 
-    <footer>
-      <FooterLayout /> 
-    </footer>
-  </div>
 </template>
 
 <script>
-import NavBar from '@/components/LayoutComponents/NavBar.vue';
-import FooterLayout from '@/components/LayoutComponents/FooterLayout.vue';
 
 export default {
-  components: { NavBar, FooterLayout }, 
 
   data() {
     return {

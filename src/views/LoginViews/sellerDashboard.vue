@@ -34,7 +34,7 @@ export default {
         return {
             view: "create",
             stores: [],
-            showCreateProductModal: false, // control del modal
+            showCreateProductModal: false, 
         };
     },
     methods: {
@@ -49,10 +49,10 @@ export default {
             alert("Cerrando sesión...");
         },
         openCreateProductModal() {
-            this.showCreateProductModal = true; // Abre el modal
+            this.showCreateProductModal = true;
         },
         closeCreateProductModal() {
-            this.showCreateProductModal = false; // Cierra el modal
+            this.showCreateProductModal = false; 
         }
     },
 };

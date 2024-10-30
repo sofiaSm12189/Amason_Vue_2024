@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <NavBar /> 
-  <div class="page-wrapper">
+    <div class="page-wrapper">
     <div class="background"></div>
     <div class="ticket-container">
       <h2 class="form-title">Crear Nuevo Ticket</h2>
@@ -64,18 +62,11 @@
       </form>
     </div>
   </div>
-  <footer>
-      <FooterLayout /> 
-    </footer>
-</div>
 </template>
 
 <script>
-import NavBar from '@/components/LayoutComponents/NavBar.vue';
-import FooterLayout from '@/components/LayoutComponents/FooterLayout.vue';
 
 export default {
-  components: { NavBar, FooterLayout },
   data() {
     return {
       ticket: {
@@ -108,19 +99,33 @@ export default {
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
 
-/* Fondo */
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+  align-items: center;
+  overflow: hidden;
+}
+
 .background {
-  position: fixed; /* Fija el fondo */
+  position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: -1; /* Se asegura de que el fondo esté detrás de todo */
+  z-index: -1; 
   background-color: #91ebff;
   background: linear-gradient(to top, #e2e2e2, #e8faff);
 }
 
-/* Contenedor del formulario */
 .ticket-container {
   max-width: 650px;
   margin: 50px auto;
@@ -130,7 +135,7 @@ export default {
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
   font-family: 'Montserrat', sans-serif;
   position: relative;
-  z-index: 1; /* Asegura que esté sobre el fondo */
+  z-index: 1; 
 }
 
 .form-title {

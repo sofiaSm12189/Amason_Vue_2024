@@ -36,29 +36,30 @@ const router = createRouter({
             name: 'Carrito',
             component: CartView
           },
+          {
+            path: '/tickets',
+            name: 'Tickets',
+            component: TicketsView
+          },
+          {
+            path: '/create-ticket',
+            name: 'CreateTicket',
+            component: CreateTicketView
+          },
+          {
+            path: '/update-ticket',
+            name: 'UpdateTicket',
+            component: UpdateTicket
+          },
+          {
+            path: '/chat',
+            name: 'Chat',
+            component: ChatView
+          },
         ],
         
       },
-      {
-        path: '/tickets',
-        name: 'Tickets',
-        component: TicketsView
-      },
-      {
-        path: '/create-ticket',
-        name: 'CreateTicket',
-        component: CreateTicketView
-      },
-      {
-        path: '/update-ticket',
-        name: 'UpdateTicket',
-        component: UpdateTicket
-      },
-      {
-        path: '/chat',
-        name: 'Chat',
-        component: ChatView
-      },
+     
       {
             path: '/controlPanel',
             name: 'controlPanel',
