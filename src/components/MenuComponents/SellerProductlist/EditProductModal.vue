@@ -4,14 +4,75 @@
       <span class="close" @click="closeModal">&times;</span>
       <h2 class="modal-title">Editar Producto</h2>
       <form @submit.prevent="saveChanges">
+        <!-- Nombre del Producto -->
         <div class="form-group">
-          <label for="name">Nombre</label>
-          <input type="text" id="name" v-model="product.name" />
+          <label for="name">Nombre del Producto</label>
+          <input
+            type="text"
+            id="name"
+            v-model="localProduct.name"
+            required
+          />
         </div>
+
+       <!-- Categoría -->
+       <div class="form-group">
+          <label for="category_id">Categoría</label>
+          <select id="category" v-model="localProduct.category_id" required>
+            <option disabled value="">Seleccione una categoría</option>
+            <option value="1">Electronics</option>
+            <option value="2">Clothing</option>
+            <option value="3">Books</option>
+            <option value="4">Toys & Games</option>
+            <option value="5">Automotive</option>
+            <option value="6">Beauty & Personal Care</option>
+          </select>
+        </div>
+        <!-- Precio -->
         <div class="form-group">
           <label for="price">Precio</label>
-          <input type="text" id="price" v-model="price" @input="updatePrice" />
+          <input
+            type="text"
+            id="price"
+            v-model="localProduct.price"
+            required
+          />
         </div>
+
+        <!-- Stock -->
+        <div class="form-group">
+          <label for="stock">Stock</label>
+          <input
+            type="number"
+            id="stock"
+            v-model="localProduct.stock"
+            required
+          />
+        </div>
+
+        <!-- Descripción -->
+        <div class="form-group">
+          <label for="description">Descripción</label>
+          <textarea
+            id="description"
+            v-model="localProduct.description"
+            rows="3"
+            required
+          ></textarea>
+        </div>
+
+        <!-- Links de Imágenes -->
+        <div class="form-group">
+          <label for="image_links">Links de Imágenes (separados por comas)</label>
+          <textarea
+            id="image_links"
+            v-model="imageLinksText"
+            rows="3"
+            placeholder="Ingresa los links de las imágenes, separados por comas"
+          ></textarea>
+        </div>
+
+        <!-- Botones de acción -->
         <div class="form-actions">
           <button type="button" @click="closeModal" class="cancel-button">Cancelar</button>
           <button type="submit" class="save-button">Guardar Cambios</button>
@@ -24,32 +85,46 @@
 <script>
 export default {
   props: {
-    product: Object
+    product: Object,
+    categories: Array, // Recibimos las categorías desde el padre
   },
   data() {
     return {
       showModal: true,
-      price: this.product.price.toString().replace('.', ',') // Convertir el punto decimal a coma
-    };
-  },
+      localProduct: { ...this.product }, // Asignar el producto recibido
+    imageLinksText: this.product.image_links ? this.product.image_links.join(', ') : '', // Convertir los enlaces a un string
+  };
+},
+watch: {
+  product: {
+    immediate: true,
+    handler(newProduct) {
+      this.localProduct = { ...newProduct };
+      this.imageLinksText = newProduct.images ? newProduct.images.map(image => image.image_path).join(', ') : '';
+    }}},
   methods: {
     closeModal() {
       this.$emit('close');
     },
-    updatePrice(event) {
-      // Convertir la coma a punto para trabajar con el valor numérico
-      this.product.price = parseFloat(event.target.value.replace(',', '.'));
-    },
     saveChanges() {
-      // Simulación de llamada a una API para actualizar los datos del producto
-      setTimeout(() => {
-        console.log('Producto actualizado en el servidor:', this.product);
-        this.$emit('save', this.product);
-        this.closeModal();
-      });
-    }
-  }
-};
+  // Convertimos el texto de los links de imágenes en un array
+  const imageLinks = (this.imageLinksText || '')
+    .split(',')
+    .map((link) => link.trim())
+    .filter((link) => link); // Filtramos posibles valores vacíos
+
+  // Actualizar el producto con los links de imágenes
+  const updatedProduct = {
+        ...this.localProduct,
+        image_links: imageLinks, // Añadir los links de imágenes actualizados
+      };
+
+  // Llamamos al método 'save' para enviar los datos actualizados al padre
+  this.$emit('save', updatedProduct);
+  this.closeModal();
+}
+  }};
+
 </script>
 
 <style scoped>
@@ -99,7 +174,9 @@ export default {
   display: block;
 }
 
-.form-group input {
+.form-group input,
+.form-group select,
+.form-group textarea {
   width: 100%;
   padding: 10px;
   border: 1px solid #ccc;

@@ -22,11 +22,12 @@
           <div class="line-2">Cuenta y listas</div>
         </a>
       </li>
-      <li>
-        <a href="#">
+      <!-- Opción "Ver Tickets" para admin -->
+      <li v-if="isAdminOrUser">
+        <router-link to="/tickets">
           <div class="line-1">Devoluciones y</div>
-          <div class="line-2">pedidos</div>
-        </a>
+          <div class="line-2">Servicio al cliente</div>
+        </router-link>
       </li>
       <li class="cart-container">
         <router-link to="/Carrito">
@@ -81,6 +82,12 @@ import { logoutUser } from '../../../api/auth'
 export default {
   components: {
     PopUpCart
+  },
+  computed: {
+    isAdminOrUser() {
+      const role = localStorage.getItem('userRole');
+      return role && (role.includes('admin') || role.includes('user'));
+    }
   },
   methods: {
     logout() {
@@ -143,6 +150,11 @@ nav {
 .line-1 {
   position: relative;
   white-space: nowrap;
+}
+
+.line-1 i{
+  font-size: .8em;
+  margin: 0;
 }
 
 .line-2 {
@@ -219,7 +231,7 @@ ul li a:hover {
   display: none;
 }
 
-@media (max-width: 854px) {
+@media (max-width: 1030px) {
   nav {
     height: 12vh;
   }

@@ -1,3 +1,4 @@
+
 <template>
 
   <div class="footer">
@@ -130,7 +131,10 @@ export default {
 }
 
 
-@media (max-width:720px) {
+@media (max-width:1030px) {
+  .footer{
+    margin-bottom: 10vh;
+  }
 
   .footer .row ul li {
     display: inline-block;
@@ -144,6 +148,7 @@ export default {
     left: 10%;
     -webkit-animation: moverCamion 7s linear infinite;
     animation: moverCamion 7s linear infinite;
-  }
+
+}
 }
 </style>

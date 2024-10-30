@@ -16,48 +16,81 @@
           </button>
         </div>
       </div>
-      <CarritoItem/>
+      <transition-group name="fade" tag="list">
+        <CarritoItem
+          v-for="(item, index) in cartItems"
+          :key="item.product_id"
+          :product="item"
+          :is-selected="selectedItems[index] || false"
+          @update-selection="updateSelection(index, $event)"
+          ref="cartItem"
+        />
+      </transition-group>
     </div>
     <div class="order">
       <SummaryOrder />
+      
     </div>
+    
+    
   </div>
+  <div class="recommendation">
+      <RecommendationByCart />
+    </div>
 </template>
 
 <script>
 import CarritoItem from '../../components/CartComponents/CartItem.vue'
 import SummaryOrder from '../../components/CartComponents/SummaryOrder.vue'
+import RecommendationByCart from '../../components/CartComponents/RecommendationByCart.vue'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
   components: {
     CarritoItem,
-    SummaryOrder
+    SummaryOrder,
+    RecommendationByCart
+  },
+  data() {
+    return {
+      selectedAll: false,
+      selectedItems: []
+    }
   },
   computed: {
+    ...mapGetters('cart', ['cartItems', 'formattedTotalAmount']),
 
-...mapGetters(['cartItems', 'formattedTotalAmount']),
+    selectedCount() {
+      return this.selectedItems.filter((item) => item).length
+    }
+  },
+  methods: {
+    ...mapActions('cart', ['removeAllProductsFromCart']),
 
-},
-methods: {
-
-...mapActions(['fetchCartItems']),
-
-toggleSelectAll() {
+    toggleSelectAll() {
       this.selectedAll = !this.selectedAll
-      this.selectedCount = this.selectedAll ? this.cartItems.length : 0
-      this.$emit('update-selection', this.selectedCount)
-      this.cartItems.forEach((item, index) => {
-        this.$refs[`cartItem${index}`].setSelected(this.selectedAll)
-      })
+      this.selectedItems = this.cartItems.map(() => this.selectedAll)
     },
 
-},
-mounted() {
-this.fetchCartItems();
-},
-};
+    updateSelection(index, isSelected) {
+      this.$set(this.selectedItems, index, isSelected)
+    },
+    deleteSelectedItems() {
+  try {
+    if (confirm('¿Estás seguro de que deseas eliminar este producto?')) {
+      this.removeAllProductsFromCart();
+      this.selectedItems = [];
+      this.selectedAll = false;
+    }
+  } catch (error) {
+    console.error('Hubo un error al vaciar el carrito');
+    console.error(error);
+  }
+}
 
+
+  }
+}
 </script>
 
 <style scoped>
@@ -124,6 +157,10 @@ hr {
   flex: 1;
 }
 
+.body > .recommendation {
+  flex: 1;
+}
+
 .order {
   position: relative;
   max-width: 376px;
@@ -137,6 +174,21 @@ hr {
   flex-direction: column;
   align-items: center;
   background-color: white;
+}
+
+.recommendation {
+  max-width: 376px;
+  height: fit-content;
+  gap: 40px;
+  border-radius: 12px;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  margin: 0px auto; /* Centrando y agregando espacio superior */
 }
 
 .delete-container {
@@ -156,25 +208,65 @@ hr {
 .delete-btn:hover {
   background-color: #b71c1c;
 }
+
+::view-transition-group {
+  display: block;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease;
+}
+
+.fade-enter,
+.fade-leave-to
+
+/* .fade-leave-active en Vue <2.1.8 */ {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
 .order-bottom {
   display: none;
 }
-@media (max-width: 854px) {
+
+@media (max-width: 1030px) {
   .body {
     height: 100%;
   }
+
   .order {
-  position: fixed;
-  bottom: 10.8vw;
-  left: 0;
-  width: auto;
-  margin: 0;
-  padding: 0;
-  height: auto;
-  background-color: #e24bb5;
-  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
-  display: flex;
-  z-index: 2000; 
+    position: fixed;
+    bottom: 10.8vw;
+    left: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    z-index: 2000;
+  }
+
+  .body {
+    padding: 0;
+    gap: 0px;
+  }
+
+  .container {
+    height: auto;
+  }
+}
+
+@media (max-width: 550px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100%;
+    padding: 12px 0;
+    margin-bottom: 2%;
+    background-color: white;
   }
 }
 </style>

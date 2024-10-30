@@ -80,3 +80,36 @@ export function logoutUser() {
 
   window.location.href = '/'
 }
+
+export async function createProduct(productData) {
+  try {
+    const formData = new FormData();
+
+    // Datos del producto
+    formData.append('name', productData.name);
+    formData.append('description', productData.description);
+    formData.append('price', productData.price);
+    formData.append('stock', productData.stock);
+    formData.append('category_id', productData.category_id);
+    formData.append('id_store', productData.id_store);
+
+    // Agregar los enlaces de imágenes si existen
+    if (productData.image_links && productData.image_links.length > 0) {
+      for (let i = 0; i < productData.image_links.length; i++) {
+        formData.append('image_links[]', productData.image_links[i]);
+      }
+    }
+
+    const response = await apiClient.post('/products', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    return response;
+  } catch (error) {
+    console.error('Error al crear el producto:', error.response?.data || error.message);
+    throw new Error('Error al crear el producto');
+  }
+}
+

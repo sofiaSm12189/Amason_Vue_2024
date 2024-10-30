@@ -3,18 +3,11 @@
     <header class="bg-white shadow">
       <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
         <h1 class="text-3xl font-bold text-gray-900">Panel de Vendedor</h1>
-        <button
-          @click="showCreateProduct"
-          class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
-        >
-          Crear Producto
-        </button>
       </div>
     </header>
     <main>
       <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        <SellerProductList v-if="!showCreateProduct" :products="sellerProducts" />
-        
+        <SellerProductList v-if="!showCreateProduct" :products="sellerProducts" @product-deleted="fetchProducts"/>
       </div>
     </main>
   </div>
@@ -22,29 +15,30 @@
 
 <script>
 import { ref, onMounted } from 'vue';
+import axios from 'axios';
 import SellerProductList from './SellerProductList.vue';
-
 
 export default {
   components: {
     SellerProductList,
-    
   },
   setup() {
     const sellerProducts = ref([]);
     const showCreateProduct = ref(false);
 
-    onMounted(() => {
-      // Simulating an API call to fetch products
-      setTimeout(() => {
-        sellerProducts.value = [
-          { id: '1', name: "Smartphone Galaxy S21", imageUrl: "/placeholder.svg?height=80&width=80", price: 799.99 },
-          { id: '2', name: "Laptop MacBook Pro 13\"", imageUrl: "/placeholder.svg?height=80&width=80", price: 1299.99 },
-          { id: '3', name: "Auriculares Sony WH-1000XM4", imageUrl: "/placeholder.svg?height=80&width=80", price: 349.99 },
-          { id: '4', name: "Cámara Canon EOS R6", imageUrl: "/placeholder.svg?height=80&width=80", price: 2499.99 },
-        ];
-      }, 1000); // Simulate network delay
-    });
+    const fetchProducts = async () => {
+      try {
+        // Realiza una llamada a la API para obtener los productos de la tienda 1
+        const response = await axios.get('http://localhost:8000/api/products/store/1');
+        // Asigna la respuesta de los productos al array de sellerProducts
+        sellerProducts.value = response.data;
+        console.log("Productos obtenidos:", sellerProducts.value);
+      } catch (error) {
+        console.error("Error al obtener los productos:", error);
+      }
+    };
+
+    onMounted(fetchProducts);
 
     // Método para manejar cuando un nuevo producto es creado
     const handleProductCreated = (newProduct) => {
@@ -56,6 +50,7 @@ export default {
       sellerProducts,
       showCreateProduct,
       handleProductCreated,
+      fetchProducts
     };
   },
 };
