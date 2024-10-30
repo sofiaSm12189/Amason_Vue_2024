@@ -8,22 +8,31 @@
     <table class="product-table">
       <thead>
         <tr>
+          <th>ID</th> <!-- Añadir el ID del producto -->
           <th>Imagen</th>
           <th>Nombre del Producto</th>
+          <th>Categoría</th> <!-- Añadir la categoría -->
+          <th>Descripción</th> <!-- Añadir la descripción -->
+          <th>Stock</th> <!-- Añadir el stock -->
           <th>Precio</th>
           <th>Acciones</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="product in localProducts" :key="product.id">
+        <tr v-for="product in localProducts" :key="product.product_id">
+          <td>{{ product.product_id }}</td> <!-- Mostrar el ID del producto -->
           <td>
-            <img :src="product.imageUrl" :alt="product.name" class="product-image" />
+            <!-- Mostrar la imagen del producto -->
+            <img :src="getImageUrl(product)" class="product-image" />
           </td>
           <td>{{ product.name }}</td>
+          <td>{{ product.category_name }}</td> <!-- Mostrar la categoría -->
+          <td>{{ product.description }}</td> <!-- Mostrar la descripción -->
+          <td>{{ product.stock }}</td> <!-- Mostrar el stock -->
           <td>{{ formatCurrency(product.price) }}</td>
           <td class="action-buttons">
             <button class="edit-button" @click="openEditModal(product)">Editar</button>
-            <button class="delete-button" @click="confirmDelete(product.id)">Eliminar</button>
+            <button class="delete-button" @click="confirmDelete(product.product_id)">Eliminar</button>
           </td>
         </tr>
       </tbody>
@@ -37,6 +46,7 @@
       @save="saveProductChanges"
     />
 
+    <!-- Modal para crear producto -->
     <!-- Modal para crear producto -->
     <CreateProduct
       v-if="showCreateModal"
@@ -52,6 +62,13 @@
       @close="cancelDelete"
       @confirm="deleteProduct"
     />
+    <DeleteConfirmationModal
+      v-if="showDeleteModal"
+      :showModal="showDeleteModal"
+      :productId="deleteProductId"
+      @close="cancelDelete"
+      @confirm="deleteProduct"
+    />
   </div>
 </template>
 
@@ -60,33 +77,43 @@ import EditProductModal from './EditProductModal.vue';
 import CreateProduct from './CreateProduct.vue';
 import DeleteConfirmationModal from './DeleteConfirmationModal.vue';
 import axios from 'axios';
+import DeleteConfirmationModal from './DeleteConfirmationModal.vue';
+import axios from 'axios';
 
 export default {
   components: {
     EditProductModal,
     CreateProduct,
     DeleteConfirmationModal
+    CreateProduct,
+    DeleteConfirmationModal
   },
   data() {
     return {
       localProducts: [...this.products], // Copia local de products
+      localProducts: [...this.products], // Copia local de products
       showEditModal: false,
       showCreateModal: false,
+      showCreateModal: false,
       showDeleteModal: false,
+      deleteProductId: null, // ID del producto a eliminar
       deleteProductId: null, // ID del producto a eliminar
       selectedProduct: null,
     };
   },
   props: {
     products: Array,
+    showModal: Boolean,
+    productId: Number
   },
   watch: {
     products(newProducts) {
-      // Sincronizar la copia local cuando `products` cambie
+      // Sincronizar la copia local cuando products cambie
       this.localProducts = [...newProducts];
     }
   },
   methods: {
+    
     formatCurrency(value) {
       return new Intl.NumberFormat('es-ES', {
         style: 'currency',
@@ -94,28 +121,62 @@ export default {
       }).format(value);
     },
     openEditModal(product) {
-      this.selectedProduct = { ...product };
-      this.showEditModal = true;
-    },
+  // Crear una copia del producto seleccionado
+  this.selectedProduct = { ...product };
+
+  // Verificar si el producto tiene una propiedad images (que viene del backend)
+  if (product.images && Array.isArray(product.images)) {
+    // Mapear los enlaces de las imágenes
+    const imageLinks = product.images.map(image => image.image_path);
+    // Asignar los enlaces como un string separado por comas
+    this.selectedProduct.imageLinksText = imageLinks.join(', ');
+  } else {
+    // Si no hay imágenes, dejar el campo vacío
+    this.selectedProduct.imageLinksText = '';
+  }
+
+  // Mostrar el modal de edición
+  this.showEditModal = true;
+}
+
+,
     closeEditModal() {
       this.showEditModal = false;
     },
     saveProductChanges(updatedProduct) {
-      const index = this.localProducts.findIndex((p) => p.id === updatedProduct.id);
-      if (index !== -1) {
-        this.$set(this.localProducts, index, updatedProduct);
-      }
-      this.showEditModal = false;
-    },
+  const index = this.localProducts.findIndex((p) => p.product_id === updatedProduct.product_id);
+  
+  if (index !== -1) {
+    // Llamada a la API para actualizar el producto en la base de datos
+    axios.put(`http://localhost:8000/api/products/${updatedProduct.product_id}`, updatedProduct)
+      .then((response) => {
+        // Actualizamos el producto en la lista con la respuesta del servidor
+        this.localProducts[index] = response.data.product;
+
+        // Confirmación de la actualización
+        console.log('Producto actualizado en la base de datos:', response.data.product);
+      })
+      .catch((error) => {
+        console.error('Error al actualizar el producto:', error);
+      });
+  }
+
+  this.showEditModal = false;
+}
+
+
+,
     openCreateModal() {
       this.showCreateModal = true; // Abre el modal de creación
     },
-    closeCreateModal() {
+    async closeCreateModal() {
       this.showCreateModal = false; // Cierra el modal de creación
+      await this.fetchProducts();
     },
     addNewProduct(newProduct) {
-      this.localProducts.push(newProduct); // Añadimos el nuevo producto a la copia local
-      this.$emit('update-products', this.localProducts); // Emitimos el cambio al componente padre
+      this.localProducts.push(newProduct); // Añadimos el nuevo producto a la copia local     
+     
+      this.$emit('update-products', this.localProducts); // Emitimos el cambio al componente padre      
       this.showCreateModal = false;
     },
     confirmDelete(productId) {
@@ -129,15 +190,19 @@ export default {
     cancelDelete() {
       this.showDeleteModal = false;
       this.deleteProductId = null;
+      this.deleteProductId = null;
     },
     async deleteProduct(productId) {
       try {
         console.log("Producto a eliminar:", productId);
         // Llamada a la API para eliminar el producto
         await axios.delete(`http://localhost:8000/api/products/${productId}`);
-        
+
+        // Volver a obtener la lista de productos después de eliminar uno
+        await this.fetchProducts();
+
         // Actualizamos la lista de productos localmente
-        this.localProducts = this.localProducts.filter(product => product.id !== productId);
+        this.localProducts = this.localProducts.filter(product => product.product_id !== productId);
 
         // Emitimos el cambio al componente padre para actualizar la lista global
         this.$emit('update-products', this.localProducts);
@@ -149,6 +214,20 @@ export default {
         console.error('Error al eliminar el producto:', error);
       }
     },
+    async fetchProducts() {
+      try {
+        // Llamada a la API para obtener la lista de productos
+        const response = await axios.get('http://localhost:8000/api/products/store/1');
+        this.localProducts = response.data;
+      } catch (error) {
+        console.error('Error al obtener los productos:', error);
+      }
+    },
+    getImageUrl(product) {
+      // Asegurarse de que la URL de la imagen esté bien formada o use una imagen por defecto
+      console.log("URL de imagen del producto:", product.image);
+      return product.image ? product.image : 'default_image_path';
+    }
   }
 };
 </script>
@@ -194,10 +273,13 @@ h2 {
   font-size: 16px;
 }
 .product-image {
-  width: 50px;
-  height: 50px;
-  object-fit: cover;
+  width: auto; 
+  max-width: 200px; 
+  height: auto; 
+  max-height: 200px; 
+  object-fit: contain; 
 }
+
 .action-buttons {
   text-align: left;
   white-space: nowrap;
