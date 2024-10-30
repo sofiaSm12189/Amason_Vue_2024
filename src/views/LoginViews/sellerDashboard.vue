@@ -15,10 +15,9 @@
 
         <main class="content">
             <addStores v-if="view === 'create'" :stores="stores" @update-stores="updateStores" />
-            <manageStores v-if="view === 'manage'" :stores="stores" @update-stores="updateStores"
-                @change-view="view = $event" />
+            <manageStores v-if="view === 'manage'" :stores="stores" @update-stores="updateStores" @change-view="view = $event"/>
             <SellerProduct v-if="view === 'SellerProduct'" @open-create-product="openCreateProductModal" />
-
+  
         </main>
     </div>
 </template>
@@ -27,7 +26,6 @@
 import addStores from "../../components/controlPanelComponents/addStores.vue";
 import manageStores from "../../components/controlPanelComponents/manageStores.vue";
 import SellerProduct from "@/components/MenuComponents/SellerProductlist/SellerProduct.vue";
-import { logoutUser } from "../../../api/auth";
 
 
 export default {
@@ -42,19 +40,13 @@ export default {
     methods: {
         updateStores(store, deleteStore = false) {
             if (deleteStore) {
-                this.stores.splice(store, 1);
+                this.stores.splice(store, 1); 
             } else {
-                this.stores.push(store);
+                this.stores.push(store); 
             }
         },
         logout() {
-            const confirmLogout = confirm("¿Estás seguro de que deseas cerrar sesión?");
-            if (confirmLogout) {
-                // Si el usuario confirma, cierra sesión
-                logoutUser();
-                this.$router.push('/login');
-            }
-
+            alert("Cerrando sesión...");
         },
         openCreateProductModal() {
             this.showCreateProductModal = true; // Abre el modal
