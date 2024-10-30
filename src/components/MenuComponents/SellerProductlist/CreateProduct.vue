@@ -1,6 +1,5 @@
 <template>
   <div v-if="showModal" class="modal-overlay">
-  <div v-if="showModal" class="modal-overlay">
     <div class="modal-content">
       <span class="close" @click="closeModal">&times;</span>
       <h2 class="modal-title">Crear Nuevo Producto</h2>
@@ -62,15 +61,7 @@
 <script>
 import { createProduct } from '../../../../api/auth'; // O la ruta correcta
 
-import { createProduct } from '../../../../api/auth'; // O la ruta correcta
-
 export default {
-  props: {
-    showModal: {
-      type: Boolean,
-      required: true, // Opción si es obligatorio
-    }
-  },
   props: {
     showModal: {
       type: Boolean,
@@ -81,7 +72,6 @@ export default {
     return {
       product: {
         name: '',
-        category_id: '',  // Este será el ID numérico de la categoría
         category_id: '',  // Este será el ID numérico de la categoría
         price: '',
         stock: '',
