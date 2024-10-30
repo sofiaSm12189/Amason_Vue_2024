@@ -76,19 +76,16 @@ export default {
       this.$set(this.selectedItems, index, isSelected)
     },
     deleteSelectedItems() {
-  try {
-    if (confirm('¿Estás seguro de que deseas eliminar este producto?')) {
-      this.removeAllProductsFromCart();
-      this.selectedItems = [];
-      this.selectedAll = false;
+      try {
+        if (confirm('¿Estás seguro de que deseas eliminar este producto?')) {
+          this.removeAllProductsFromCart()
+          this.$toast.success('Carrito vaciado exitosamente')
+        }
+      } catch (error) {
+        this.$toast.error('Hubo un error al vaciar el carrito')
+        console.error(error)
+      }
     }
-  } catch (error) {
-    console.error('Hubo un error al vaciar el carrito');
-    console.error(error);
-  }
-}
-
-
   }
 }
 </script>
