@@ -1,56 +1,23 @@
 import api from '../../../services/api';
 
-const calculateTotalAmount = (cart) => {
-  return cart.reduce((total, p) => {
-    const price = p.product_price;
-    const quantity = p.quantity;
-    return total + (price * quantity);
-  }, 0);
-};
-
 const cart = {
   namespaced: true,
   state: {
     cart: [],
     totalAmount: 0,
-    isAdding: false,
   },
-  
   mutations: {
-    
-    setIsAdding(state, value) {
-      state.isAdding = value;
-    },
-
     setCart(state, products) {
       state.cart = products;
-      state.totalAmount = calculateTotalAmount(state.cart);
     },
-    addProduct(state, product) {
-     
-          state.cart.push({
-          product_id: product.product_id,
-          product_name: product.product_name,
-          product_price: product.product_price,
-          product_description: product.product_description,
-          quantity: product.quantity,
-          
-        });
-      
-      state.totalAmount = calculateTotalAmount(state.cart);
+    setTotalAmount(state, totalAmount) {
+      state.totalAmount = totalAmount;
     },
     removeProduct(state, index) {
       state.cart.splice(index, 1);
-      state.totalAmount = calculateTotalAmount(state.cart);
     },
-    updateQuantity(state, { index, quantity }) {
-      if (quantity > 0) {
-        state.cart[index].quantity = quantity;
-      }
-      state.totalAmount = calculateTotalAmount(state.cart);
-    },
-    setTotalAmount(state) {
-      state.totalAmount = calculateTotalAmount(state.cart);
+    updateProductQuantity(state, { index, quantity }) {
+      state.cart[index].quantity = quantity;
     },
     clearCart(state) {
       state.cart = [];
@@ -70,7 +37,11 @@ const cart = {
         if (response.status === 200) {
           const cartProducts = response.data.cart_products;
           commit('setCart', cartProducts);
-          const totalAmount = calculateTotalAmount(cartProducts);
+
+          // Calcular totalAmount
+          const totalAmount = cartProducts.reduce((total, product) => {
+            return total + (product.product_price * product.quantity);
+          }, 0);
           commit('setTotalAmount', totalAmount);
         } else {
           console.error('Error response from server:', response);
@@ -79,54 +50,7 @@ const cart = {
         console.error('Error fetching cart items:', error);
       }
     },
-    async addProductToCart({ commit, dispatch, state }, product) {
-      if (state.isAdding) return;  // Si ya está procesando, sale de la función
-      commit('setIsAdding', true);  // Cambia el estado a "agregando"
-    
-      try {
-        const existingProductIndex = state.cart.findIndex(p => p.product_id === product.product_id);
-    
-        if (existingProductIndex !== -1) {
-          // Actualiza la cantidad del producto existente
-          await dispatch('updateProductQuantity', { 
-            productId: product.product_id, 
-            quantity: state.cart[existingProductIndex].quantity + 1, 
-            action: 'add' 
-          });
-        } else {
-          const response = await api.post('/cart/add', {
-            idproduct: product.product_id,
-            quantity: 1,
-          }, {
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${localStorage.getItem('token')}`,
-            }
-          });
-    
-          if (response.status === 201) {
-            commit('addProduct', { 
-              product_description: product.product_description, 
-              product_id: product.product_id, 
-              product_name: product.product_name, 
-              product_price: product.product_price, 
-              product_stock: product.product_stock,
-              product_image: product.product_image,
-              quantity: 1 
-            });
-          }
-        }
-    
-        commit('setTotalAmount');
-        
-      } catch (error) {
-        console.error('Error adding product to cart:', error);
-      } finally {
-        commit('setIsAdding', false);  
-      }
-    }
-    ,
-    
+
     async removeProductFromCart({ commit, state }, productId) {
       try {
         const productIndex = state.cart.findIndex(
@@ -152,7 +76,11 @@ const cart = {
 
         if (response.status === 200) {
           commit('removeProduct', productIndex);
-          const newTotalAmount = calculateTotalAmount(state.cart);
+
+          // Recalcular el totalAmount
+          const newTotalAmount = state.cart.reduce((total, product) => {
+            return total + (product.product_price * product.quantity);
+          }, 0);
           commit('setTotalAmount', newTotalAmount);
         } else {
           console.error('Error response from server:', response);
@@ -174,8 +102,7 @@ const cart = {
         }
     
         // Actualiza la cantidad en el estado local
-
-        commit('updateQuantity', { index: productIndex, quantity });
+        commit('updateProductQuantity', { index: productIndex, quantity });
     
         // Recalcular el totalAmount localmente
         const newTotalAmount = state.cart.reduce((total, product) => {
@@ -188,8 +115,8 @@ const cart = {
           '/cart/update-units',
           {
             idproducttoupdate: productId,
-            quantity: 1,
-            action: action,
+            quantity,
+            action,
           },
           {
             headers: {
@@ -199,7 +126,7 @@ const cart = {
           }
         );
     
-        if (response.status !== 200 && response.status !== 201) {
+        if (response.status !== 200) {
           console.error('Error response from server:', response);
           // Si la respuesta no es exitosa, revertimos el cambio
           // (opcional, solo si deseas manejar revertir en caso de error)
